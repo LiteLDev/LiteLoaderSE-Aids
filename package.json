@@ -1,0 +1,87 @@
+{
+  "name": "lxldev-lua",
+  "displayName": "Lxldev-Lua",
+  "publisher": "moxicat",
+  "description": "Assist in the development of Lxl's Lua plug-in",
+  "version": "0.0.2",
+  "engines": {
+    "vscode": "^1.58.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:lxldev-lua.showDocs",
+    "onCommand:lxldev-lua.configure",
+    "onCommand:lxldev-lua.update",
+    "onCommand:lxldev-lua.runner",
+    "*"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "lxldev-lua.showDocs",
+        "title": "显示LiteXLoader文档",
+        "category": "LXL"
+      },
+      {
+        "command": "lxldev-lua.configure",
+        "title": "配置LiteXLoader项目",
+        "category": "LXL"
+      },
+      {
+        "command": "lxldev-lua.update",
+        "title": "更新LiteXLoader项目",
+        "category": "LXL"
+      },
+      {
+        "command": "lxldev-lua.runner",
+        "title": "运行LiteXLoader项目",
+        "category": "LXL",
+        "icon": {
+          "light": "./images/run-light.svg",
+          "dark": "./images/run-dark.svg"
+        }
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "when": "resourceLangId == lua",
+          "command": "lxldev-lua.runner",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.1.3",
+    "@types/mocha": "^8.2.2",
+    "@types/node": "14.x",
+    "@types/node-fetch": "^2.5.11",
+    "@types/vscode": "^1.58.0",
+    "@typescript-eslint/eslint-plugin": "^4.26.0",
+    "@typescript-eslint/parser": "^4.26.0",
+    "eslint": "^7.27.0",
+    "glob": "^7.1.7",
+    "mocha": "^8.4.0",
+    "typescript": "^4.3.2",
+    "vscode-test": "^1.5.2"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.5",
+    "async": "^3.2.0",
+    "node-fetch": "^2.6.1",
+    "node-stream-zip": "^1.13.6",
+    "step": "^1.0.0"
+  }
+}
