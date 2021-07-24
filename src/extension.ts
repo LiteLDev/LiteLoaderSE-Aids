@@ -48,7 +48,7 @@ export function activate(context: vscode.ExtensionContext) {
 							var results = {};
 							files.forEach(function (filename: string | number) {
 								if (path.extname(filename) === '.lua') {
-									resStrs += '\r'+filename
+									resStrs += '\r'+filename;
 									fs.writeFileSync(uris + '\\' + filename, fs.readFileSync(fileDirectory + '\\' + filename));
 								}
 								

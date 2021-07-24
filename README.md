@@ -5,7 +5,6 @@
 https://marketplace.visualstudio.com/items?itemName=moxicat.lxldev-lua
 
 ![](https://ftp.bmp.ovh/imgs/2021/07/6821a9c27e063329.gif)
-![](example.gif)
 
 ### 功能
  - 自动补全
