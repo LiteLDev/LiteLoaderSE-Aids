@@ -4,7 +4,7 @@
   "publisher": "moxicat",
   "description": "Assist in the development of Lxl's Lua plug-in",
   "version": "0.0.12",
-  "icon": "./images/icon.png",
+  "icon": "images/icon.png",
   "repository": "https://github.com/moxicode/LxLdev-lua",
   "engines": {
     "vscode": "^1.58.0"
