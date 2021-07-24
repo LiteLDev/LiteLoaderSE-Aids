@@ -30,7 +30,7 @@ export function activate(context: vscode.ExtensionContext) {
 	let disposable7 = vscode.commands.registerCommand('lxldev-lua.out', (fileUri: vscode.Uri) => {
 		if (vscode.workspace.rootPath !== undefined) {
 			vscode.window.showOpenDialog({
-				title: '选择带有LXL环境的BDS根目录',
+				title: '选择要导出的目录',
 				canSelectFolders: true,
 				canSelectMany: false
 			}).then(function (uri) {
