@@ -3,7 +3,7 @@
   "displayName": "Lxldev-Lua",
   "publisher": "moxicat",
   "description": "Assist in the development of Lxl's Lua plug-in",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "icon": "images/icon.png",
   "repository": "https://github.com/moxicode/LxLdev-lua",
   "engines": {
