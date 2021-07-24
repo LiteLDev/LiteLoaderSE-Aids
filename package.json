@@ -38,22 +38,58 @@
       },
       {
         "command": "lxldev-lua.runner",
-        "title": "运行LiteXLoader项目",
+        "title": "启动LXL(BDS)控制台",
         "category": "LXL",
         "icon": {
           "light": "./images/run-light.svg",
           "dark": "./images/run-dark.svg"
         }
+      },
+      {
+        "command": "lxldev-lua.load",
+        "title": "加载/重载此文件到LXL",
+        "category": "LXL",
+        "icon": {
+          "light": "./images/reload-light.svg",
+          "dark": "./images/reload-dark.svg"
+        }
+      },
+      {
+        "command": "lxldev-lua.configDir",
+        "title": "配置LXL(BDS)目录",
+        "category": "LXL"
       }
     ],
     "menus": {
       "editor/title": [
         {
-          "when": "resourceLangId == lua",
+          "when": "resourceLangId == lua && !config.LXl-Lua-runner.isrunning",
           "command": "lxldev-lua.runner",
+          "group": "navigation"
+        },
+        {
+          "when": "resourceLangId == lua && config.LXl-Lua-runner.isrunning",
+          "command": "lxldev-lua.load",
           "group": "navigation"
         }
       ]
+    },
+    "configuration": {
+      "title": "LXLdev-Lua configuration",
+      "properties": {
+        "LXl-Lua-runner.bds-lxlDir": {
+          "type": "string",
+          "default": null,
+          "description": "LXL的运行环境目录",
+          "scope": "resource"
+        },
+        "LXl-Lua-runner.isrunning": {
+          "type": "boolean",
+          "default": false,
+          "description": "LXL的运行状态",
+          "scope": "resource"
+        }
+      }
     }
   },
   "scripts": {
@@ -81,8 +117,10 @@
   "dependencies": {
     "adm-zip": "^0.5.5",
     "async": "^3.2.0",
+    "marked": "^2.1.3",
     "node-fetch": "^2.6.1",
     "node-stream-zip": "^1.13.6",
+    "path": "^0.12.7",
     "step": "^1.0.0"
   }
 }

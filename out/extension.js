@@ -8,7 +8,35 @@ const update_1 = require("./update");
 const fs = require('fs');
 exports.apiHost = "https://raw.githubusercontent.com/moxicode/LXLDevHelper/master/Helper/version.json";
 function activate(context) {
-    console.log('Congratulations, your extension "lxldev-lua" is now active!');
+    //UPDATE 
+    update_1.showed(context);
+    const luarunner = new runner_1.LuaRunner();
+    vscode.window.onDidCloseTerminal((t) => {
+        if (t.name === 'LXLDebug') {
+            vscode.workspace.getConfiguration('LXl-Lua-runner').update('isrunning', false);
+            t === null || t === void 0 ? void 0 : t.dispose;
+        }
+    });
+    if (luarunner.terminal === undefined) {
+        vscode.workspace.getConfiguration('LXl-Lua-runner').update('isrunning', false);
+    }
+    //load/reload
+    let disposable5 = vscode.commands.registerCommand('lxldev-lua.load', (fileUri) => {
+        luarunner.load(fileUri);
+    });
+    let disposable6 = vscode.commands.registerCommand('lxldev-lua.configDir', (fileUri) => {
+        vscode.window.showOpenDialog({
+            title: '选择带有LXL环境的BDS根目录',
+            canSelectFolders: true,
+            canSelectMany: false
+        }).then(function (uri) {
+            if (uri !== undefined) {
+                var uris = uri[0].fsPath;
+                vscode.workspace.getConfiguration('LXl-Lua-runner').update('bds-lxlDir', uris);
+                vscode.window.showInformationMessage('选择成功：' + uris);
+            }
+        });
+    });
     //update
     let disposable3 = vscode.commands.registerCommand('lxldev-lua.update', () => {
         const path = vscode.workspace.rootPath;
@@ -21,8 +49,8 @@ function activate(context) {
             }
         });
     });
-    let disposable4 = vscode.commands.registerCommand('lxldev-lua.runner', () => {
-        runner_1.run();
+    let disposable4 = vscode.commands.registerCommand('lxldev-lua.runner', (fileUri) => {
+        luarunner.run(fileUri);
     });
     //showDocs
     let disposable = vscode.commands.registerCommand('lxldev-lua.showDocs', () => {
@@ -50,7 +78,7 @@ function activate(context) {
             });
         }
     });
-    context.subscriptions.push(disposable, disposable2, disposable3, disposable4);
+    context.subscriptions.push(disposable, disposable2, disposable3, disposable4, disposable5, disposable6);
 }
 exports.activate = activate;
 //funcions
@@ -71,4 +99,11 @@ function showLXLDocs(context) {
 		  `;
 }
 exports.showLXLDocs = showLXLDocs;
+exports.deactivate = function () {
+    var _a;
+    vscode.workspace.getConfiguration('LXl-Lua-runner').update('isrunning', false);
+    const luarunner = new runner_1.LuaRunner();
+    (_a = luarunner.terminal) === null || _a === void 0 ? void 0 : _a.dispose;
+    luarunner.terminal = undefined;
+};
 //# sourceMappingURL=extension.js.map

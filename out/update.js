@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.update = void 0;
+exports.showed = exports.update = void 0;
 /* eslint-disable eqeqeq */
 /* eslint-disable @typescript-eslint/naming-convention */
 const vscode = require("vscode");
@@ -10,6 +10,7 @@ const extension_1 = require("./extension");
 const fetch = require("node-fetch");
 const streamZip = require("node-stream-zip");
 const paths = vscode.workspace.rootPath;
+const marked = require("marked");
 function update(path) {
     fs.readFile(path, 'utf8', (err, data) => {
         if (err) {
@@ -105,4 +106,26 @@ function unzip(zippath, version, newversion) {
         }
     });
 }
+function showed(context) {
+    let reqs = https.request('https://raw.githubusercontent.com/moxicode/LXLDevHelper/master/README.md', (res) => {
+        let resStr = "";
+        res.on("data", (str) => {
+            resStr += str;
+        });
+        reqs.on('error', error => {
+            vscode.window.showErrorMessage('获取地址出现错误' + error);
+        });
+        res.on("end", () => {
+            console.info(resStr);
+            const html = marked(resStr);
+            var planes = vscode.window.createWebviewPanel("update", "LXLDevHelper", vscode.ViewColumn.One, {
+                retainContextWhenHidden: true,
+                enableScripts: true
+            });
+            planes.webview.html = html;
+        });
+    });
+    reqs.end();
+}
+exports.showed = showed;
 //# sourceMappingURL=update.js.map
