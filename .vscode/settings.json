@@ -10,5 +10,6 @@
     "typescript.tsc.autoDetect": "off",
     "github.copilot.advanced": {
     
-    }
+    },
+    "LXl-Lua-runner.isrunning": false
 }

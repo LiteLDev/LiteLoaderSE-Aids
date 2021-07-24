@@ -7,6 +7,7 @@ const runner_1 = require("./runner");
 const update_1 = require("./update");
 const fs = require('fs');
 exports.apiHost = "https://raw.githubusercontent.com/moxicode/LXLDevHelper/master/Helper/version.json";
+const path = require('path');
 function activate(context) {
     //UPDATE 
     update_1.showed(context);
@@ -23,6 +24,45 @@ function activate(context) {
     //load/reload
     let disposable5 = vscode.commands.registerCommand('lxldev-lua.load', (fileUri) => {
         luarunner.load(fileUri);
+    });
+    let disposable7 = vscode.commands.registerCommand('lxldev-lua.out', (fileUri) => {
+        if (vscode.workspace.rootPath !== undefined) {
+            vscode.window.showOpenDialog({
+                title: '选择带有LXL环境的BDS根目录',
+                canSelectFolders: true,
+                canSelectMany: false
+            }).then(function (uri) {
+                if (uri !== undefined) {
+                    var uris = uri[0].fsPath;
+                    var fileDirectory = vscode.workspace.rootPath;
+                    var resStrs = "";
+                    if (fs.existsSync(fileDirectory)) {
+                        fs.readdir(fileDirectory, function (err, files) {
+                            if (err) {
+                                console.log(err);
+                                return;
+                            }
+                            var count = files.length;
+                            var results = {};
+                            files.forEach(function (filename) {
+                                if (path.extname(filename) === '.lua') {
+                                    resStrs += '\r' + filename;
+                                    fs.writeFileSync(uris + '\\' + filename, fs.readFileSync(fileDirectory + '\\' + filename));
+                                }
+                            });
+                            vscode.window.showInformationMessage('导出文件' + resStrs + '\n 到' + uris + '成功');
+                        });
+                    }
+                    else {
+                        console.log(fileDirectory + "  Not Found!");
+                    }
+                }
+            });
+        }
+        else {
+            vscode.window.showErrorMessage('获取路径错误');
+        }
+        ;
     });
     let disposable6 = vscode.commands.registerCommand('lxldev-lua.configDir', (fileUri) => {
         vscode.window.showOpenDialog({
@@ -78,7 +118,7 @@ function activate(context) {
             });
         }
     });
-    context.subscriptions.push(disposable, disposable2, disposable3, disposable4, disposable5, disposable6);
+    context.subscriptions.push(disposable, disposable2, disposable3, disposable4, disposable5, disposable6, disposable7);
 }
 exports.activate = activate;
 //funcions

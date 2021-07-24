@@ -37,6 +37,15 @@
         "category": "LXL"
       },
       {
+        "command": "lxldev-lua.out",
+        "title": "导出所有Lua插件文件",
+        "category": "LXL",
+        "icon": {
+          "light": "./images/out_light.svg",
+          "dark": "./images/out_dark.svg"
+        }
+      },
+      {
         "command": "lxldev-lua.runner",
         "title": "启动LXL(BDS)控制台",
         "category": "LXL",
@@ -70,6 +79,11 @@
         {
           "when": "resourceLangId == lua && config.LXl-Lua-runner.isrunning",
           "command": "lxldev-lua.load",
+          "group": "navigation"
+        },
+        {
+          "when": "resourceLangId == lua",
+          "command": "lxldev-lua.out",
           "group": "navigation"
         }
       ]

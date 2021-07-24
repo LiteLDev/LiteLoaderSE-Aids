@@ -114,7 +114,6 @@ export function showed(context: vscode.ExtensionContext) {
                vscode.window.showErrorMessage('获取地址出现错误'+error);
              });
            res.on("end", () => {
-               console.info(resStr);
                const html = marked(resStr);
                var planes = vscode.window.createWebviewPanel(
                    "update",
