@@ -1,24 +1,22 @@
-# LxLdev-lua
-## 功能
-~~~
-- 自动补全
-- 文档注解
-- 长期更新
-- 开发辅助
-- 调试运行
-~~~
-## 使用
-~~~
-1.在MArketplace搜索本插件
-2.创建一个项目文件夹
-3.打开命令面板，输入前缀 LXL
-~~~
+# LXL Dev Helper (Lua)
+![](https://img.shields.io/github/stars/moxicode/LXLDevHelper) ![](https://img.shields.io/github/forks/moxicode/LXLDevHelper) ![](https://img.shields.io/github/issues/moxicode/LXLDevHelper) ![](https://img.shields.io/github/license/moxicode/LXLDevHelper)
 
-## 前置
-sumneko大佬的[Lua](https://marketplace.visualstudio.com/items?itemName=sumneko.lua
-)插件
+### 在VSCODE中安装
+https://marketplace.visualstudio.com/items?itemName=moxicat.lxldev-lua
 
-## 贡献
-若您想要改进补全库或提交问题
+![](https://ftp.bmp.ovh/imgs/2021/07/6821a9c27e063329.gif)
+![](example.gif)
 
-请前往[LXLDevHelper](https://github.com/moxicode/LXLDevHelper/)项目
+### 功能
+ - 自动补全
+ - 内嵌文档
+ - 长期更新
+ - 调试更新
+ - and more...
+
+ ### 依赖
+ - [sumneko.lua](https://marketplace.visualstudio.com/items?itemName=sumneko.lua)
+
+ ### Feedback
+  - [Github Issue](https://github.com/moxicode/LXLDevHelper/issues)
+  - [Pull Request](https://github.com/moxicode/LXLDevHelper/pulls)
