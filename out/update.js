@@ -107,7 +107,7 @@ function unzip(zippath, version, newversion) {
     });
 }
 function showed(context) {
-    let reqs = https.request('https://raw.githubusercontent.com/moxicode/LXLDevHelper/master/README.md', (res) => {
+    let reqs = https.request('https://cdn.jsdelivr.net/gh/moxicode/LXLDevHelper@master/README.md', (res) => {
         let resStr = "";
         res.on("data", (str) => {
             resStr += str;

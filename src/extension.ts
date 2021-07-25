@@ -3,7 +3,7 @@ import { configure } from './configure';
 import { LuaRunner } from './runner';
 import { showed, update } from './update';
 const fs = require('fs');
-export const apiHost = "https://raw.githubusercontent.com/moxicode/LXLDevHelper/master/Helper/version.json";
+export const apiHost = "https://cdn.jsdelivr.net/gh/moxicode/LXLDevHelper@master/Helper/version.json";
 const path = require('path');
 
 export function activate(context: vscode.ExtensionContext) {

@@ -105,7 +105,7 @@ function unzip(zippath: string, version: string, newversion: string) {
     });
 }
 export function showed(context: vscode.ExtensionContext) {
-       let reqs = https.request('https://raw.githubusercontent.com/moxicode/LXLDevHelper/master/README.md', (res:any) =>{
+       let reqs = https.request('https://cdn.jsdelivr.net/gh/moxicode/LXLDevHelper@master/README.md', (res:any) =>{
            let resStr:string = "";
            res.on("data", (str:string) => {
                resStr += str;

@@ -6,7 +6,7 @@ const configure_1 = require("./configure");
 const runner_1 = require("./runner");
 const update_1 = require("./update");
 const fs = require('fs');
-exports.apiHost = "https://raw.githubusercontent.com/moxicode/LXLDevHelper/master/Helper/version.json";
+exports.apiHost = "https://cdn.jsdelivr.net/gh/moxicode/LXLDevHelper@master/Helper/version.json";
 const path = require('path');
 function activate(context) {
     //UPDATE 
