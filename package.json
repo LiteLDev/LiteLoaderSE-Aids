@@ -3,7 +3,7 @@
   "displayName": "LXLDevHelper",
   "publisher": "moxicat",
   "description": "Assist in the development of Lxl's plugin",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "icon": "images/icon.png",
   "repository": "https://github.com/moxicode/LXLDevHelper",
   "engines": {
