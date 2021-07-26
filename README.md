@@ -1,10 +1,7 @@
-# LXL Dev Helper (Lua)
-![](https://img.shields.io/github/stars/moxicode/LXLDevHelper) ![](https://img.shields.io/github/forks/moxicode/LXLDevHelper) ![](https://img.shields.io/github/issues/moxicode/LXLDevHelper) ![](https://img.shields.io/github/license/moxicode/LXLDevHelper)
+![LXLDevHelper](https://socialify.git.ci/moxicode/LXLDevHelper/image?description=1&descriptionEditable=For%20LiteXLoader&forks=1&issues=1&language=1&owner=1&pattern=Diagonal%20Stripes&pulls=1&stargazers=1&theme=Light)
 
-### 在VSCODE中安装
+# 在VSCODE中安装
 https://marketplace.visualstudio.com/items?itemName=moxicat.lxldev-lua
-
-![](https://ftp.bmp.ovh/imgs/2021/07/6821a9c27e063329.gif)
 
 ### 功能
  - 自动补全

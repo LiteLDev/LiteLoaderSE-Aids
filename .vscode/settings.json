@@ -11,5 +11,8 @@
     "github.copilot.advanced": {
     
     },
-    "LXl-Lua-runner.isrunning": false
+    "LXl-Lua-runner.isrunning": false,
+    "Lua.workspace.library": [
+        "F:\\Lua-Plugins\\Leaderborad\\Helper\\DataAPI\\ConfigFile.lua"
+    ]
 }

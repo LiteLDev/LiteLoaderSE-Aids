@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.showed = exports.update = void 0;
+exports.update = void 0;
 /* eslint-disable eqeqeq */
 /* eslint-disable @typescript-eslint/naming-convention */
 const vscode = require("vscode");
@@ -106,25 +106,4 @@ function unzip(zippath, version, newversion) {
         }
     });
 }
-function showed(context) {
-    let reqs = https.request('https://cdn.jsdelivr.net/gh/moxicode/LXLDevHelper@master/README.md', (res) => {
-        let resStr = "";
-        res.on("data", (str) => {
-            resStr += str;
-        });
-        reqs.on('error', error => {
-            vscode.window.showErrorMessage('获取地址出现错误' + error);
-        });
-        res.on("end", () => {
-            const html = marked(resStr);
-            var planes = vscode.window.createWebviewPanel("update", "LXLDevHelper", vscode.ViewColumn.One, {
-                retainContextWhenHidden: true,
-                enableScripts: true
-            });
-            planes.webview.html = html;
-        });
-    });
-    reqs.end();
-}
-exports.showed = showed;
 //# sourceMappingURL=update.js.map
