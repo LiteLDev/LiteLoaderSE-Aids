@@ -1,11 +1,11 @@
 {
-  "name": "lxldev-lua",
-  "displayName": "Lxldev-Lua",
+  "name": "lxldevhelper",
+  "displayName": "LXLDevHelper",
   "publisher": "moxicat",
-  "description": "Assist in the development of Lxl's Lua plug-in",
+  "description": "Assist in the development of Lxl's plugin",
   "version": "0.0.14",
   "icon": "images/icon.png",
-  "repository": "https://github.com/moxicode/LxLdev-lua",
+  "repository": "https://github.com/moxicode/LXLDevHelper",
   "engines": {
     "vscode": "^1.58.0"
   },
@@ -13,41 +13,26 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:lxldev-lua.showDocs",
-    "onCommand:lxldev-lua.configure",
-    "onCommand:lxldev-lua.update",
-    "onCommand:lxldev-lua.runner",
+    "onCommand:LXLDevHelper.showDocs",
+    "onCommand:LXLDevHelper.configure",
+    "onCommand:LXLDevHelper.update",
+    "onCommand:lxldev.runner",
     "*"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "lxldev-lua.showDocs",
+        "command": "LXLDevHelper.showDocs",
         "title": "显示LiteXLoader文档",
-        "category": "LXL"
-      },
-      {
-        "command": "lxldev-lua.configure",
-        "title": "配置LiteXLoader项目",
-        "category": "LXL"
-      },
-      {
-        "command": "lxldev-lua.update",
-        "title": "更新LiteXLoader项目",
-        "category": "LXL"
-      },
-      {
-        "command": "lxldev-lua.out",
-        "title": "导出所有Lua插件文件",
         "category": "LXL",
         "icon": {
-          "light": "./images/out_light.svg",
-          "dark": "./images/out_dark.svg"
+          "light": "./images/docs-light.svg",
+          "dark": "./images/docs-dark.svg"
         }
       },
       {
-        "command": "lxldev-lua.runner",
+        "command": "LXLDevHelper.runner",
         "title": "启动LXL(BDS)控制台",
         "category": "LXL",
         "icon": {
@@ -56,8 +41,26 @@
         }
       },
       {
-        "command": "lxldev-lua.load",
-        "title": "加载/重载此文件到LXL",
+        "command": "LXLDevHelper.stop",
+        "title": "结束LXL(BDS)控制台",
+        "category": "LXL",
+        "icon": {
+          "light": "./images/stop-light.svg",
+          "dark": "./images/stop-dark.svg"
+        }
+      },
+      {
+        "command": "LXLDevHelper.load",
+        "title": "加载此文件到LXL",
+        "category": "LXL",
+        "icon": {
+          "light": "./images/load-light.svg",
+          "dark": "./images/load-dark.svg"
+        }
+      },
+      {
+        "command": "LXLDevHelper.reload",
+        "title": "重载此文件到LXL",
         "category": "LXL",
         "icon": {
           "light": "./images/reload-light.svg",
@@ -65,7 +68,7 @@
         }
       },
       {
-        "command": "lxldev-lua.configDir",
+        "command": "LXLDevHelper.configDir",
         "title": "配置LXL(BDS)目录",
         "category": "LXL"
       }
@@ -73,32 +76,42 @@
     "menus": {
       "editor/title": [
         {
-          "when": "resourceLangId == lua && !config.LXl-Lua-runner.isrunning",
-          "command": "lxldev-lua.runner",
-          "group": "navigation"
+          "when": "resourceLangId == lua && config.LXLDevHelper.isrunning",
+          "command": "LXLDevHelper.stop",
+          "group": "navigation@2"
         },
         {
-          "when": "resourceLangId == lua && config.LXl-Lua-runner.isrunning",
-          "command": "lxldev-lua.load",
-          "group": "navigation"
+          "when": "resourceLangId == lua && !config.LXLDevHelper.isrunning",
+          "command": "LXLDevHelper.runner",
+          "group": "navigation@1"
+        },
+        {
+          "when": "resourceLangId == lua && config.LXLDevHelper.isrunning",
+          "command": "LXLDevHelper.load",
+          "group": "navigation@3"
+        },
+        {
+          "when": "resourceLangId == lua && config.LXLDevHelper.isrunning",
+          "command": "LXLDevHelper.reload",
+          "group": "navigation@4"
         },
         {
           "when": "resourceLangId == lua",
-          "command": "lxldev-lua.out",
-          "group": "navigation"
+          "command": "LXLDevHelper.showDocs",
+          "group": "navigation@5"
         }
       ]
     },
     "configuration": {
-      "title": "LXLdev-Lua configuration",
+      "title": "LXLDevHelper configuration",
       "properties": {
-        "LXl-Lua-runner.bds-lxlDir": {
+        "LXLDevHelper.bds-lxlDir": {
           "type": "string",
           "default": null,
           "description": "LXL的运行环境目录",
           "scope": "resource"
         },
-        "LXl-Lua-runner.isrunning": {
+        "LXLDevHelper.isrunning": {
           "type": "boolean",
           "default": false,
           "description": "LXL的运行状态",
