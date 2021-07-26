@@ -4,7 +4,7 @@ import { configure } from './configure';
 import { loadPlugins, reloadPlugins, reSetTerminal, runTerminal, stopTerminal, terminal } from './debugger';
 import { ReminderView } from './reminderView';
 const fs = require('fs');
-export const apiHost = "https://cdn.jsdelivr.net/gh/moxicode/LXLDevHelper-Libary@master/Helper/version.json";
+export const apiHost = "https://cdn.jsdelivr.net/gh/moxicode/LXLDevHelper-Libary@master/version.json";
 export function activate(context: vscode.ExtensionContext) {
 
 	//检测依赖

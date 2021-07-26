@@ -1,4 +1,4 @@
-![LXLDevHelper](https://socialify.git.ci/moxicode/LXLDevHelper/image?description=1&descriptionEditable=For%20LiteXLoader&forks=1&issues=1&language=1&owner=1&pattern=Diagonal%20Stripes&pulls=1&stargazers=1&theme=Light)
+![LXLDevHelper](https://socialify.git.ci/moxicode/LXLDevHelper/image?description=1&descriptionEditable=For%20LiteXLoader&forks=1&issues=1&language=1&logo=https%3A%2F%2Fftp.bmp.ovh%2Fimgs%2F2021%2F07%2F330e4ee02ded7b58.png&pattern=Circuit%20Board&pulls=1&stargazers=1&theme=Light)
 
 # 在VSCODE中安装
 https://marketplace.visualstudio.com/items?itemName=moxicat.lxldev-lua
