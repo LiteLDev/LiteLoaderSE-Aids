@@ -11,6 +11,7 @@ https://marketplace.visualstudio.com/items?itemName=moxicat.lxldev-lua
  - and more...
 
  ### 依赖
+ - [LXLDevHelper-Libary](https://github.com/moxicode/LXLDevHelper-Libary)
  - [sumneko.lua](https://marketplace.visualstudio.com/items?itemName=sumneko.lua)
 
  ### Feedback

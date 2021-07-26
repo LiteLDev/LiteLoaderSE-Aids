@@ -6,7 +6,7 @@ const configure_1 = require("./configure");
 const debugger_1 = require("./debugger");
 const reminderView_1 = require("./reminderView");
 const fs = require('fs');
-exports.apiHost = "https://cdn.jsdelivr.net/gh/moxicode/LXLDevHelper-Libary@master/Helper/version.json";
+exports.apiHost = "https://cdn.jsdelivr.net/gh/moxicode/LXLDevHelper-Libary@master/version.json";
 function activate(context) {
     //检测依赖
     const result = vscode.extensions.getExtension('sumneko.lua');
