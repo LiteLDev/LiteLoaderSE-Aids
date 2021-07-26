@@ -30,7 +30,8 @@ function configure(libaryPath, type) {
                         var arrs = JSON.parse(data);
                         if (arr.version !== undefined) {
                             if (checkUp(arr.version, arrs.version)) {
-                                delDir(libaryPath + '\\libary');
+                                console.info('55555');
+                                delDir(libaryPath + '\\Libary\\');
                                 downloadFile(arr.download_url, libaryPath + '\\cache.zip', arr.version, arrs.version, false, libaryPath);
                             }
                         }

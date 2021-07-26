@@ -18,7 +18,6 @@ export function activate(context: vscode.ExtensionContext) {
 	}
 
 	//configure libary
-	vscode.workspace.getConfiguration().update('LXLDevHelper.isrunning', false);
 	const libary = vscode.extensions.getExtension('moxicat.LXLDevHelper');
 	const libaryPath = libary?.extensionPath + '\\Helper';
 	fs.exists(libaryPath + '\\version.json', (exists: any) => {
@@ -57,6 +56,7 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	context.subscriptions.push(disposable, disposable2, disposable3, disposable4, disposable5);
+	vscode.workspace.getConfiguration().update('LXLDevHelper.isrunning', false);
 	vscode.window.onDidCloseTerminal(() => {
 		vscode.workspace.getConfiguration().update('LXLDevHelper.isrunning', false);
 		terminal?.dispose();
