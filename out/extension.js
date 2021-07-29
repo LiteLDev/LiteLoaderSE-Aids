@@ -17,6 +17,14 @@ function activate(context) {
             }
         });
     }
+    const results = vscode.extensions.getExtension('moxicat.lxldev-lua');
+    if (results !== undefined) {
+        vscode.window.showInformationMessage('请删除旧版LXLDev—Lua', '卸载').then(function (msg) {
+            if (msg === '卸载') {
+                vscode.commands.executeCommand('workbench.action.quickOpen', 'ext uninstall moxicat.lxldev-lua');
+            }
+        });
+    }
     //configure libary
     const libary = vscode.extensions.getExtension('moxicat.LXLDevHelper');
     const libaryPath = (libary === null || libary === void 0 ? void 0 : libary.extensionPath) + '\\Helper';
@@ -36,7 +44,7 @@ function activate(context) {
             });
         }
     });
-    vscode.workspace.getConfiguration().update('Lua.workspace.library', [libaryPath]);
+    vscode.workspace.getConfiguration().update('Lua.workspace.library', [libaryPath], true);
     let disposable5 = vscode.commands.registerCommand('LXLDevHelper.load', (fileUri) => {
         debugger_1.loadPlugins(fileUri);
     });
