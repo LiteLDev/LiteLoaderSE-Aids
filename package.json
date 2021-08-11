@@ -3,7 +3,7 @@
   "displayName": "LXLDevHelper",
   "publisher": "moxicat",
   "description": "Assist in the development of Lxl's plugin",
-  "version": "0.0.17",
+  "version": "0.1.1",
   "icon": "images/icon.png",
   "repository": "https://github.com/moxicode/LXLDevHelper",
   "engines": {
@@ -71,11 +71,6 @@
         "command": "LXLDevHelper.configDir",
         "title": "配置LXL(BDS)目录",
         "category": "LXL"
-      },
-      {
-        "command": "LXLDevHelper.JSApi",
-        "title": "导入LiteXLoader补全",
-        "category": "LXL"
       }
     ],
     "menus": {
@@ -104,13 +99,6 @@
           "when": "resourceLangId == lua||resourceLangId == javascript",
           "command": "LXLDevHelper.showDocs",
           "group": "navigation@5"
-        }
-      ],
-      "editor/context": [
-        {
-          "when": "resourceLangId == javascript",
-          "command": "LXLDevHelper.JSApi",
-          "group": "navigation@1"
         }
       ]
     },
