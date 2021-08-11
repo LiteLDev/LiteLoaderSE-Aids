@@ -2,11 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.activate = exports.apiHost = void 0;
 const vscode = require("vscode");
-const configure_1 = require("./configure");
 const debugger_1 = require("./debugger");
+const LibraryConfig_1 = require("./LibraryConfig");
 const reminderView_1 = require("./reminderView");
 const fs = require('fs');
-exports.apiHost = "https://cdn.jsdelivr.net/gh/moxicode/LXLDevHelper-Libary@master/version.json";
+const fetch = require('node-fetch');
+exports.apiHost = "https://cdn.jsdelivr.net/gh/LiteLDev-LXL/version/Helper-Library.json";
 function activate(context) {
     //检测依赖
     const result = vscode.extensions.getExtension('sumneko.lua');
@@ -17,36 +18,48 @@ function activate(context) {
             }
         });
     }
-    const results = vscode.extensions.getExtension('moxicat.lxldev-lua');
-    if (results !== undefined) {
-        vscode.window.showInformationMessage('请删除旧版LXLDev—Lua', '卸载').then(function (msg) {
-            if (msg === '卸载') {
-                vscode.commands.executeCommand('workbench.action.quickOpen', 'ext uninstall moxicat.lxldev-lua');
+    else {
+        fetch(exports.apiHost)
+            .then((res) => res.text())
+            .then((json) => {
+            const nowVersion = vscode.workspace.getConfiguration().get("LXLDevHelper.version");
+            let arrs = JSON.parse(json);
+            if (nowVersion !== arrs.version) {
+                const lib = new LibraryConfig_1.LibraryConfig();
+                lib.run(arrs);
             }
         });
     }
-    //configure libary
-    const libary = vscode.extensions.getExtension('moxicat.LXLDevHelper');
-    const libaryPath = (libary === null || libary === void 0 ? void 0 : libary.extensionPath) + '\\Helper';
-    fs.exists(libaryPath + '\\version.json', (exists) => {
-        if (exists) {
-            configure_1.configure(libaryPath, true);
-        }
-        else {
-            fs.exists(libaryPath, (exists2) => {
-                if (exists2) {
-                    configure_1.configure(libaryPath, false);
-                }
-                else {
-                    configure_1.configure(libaryPath, false);
-                    fs.mkdirSync(libaryPath);
-                }
+    const provider2 = vscode.languages.registerCompletionItemProvider('javascript', {
+        provideCompletionItems(document, position) {
+            const snippetCompletion = new vscode.CompletionItem({
+                description: " 导入LiteXLoader补全",
+                label: "lxl"
             });
+            const dir = vscode.workspace.getConfiguration().get("LXLDevHelper.LibraryPath");
+            if (dir === null || dir === "") {
+                vscode.window.showErrorMessage("未配置Library", "配置").then(function (p) {
+                    if (p === "配置") {
+                        new LibraryConfig_1.LibraryConfig().run(exports.apiHost);
+                    }
+                });
+            }
+            else {
+                snippetCompletion.insertText = new vscode.SnippetString('//LiteXLoader Dev Helper\n/// <reference path="' + dir + '/JS/Api.js" /> \n\n\n$1');
+            }
+            return [
+                snippetCompletion
+            ];
         }
-    });
-    vscode.workspace.getConfiguration().update('Lua.workspace.library', [libaryPath], true);
+    }, '.' // triggered whenever a '.' is being typed
+    );
+    context.subscriptions.push(provider2);
     let disposable5 = vscode.commands.registerCommand('LXLDevHelper.load', (fileUri) => {
         debugger_1.loadPlugins(fileUri);
+    });
+    let jsapi = vscode.commands.registerCommand('LXLDevHelper.JSApi', (editor, fileUri) => {
+        let edit = editor.get(fileUri);
+        console.info(edit.values);
     });
     let disposable3 = vscode.commands.registerCommand('LXLDevHelper.reload', (fileUri) => {
         debugger_1.reloadPlugins(fileUri);
@@ -61,7 +74,7 @@ function activate(context) {
     let disposable = vscode.commands.registerCommand('LXLDevHelper.showDocs', () => {
         reminderView_1.ReminderView.show(context);
     });
-    context.subscriptions.push(disposable, disposable2, disposable3, disposable4, disposable5);
+    context.subscriptions.push(disposable, disposable2, disposable3, disposable4, disposable5, jsapi);
     vscode.workspace.getConfiguration().update('LXLDevHelper.isrunning', false);
     vscode.window.onDidCloseTerminal(() => {
         vscode.workspace.getConfiguration().update('LXLDevHelper.isrunning', false);
