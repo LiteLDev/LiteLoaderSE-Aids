@@ -3,7 +3,7 @@
   "displayName": "LXLDevHelper",
   "publisher": "moxicat",
   "description": "Assist in the development of Lxl's plugin",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "icon": "images/icon.png",
   "repository": "https://github.com/moxicode/LXLDevHelper",
   "engines": {
@@ -71,7 +71,8 @@
         "command": "LXLDevHelper.configDir",
         "title": "配置LXL(BDS)目录",
         "category": "LXL"
-      } ,{
+      },
+      {
         "command": "LXLDevHelper.JSApi",
         "title": "导入LiteXLoader补全",
         "category": "LXL"
@@ -111,7 +112,7 @@
           "command": "LXLDevHelper.JSApi",
           "group": "navigation@1"
         }
-  ]
+      ]
     },
     "configuration": {
       "title": "LXLDevHelper",
