@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LibraryConfig = void 0;
 const fs = require('fs');
@@ -12,7 +21,9 @@ class LibraryConfig {
             vscode.window.showInformationMessage(arrs.notice, "更新").then(function (t) {
                 if (t === "更新") {
                     vscode.window.showInformationMessage('开始更新Library：' + ver + " -> " + arrs.version);
-                    new LibraryConfig().downloadFile(arrs.download, vscode.workspace.getConfiguration().get("LXLDevHelper.LibraryPath"), arrs);
+                    const path = vscode.workspace.getConfiguration().get("LXLDevHelper.LibraryPath");
+                    delDir(path);
+                    new LibraryConfig().downloadFile(arrs.download, path, arrs);
                 }
             });
         }
@@ -96,4 +107,22 @@ class LibraryConfig {
     }
 }
 exports.LibraryConfig = LibraryConfig;
+function delDir(path) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let files = [];
+        if (fs.existsSync(path)) {
+            files = fs.readdirSync(path);
+            files.forEach((file, index) => {
+                let curPath = path + "/" + file;
+                if (fs.statSync(curPath).isDirectory()) {
+                    delDir(curPath); //递归删除文件夹
+                }
+                else {
+                    fs.unlinkSync(curPath); //删除文件
+                }
+            });
+            fs.rmdirSync(path);
+        }
+    });
+}
 //# sourceMappingURL=LibraryConfig.js.map

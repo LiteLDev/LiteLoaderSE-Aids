@@ -7,7 +7,7 @@ const LibraryConfig_1 = require("./LibraryConfig");
 const reminderView_1 = require("./reminderView");
 const fs = require('fs');
 const fetch = require('node-fetch');
-exports.apiHost = "https://cdn.jsdelivr.net/gh/LiteLDev-LXL/version/Helper-Library.json";
+exports.apiHost = "https://lxl-upgrade.amd.rocks/Helper/Version.json";
 function activate(context) {
     //检测依赖
     const result = vscode.extensions.getExtension('sumneko.lua');
@@ -23,13 +23,35 @@ function activate(context) {
             .then((res) => res.text())
             .then((json) => {
             const nowVersion = vscode.workspace.getConfiguration().get("LXLDevHelper.version");
-            let arrs = JSON.parse(json);
+            const arrs = JSON.parse(json);
+            console.log(arrs.version);
             if (nowVersion !== arrs.version) {
                 const lib = new LibraryConfig_1.LibraryConfig();
                 lib.run(arrs);
             }
         });
     }
+    vscode.workspace.onDidCreateFiles(function (e) {
+        e.files.forEach(function (p) {
+            let path = p.fsPath.toLowerCase();
+            if (path.includes("lxl.js")) {
+                const dir = vscode.workspace.getConfiguration().get("LXLDevHelper.LibraryPath");
+                if (dir === null || dir === "") {
+                    vscode.window.showErrorMessage("未配置Library", "配置").then(function (p) {
+                        if (p === "配置") {
+                            new LibraryConfig_1.LibraryConfig().run(exports.apiHost);
+                        }
+                    });
+                }
+                else {
+                    setTimeout(function () {
+                        var _a;
+                        (_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.insertSnippet(new vscode.SnippetString('//LiteXLoader Dev Helper\n/// <reference path="' + dir + '/JS/Api.js" /> \n\n\n$1'));
+                    }, 1000);
+                }
+            }
+        });
+    });
     const provider2 = vscode.languages.registerCompletionItemProvider('javascript', {
         provideCompletionItems(document, position) {
             const snippetCompletion = new vscode.CompletionItem({

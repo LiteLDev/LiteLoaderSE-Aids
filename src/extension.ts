@@ -5,7 +5,7 @@ import { LibraryConfig } from './LibraryConfig';
 import { ReminderView } from './reminderView';
 const fs = require('fs');
 const fetch = require('node-fetch');
-export const apiHost = "https://cdn.jsdelivr.net/gh/LiteLDev-LXL/version/Helper-Library.json";
+export const apiHost = "https://lxl-upgrade.amd.rocks/Helper/Version.json";
 export function activate(context: vscode.ExtensionContext) {
 
 	//检测依赖
@@ -14,6 +14,7 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.showInformationMessage('您还没有安装 sumneko.lua 扩展依赖项', '安装').then(function (msg) {
 			if (msg === '安装') {
 				vscode.commands.executeCommand('workbench.action.quickOpen', 'ext install sumneko.lua');
+
 			}
 		});
 	} else {
@@ -21,13 +22,40 @@ export function activate(context: vscode.ExtensionContext) {
 			.then((res: any) => res.text())
 			.then((json: string) => {
 				const nowVersion = vscode.workspace.getConfiguration().get("LXLDevHelper.version");
-				let arrs = JSON.parse(json);
+
+				const arrs = JSON.parse(json);
+				console.log(arrs.version);
 				if (nowVersion !== arrs.version) {
 					const lib = new LibraryConfig();
 					lib.run(arrs);
 				}
 			});
 	}
+
+
+
+	vscode.workspace.onDidCreateFiles(function (e: vscode.FileCreateEvent) {
+		e.files.forEach(function (p) {
+			let path = p.fsPath.toLowerCase();
+			if (path.includes("lxl.js")) {
+				const dir = vscode.workspace.getConfiguration().get("LXLDevHelper.LibraryPath");
+				if (dir === null || dir === "") {
+					vscode.window.showErrorMessage("未配置Library", "配置").then(function (p) {
+						if (p === "配置") {
+							new LibraryConfig().run(apiHost);
+						}
+					});
+				} else {
+					setTimeout(function () {
+						vscode.window.activeTextEditor?.insertSnippet(new vscode.SnippetString('//LiteXLoader Dev Helper\n/// <reference path="' + dir + '/JS/Api.js" /> \n\n\n$1'));
+					}, 1000);
+				}
+			}
+		});
+	});
+
+
+
 
 	const provider2 = vscode.languages.registerCompletionItemProvider(
 		'javascript',
@@ -60,7 +88,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 
 
-
+		
 
 
 

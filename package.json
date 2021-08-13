@@ -13,10 +13,6 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:LXLDevHelper.showDocs",
-    "onCommand:LXLDevHelper.configure",
-    "onCommand:LXLDevHelper.update",
-    "onCommand:lxldev.runner",
     "*"
   ],
   "main": "./out/extension.js",
@@ -76,27 +72,51 @@
     "menus": {
       "editor/title": [
         {
-          "when": "resourceLangId == lua||resourceLangId == javascript && config.LXLDevHelper.isrunning",
+          "when": "resourceLangId == lua && config.LXLDevHelper.isrunning",
           "command": "LXLDevHelper.stop",
           "group": "navigation@2"
         },
         {
-          "when": "resourceLangId == lua||resourceLangId == javascript && !config.LXLDevHelper.isrunning",
+          "when": "resourceLangId == lua && !config.LXLDevHelper.isrunning",
           "command": "LXLDevHelper.runner",
           "group": "navigation@1"
         },
         {
-          "when": "resourceLangId == lua||resourceLangId == javascript && config.LXLDevHelper.isrunning",
+          "when": "resourceLangId == lua && config.LXLDevHelper.isrunning",
           "command": "LXLDevHelper.load",
           "group": "navigation@3"
         },
         {
-          "when": "resourceLangId == lua||resourceLangId == javascript && config.LXLDevHelper.isrunning",
+          "when": "resourceLangId == lua && config.LXLDevHelper.isrunning",
           "command": "LXLDevHelper.reload",
           "group": "navigation@4"
         },
+
+
         {
-          "when": "resourceLangId == lua||resourceLangId == javascript",
+          "when": "resourceLangId == javascript && config.LXLDevHelper.isrunning",
+          "command": "LXLDevHelper.stop",
+          "group": "navigation@2"
+        },
+        {
+          "when": "resourceLangId == javascript && !config.LXLDevHelper.isrunning",
+          "command": "LXLDevHelper.runner",
+          "group": "navigation@1"
+        },
+        {
+          "when": "resourceLangId == javascript && config.LXLDevHelper.isrunning",
+          "command": "LXLDevHelper.load",
+          "group": "navigation@3"
+        },
+        {
+          "when": "resourceLangId == javascript && config.LXLDevHelper.isrunning",
+          "command": "LXLDevHelper.reload",
+          "group": "navigation@4"
+        },
+
+
+        {
+          "when": "resourceLangId == lua || resourceLangId== javascript",
           "command": "LXLDevHelper.showDocs",
           "group": "navigation@5"
         }
@@ -119,7 +139,7 @@
           "scope": "resource"
         },
         "LXLDevHelper.version": {
-          "type": "number",
+          "type": "string",
           "default": null,
           "readOnly": true,
           "description": "Library当前版本",
