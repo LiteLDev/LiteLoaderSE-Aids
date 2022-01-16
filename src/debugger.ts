@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import * as path from "path";
+import * as fs from "fs";
 export let terminal: vscode.Terminal | undefined;
 
 export function runTerminal() {
@@ -9,9 +10,14 @@ export function runTerminal() {
     }
     else {
         if (terminal === undefined) {
+            var fileList = fs.readdirSync(bdsDir);
+            var bds = '\\bedrock_server.exe';
+            if(fileList.indexOf('bedrock_server.exe') === -1){
+                bds = '\\bedrock_server_mod.exe';
+            }
             terminal = vscode.window.createTerminal({
                 name: 'LXLDevHelper',
-                shellPath: bdsDir + '\\bedrock_server.exe',
+                shellPath: bdsDir + bds,
                 cwd: bdsDir
             });
             terminal.show();

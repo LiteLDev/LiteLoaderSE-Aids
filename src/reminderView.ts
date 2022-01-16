@@ -22,7 +22,7 @@ export class ReminderView {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <script language="javascript" type="text/javascript"> 
-window.location.href='https://lxl.litetitle.com/#/zh_CN/Development/';
+window.location.href='https://lxl.litebds.com/#/zh_CN/Development/';
 </script>
 </html>`;
 

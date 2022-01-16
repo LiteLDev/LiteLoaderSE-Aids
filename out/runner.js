@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LuaRunner = void 0;
 const vscode = require("vscode");
 const path = require('path');
+const fs = require("fs")
 class LuaRunner {
     constructor() {
         this.uriList = new Array();
@@ -58,9 +59,14 @@ class LuaRunner {
         }
         else {
             if (this.terminal === undefined) {
+                var fileList = fs.readdirSync(bdsDir);
+                var bds = '\\bedrock_server.exe'
+                if(fileList.indexOf('bedrock_server.exe') == -1){
+                    bds = '\\bedrock_server_mod.exe'
+                }
                 this.terminal = vscode.window.createTerminal({
                     name: 'LXLDebug',
-                    shellPath: bdsDir + '\\bedrock_server.exe',
+                    shellPath: bdsDir + bds,
                     cwd: bdsDir
                 });
                 this.terminal.show();
