@@ -35,27 +35,19 @@ function activate(context) {
             const nowVersion = vscode.workspace.getConfiguration().get("LXLDevHelper.version");
             const arrs = JSON.parse(json);
             var path = vscode.workspace.getConfiguration().get("LXLDevHelper.LibraryPath", true);
-            console.log(path);
+            console.log(nowVersion);
             if (nowVersion !== arrs.version) {
                 const lib = new LibraryConfig_1.LibraryConfig();
                 lib.run(arrs);
             }
-            else if (path != null) {
-                try {
-                    console.log(path);
-                    if (!fsExistsSync(path)) {
-                        vscode.window.showInformationMessage("检测到您更新了Helper,是否重新配置补全库?", "配置").then(function (t) {
-                            if (t === "配置") {
-                                const lib = new LibraryConfig_1.LibraryConfig();
-                                lib.run(arrs);
-                            }
-                        });
-                        vscode.window.showWarningMessage("Tips: 项目中的补全库引用需要重新配置\n代码片段: lxl");
+            else if (String(path).indexOf(String(nowVersion)) == -1) {
+                vscode.window.showInformationMessage("检测到您更新了Helper,是否重新配置补全库?", "配置").then(function (t) {
+                    if (t === "配置") {
+                        const lib = new LibraryConfig_1.LibraryConfig();
+                        lib.run(arrs);
                     }
-                }
-                catch (error) {
-                    console.log(error);
-                }
+                });
+                vscode.window.showWarningMessage("Tips: 项目中的补全库引用需要重新配置\n代码片段: lxl");
             }
         });
     }

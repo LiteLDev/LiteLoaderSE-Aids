@@ -7,10 +7,10 @@ const fs = require('fs');
 const fetch = require('node-fetch');
 export const apiHost = "https://lxl-upgrade.amd.rocks/Helper/Version.json";
 export function activate(context: vscode.ExtensionContext) {
-	function fsExistsSync(path:any) {
-		try{
-			fs.accessSync(path,fs.F_OK);
-		}catch(e){
+	function fsExistsSync(path: any) {
+		try {
+			fs.accessSync(path, fs.F_OK);
+		} catch (e) {
 			return false;
 		}
 		return true;
@@ -34,26 +34,19 @@ export function activate(context: vscode.ExtensionContext) {
 				const nowVersion = vscode.workspace.getConfiguration().get("LXLDevHelper.version");
 				const arrs = JSON.parse(json);
 				var path = vscode.workspace.getConfiguration().get("LXLDevHelper.LibraryPath", true)
-				console.log(path)
-
+				console.log(nowVersion)
 				if (nowVersion !== arrs.version) {
 					const lib = new LibraryConfig();
 					lib.run(arrs);
-				} else if(path != null) {
-					try {
-						console.log(path)
-							if (!fsExistsSync(path)) {
-								vscode.window.showInformationMessage("检测到您更新了Helper,是否重新配置补全库?", "配置").then(function (t) {
-									if (t === "配置") {
-										const lib = new LibraryConfig();
-										lib.run(arrs);
-									}
-								});
-								vscode.window.showWarningMessage("Tips: 项目中的补全库引用需要重新配置\n代码片段: lxl")
-							}
-					} catch (error) {
-						console.log(error)
-					}
+				} else if (String(path).indexOf(String(nowVersion)) == -1) {
+					vscode.window.showInformationMessage("检测到您更新了Helper,是否重新配置补全库?", "配置").then(function (t) {
+						if (t === "配置") {
+							const lib = new LibraryConfig();
+							lib.run(arrs);
+						}
+					});
+					vscode.window.showWarningMessage("Tips: 项目中的补全库引用需要重新配置\n代码片段: lxl")
+
 				}
 			});
 	}
