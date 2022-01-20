@@ -26,10 +26,10 @@ export class LuaRunner implements vscode.Disposable {
             var uris = fileUri.fsPath;
             if (this.uriList.includes(uris)) {
                 var fileName = path.basename(uris);
-                this.terminal.sendText('lxl reload ' +fileName);
+                this.terminal.sendText('lxl reload ' + '"' + fileName + '"');
                 vscode.window.showInformationMessage('Lua '+fileName+' 已重载');
             } else {
-                this.terminal.sendText('lxl load ' + uris);
+                this.terminal.sendText('lxl load ' + '"' + uris + '"');
                 vscode.window.showInformationMessage('Lua ' + uris + ' 已加载');
                 this.uriList.push(uris);
             }

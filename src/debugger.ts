@@ -43,7 +43,7 @@ export function loadPlugins(fileUri: vscode.Uri) {
     }
     else{
         var uris = fileUri.fsPath;
-        terminal.sendText('lxl load ' + uris);
+        terminal.sendText('lxl load ' + '"' + uris + '"');
         vscode.window.showInformationMessage('插件 ' + uris + ' 已加载');
     }
 }
@@ -58,7 +58,7 @@ export function reloadPlugins(fileUri: vscode.Uri) {
     }
     else{
         var uris = path.basename(fileUri.fsPath);
-        terminal.sendText('lxl reload ' + uris);
+        terminal.sendText('lxl reload ' + '"' + uris + '"');
         vscode.window.showInformationMessage('插件 ' + uris + ' 已重载');
     }
 }
