@@ -7,7 +7,14 @@ const fs = require('fs');
 const fetch = require('node-fetch');
 export const apiHost = "https://lxl-upgrade.amd.rocks/Helper/Version.json";
 export function activate(context: vscode.ExtensionContext) {
-
+	function fsExistsSync(path:any) {
+		try{
+			fs.accessSync(path,fs.F_OK);
+		}catch(e){
+			return false;
+		}
+		return true;
+	}
 	//检测依赖
 	const result = vscode.extensions.getExtension('sumneko.lua');
 	if (result === undefined) {
@@ -18,16 +25,35 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 		});
 	} else {
+		console.log("1")
+
 		fetch(apiHost)
 			.then((res: any) => res.text())
+
 			.then((json: string) => {
 				const nowVersion = vscode.workspace.getConfiguration().get("LXLDevHelper.version");
-
 				const arrs = JSON.parse(json);
-				console.log(arrs.version);
+				var path = vscode.workspace.getConfiguration().get("LXLDevHelper.LibraryPath", true)
+				console.log(path)
+
 				if (nowVersion !== arrs.version) {
 					const lib = new LibraryConfig();
 					lib.run(arrs);
+				} else if(path != null) {
+					try {
+						console.log(path)
+							if (!fsExistsSync(path)) {
+								vscode.window.showInformationMessage("检测到您更新了Helper,是否重新配置补全库?", "配置").then(function (t) {
+									if (t === "配置") {
+										const lib = new LibraryConfig();
+										lib.run(arrs);
+									}
+								});
+								vscode.window.showWarningMessage("Tips: 项目中的补全库引用需要重新配置\n代码片段: lxl")
+							}
+					} catch (error) {
+						console.log(error)
+					}
 				}
 			});
 	}
@@ -88,7 +114,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 
 
-		
+
 
 
 

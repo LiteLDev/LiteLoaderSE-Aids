@@ -4,7 +4,6 @@ const fetch = require('node-fetch');
 import streamZip = require('node-stream-zip');
 export class LibraryConfig {
     public run(arrs: any) {
-
         if (vscode.workspace.getConfiguration().get("LXLDevHelper.LibraryPath") !== null && vscode.workspace.getConfiguration().get("LXLDevHelper.LibraryPath") !== "") {
             const ver = vscode.workspace.getConfiguration().get("LXLDevHelper.version");
             vscode.window.showInformationMessage(arrs.notice, "更新").then(function (t) {
@@ -16,6 +15,9 @@ export class LibraryConfig {
                 }
             });
         } else {
+
+
+            
             vscode.window.showErrorMessage("未配置Library的存放地址", "使用默认", "自定义").then(function (t) {
                 if (t === "使用默认") {
                     const libary = vscode.extensions.getExtension('moxicat.LXLDevHelper');
@@ -40,7 +42,7 @@ export class LibraryConfig {
                     });
                 }
             });
-        }
+        } 
 
 
     }

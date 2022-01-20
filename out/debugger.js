@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.reSetTerminal = exports.reloadPlugins = exports.loadPlugins = exports.stopTerminal = exports.runTerminal = exports.terminal = void 0;
 const vscode = require("vscode");
 const path = require("path");
-const fs = require("fs")
+const fs = require("fs");
 function runTerminal() {
     var bdsDir = String(vscode.workspace.getConfiguration().get('LXLDevHelper.bds-lxlDir'));
     if (bdsDir === 'null' || bdsDir === null) {
@@ -13,12 +13,12 @@ function runTerminal() {
         if (exports.terminal === undefined) {
             var fileList = fs.readdirSync(bdsDir);
             var bds = '\\bedrock_server.exe';
-            if(fileList.indexOf('bedrock_server.exe') == -1){
+            if (fileList.indexOf('bedrock_server.exe') === -1) {
                 bds = '\\bedrock_server_mod.exe';
             }
             exports.terminal = vscode.window.createTerminal({
                 name: 'LXLDevHelper',
-                shellPath: bdsDir + '\\bedrock_server.exe',
+                shellPath: bdsDir + bds,
                 cwd: bdsDir
             });
             exports.terminal.show();
@@ -45,7 +45,7 @@ function loadPlugins(fileUri) {
     }
     else {
         var uris = fileUri.fsPath;
-        exports.terminal.sendText('lxl load ' + uris);
+        exports.terminal.sendText('lxl load ' + '"' + uris + '"');
         vscode.window.showInformationMessage('插件 ' + uris + ' 已加载');
     }
 }
@@ -61,7 +61,7 @@ function reloadPlugins(fileUri) {
     }
     else {
         var uris = path.basename(fileUri.fsPath);
-        exports.terminal.sendText('lxl reload ' + uris);
+        exports.terminal.sendText('lxl reload ' + '"' + uris + '"');
         vscode.window.showInformationMessage('插件 ' + uris + ' 已重载');
     }
 }
