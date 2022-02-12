@@ -1,11 +1,11 @@
 {
-  "name": "lxldevhelper",
-  "displayName": "LXLDevHelper",
+  "name": "LLScriptHelper",
+  "displayName": "LLScriptHelper",
   "publisher": "moxicat",
-  "description": "Assist in the development of Lxl's plugin",
+  "description": "Assist in the development of LLScript's plugin",
   "version": "0.1.7",
   "icon": "images/icon.png",
-  "repository": "https://github.com/moxicode/LXLDevHelper",
+  "repository": "https://github.com/LiteLScript-Dev/LLScriptHelper-Vscode",
   "engines": {
     "vscode": "^1.58.0"
   },
@@ -19,129 +19,130 @@
   "contributes": {
     "commands": [
       {
-        "command": "LXLDevHelper.showDocs",
-        "title": "显示LiteXLoader文档",
-        "category": "LXL",
+        "command": "LLScriptHelper.showDocs",
+        "title": "显示LLScriptHelper文档",
+        "category": "LLScriptHelper",
         "icon": {
           "light": "./images/docs-light.svg",
           "dark": "./images/docs-dark.svg"
         }
       },
       {
-        "command": "LXLDevHelper.runner",
-        "title": "启动LXL(BDS)控制台",
-        "category": "LXL",
+        "command": "LLScriptHelper.runner",
+        "title": "启动LLScriptHelper(BDS)控制台",
+        "category": "LLScriptHelper",
         "icon": {
           "light": "./images/run-light.svg",
           "dark": "./images/run-dark.svg"
         }
       },
       {
-        "command": "LXLDevHelper.stop",
-        "title": "结束LXL(BDS)控制台",
-        "category": "LXL",
+        "command": "LLScriptHelper.stop",
+        "title": "结束LLScriptHelper(BDS)控制台",
+        "category": "LLScriptHelper",
         "icon": {
           "light": "./images/stop-light.svg",
           "dark": "./images/stop-dark.svg"
         }
       },
       {
-        "command": "LXLDevHelper.load",
-        "title": "加载此文件到LXL",
-        "category": "LXL",
+        "command": "LLScriptHelper.load",
+        "title": "加载此文件到LLScriptHelper",
+        "category": "LLScriptHelper",
         "icon": {
           "light": "./images/load-light.svg",
           "dark": "./images/load-dark.svg"
         }
       },
       {
-        "command": "LXLDevHelper.reload",
-        "title": "重载此文件到LXL",
-        "category": "LXL",
+        "command": "LLScriptHelper.reload",
+        "title": "重载此文件到LLScriptHelper",
+        "category": "LLScriptHelper",
         "icon": {
           "light": "./images/reload-light.svg",
           "dark": "./images/reload-dark.svg"
         }
       },
       {
-        "command": "LXLDevHelper.configDir",
-        "title": "配置LXL(BDS)目录",
-        "category": "LXL"
+        "command": "LLScriptHelper.configDir",
+        "title": "配置LLScriptHelper(BDS)目录",
+        "category": "LLScriptHelper"
       }
     ],
     "menus": {
       "editor/title": [
         {
-          "when": "resourceLangId == lua && config.LXLDevHelper.isrunning",
-          "command": "LXLDevHelper.stop",
+          "when": "resourceLangId == lua && config.LLScriptHelper.isrunning",
+          "command": "LLScriptHelper.stop",
           "group": "navigation@2"
         },
         {
-          "when": "resourceLangId == lua && !config.LXLDevHelper.isrunning",
-          "command": "LXLDevHelper.runner",
+          "when": "resourceLangId == lua && !config.LLScriptHelper.isrunning",
+          "command": "LLScriptHelper.runner",
           "group": "navigation@1"
         },
         {
-          "when": "resourceLangId == lua && config.LXLDevHelper.isrunning",
-          "command": "LXLDevHelper.load",
+          "when": "resourceLangId == lua && config.LLScriptHelper.isrunning",
+          "command": "LLScriptHelper.load",
           "group": "navigation@3"
         },
         {
-          "when": "resourceLangId == lua && config.LXLDevHelper.isrunning",
-          "command": "LXLDevHelper.reload",
+          "when": "resourceLangId == lua && config.LLScriptHelper.isrunning",
+          "command": "LLScriptHelper.reload",
           "group": "navigation@4"
         },
         {
-          "when": "resourceLangId == javascript && config.LXLDevHelper.isrunning",
-          "command": "LXLDevHelper.stop",
+          "when": "resourceLangId == javascript && config.LLScriptHelper.isrunning",
+          "command": "LLScriptHelper.stop",
           "group": "navigation@2"
         },
         {
-          "when": "resourceLangId == javascript && !config.LXLDevHelper.isrunning",
-          "command": "LXLDevHelper.runner",
+          "when": "resourceLangId == javascript && !config.LLScriptHelper.isrunning",
+          "command": "LLScriptHelper.runner",
           "group": "navigation@1"
         },
         {
-          "when": "resourceLangId == javascript && config.LXLDevHelper.isrunning",
-          "command": "LXLDevHelper.load",
+          "when": "resourceLangId == javascript && config.LLScriptHelper.isrunning",
+          "command": "LLScriptHelper.load",
           "group": "navigation@3"
         },
         {
-          "when": "resourceLangId == javascript && config.LXLDevHelper.isrunning",
-          "command": "LXLDevHelper.reload",
+          "when": "resourceLangId == javascript && config.LLScriptHelper.isrunning",
+          "command": "LLScriptHelper.reload",
           "group": "navigation@4"
         },
         {
           "when": "resourceLangId == lua || resourceLangId== javascript",
-          "command": "LXLDevHelper.showDocs",
+          "command": "LLScriptHelper.showDocs",
           "group": "navigation@5"
         }
       ]
     },
+    
     "configuration": {
-      "title": "LXLDevHelper",
+      "title": "LLScriptHelper",
       "properties": {
-        "LXLDevHelper.bds-lxlDir": {
+        "LLScriptHelper.bds-LLScriptHelperDir": {
           "type": "string",
           "default": null,
-          "description": "LiteXLoader的运行环境根目录",
+          "description": "LiteLoader的运行环境根目录",
           "scope": "resource"
         },
-        "LXLDevHelper.isrunning": {
+        "LLScriptHelper.isrunning": {
           "type": "boolean",
           "default": false,
           "readOnly": true,
-          "description": "LXL的运行状态",
+          "description": "LiteLoader的运行状态",
           "scope": "resource"
         },
-        "LXLDevHelper.version": {
+        "LLScriptHelper.version": {
           "type": "string",
           "default": null,
           "readOnly": true,
           "description": "Library当前版本",
           "scope": "resource"
         },
-        "LXLDevHelper.LibraryPath": {
+        "LLScriptHelper.LibraryPath": {
           "type": "string",
           "default": null,
           "description": "补全库的固定存放地址",

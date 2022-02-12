@@ -16,7 +16,7 @@ class LuaRunner {
     }
     load(fileUri) {
         if (this.terminal === undefined) {
-            vscode.workspace.getConfiguration('LXl-Lua-runner').update('isrunning', false);
+            vscode.workspace.getConfiguration('LLScriptHelper').update('isrunning', false);
             vscode.window.showInformationMessage('BDS控制台未启动', '启动').then(function (t) {
                 if (t === '启动') {
                     var lua = new LuaRunner();

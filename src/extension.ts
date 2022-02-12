@@ -21,35 +21,35 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.showInformationMessage('您还没有安装 sumneko.lua 扩展依赖项', '安装').then(function (msg) {
 			if (msg === '安装') {
 				vscode.commands.executeCommand('workbench.action.quickOpen', 'ext install sumneko.lua');
-
+				vscode.window.showInformationMessage('安装完成后请重启Vscode', '重启').then(function (msg) {
+					if (msg === '重启') {
+						vscode.commands.executeCommand('workbench.action.quickOpen', '> reload window');
+					}
+				});
 			}
 		});
-	} else {
-		console.log("1")
+	}
 
 		fetch(apiHost)
 			.then((res: any) => res.text())
-
 			.then((json: string) => {
-				const nowVersion = vscode.workspace.getConfiguration().get("LXLDevHelper.version");
+				const nowVersion = vscode.workspace.getConfiguration().get("LLScriptHelper.version");
 				const arrs = JSON.parse(json);
-				var path = vscode.workspace.getConfiguration().get("LXLDevHelper.LibraryPath", true)
-				console.log(nowVersion)
+				var path = vscode.workspace.getConfiguration().get("LLScriptHelper.LibraryPath", true)
 				if (nowVersion !== arrs.version) {
 					const lib = new LibraryConfig();
 					lib.run(arrs);
-				} else if (String(path).indexOf(String(nowVersion)) == -1) {
+				} else if (nowVersion !== arrs.version) {
 					vscode.window.showInformationMessage("检测到您更新了Helper,是否重新配置补全库?", "配置").then(function (t) {
 						if (t === "配置") {
 							const lib = new LibraryConfig();
 							lib.run(arrs);
 						}
 					});
-					vscode.window.showWarningMessage("Tips: 项目中的补全库引用需要重新配置\n代码片段: lxl")
+					vscode.window.showWarningMessage("Tips: 项目中的补全库引用需要重新配置\n代码片段: lls");
 
 				}
 			});
-	}
 
 
 
@@ -57,7 +57,7 @@ export function activate(context: vscode.ExtensionContext) {
 		e.files.forEach(function (p) {
 			let path = p.fsPath.toLowerCase();
 			if (path.includes("lxl.js")) {
-				const dir = vscode.workspace.getConfiguration().get("LXLDevHelper.LibraryPath");
+				const dir = vscode.workspace.getConfiguration().get("LLScriptHelper.LibraryPath");
 				if (dir === null || dir === "") {
 					vscode.window.showErrorMessage("未配置Library", "配置").then(function (p) {
 						if (p === "配置") {
@@ -83,10 +83,10 @@ export function activate(context: vscode.ExtensionContext) {
 
 
 				const snippetCompletion = new vscode.CompletionItem({
-					description: " 导入LiteXLoader补全",
-					label: "lxl"
+					description: " 导入LLScriptHelper补全",
+					label: "lls"
 				});
-				const dir = vscode.workspace.getConfiguration().get("LXLDevHelper.LibraryPath");
+				const dir = vscode.workspace.getConfiguration().get("LLScriptHelper.LibraryPath");
 				if (dir === null || dir === "") {
 					vscode.window.showErrorMessage("未配置Library", "配置").then(function (p) {
 						if (p === "配置") {
@@ -94,7 +94,7 @@ export function activate(context: vscode.ExtensionContext) {
 						}
 					});
 				} else {
-					snippetCompletion.insertText = new vscode.SnippetString('//LiteXLoader Dev Helper\n/// <reference path="' + dir + '/JS/Api.js" /> \n\n\n$1');
+					snippetCompletion.insertText = new vscode.SnippetString('//LiteLoaderScript Dev Helper\n/// <reference path="' + dir + '/JS/Api.js" /> \n\n\n$1');
 				}
 				return [
 					snippetCompletion
@@ -111,35 +111,35 @@ export function activate(context: vscode.ExtensionContext) {
 
 
 
-	let disposable5 = vscode.commands.registerCommand('LXLDevHelper.load', (fileUri: vscode.Uri) => {
+	let disposable5 = vscode.commands.registerCommand('LLScriptHelper.load', (fileUri: vscode.Uri) => {
 		loadPlugins(fileUri);
 	});
-	let jsapi = vscode.commands.registerCommand('LXLDevHelper.JSApi', (editor: vscode.WorkspaceEdit, fileUri: vscode.Uri) => {
+	let jsapi = vscode.commands.registerCommand('LLScriptHelper.JSApi', (editor: vscode.WorkspaceEdit, fileUri: vscode.Uri) => {
 		let edit = editor.get(fileUri);
 		console.info(edit.values);
 	});
-	let disposable3 = vscode.commands.registerCommand('LXLDevHelper.reload', (fileUri: vscode.Uri) => {
+	let disposable3 = vscode.commands.registerCommand('LLScriptHelper.reload', (fileUri: vscode.Uri) => {
 		reloadPlugins(fileUri);
 	});
 
-	let disposable4 = vscode.commands.registerCommand('LXLDevHelper.runner', () => {
+	let disposable4 = vscode.commands.registerCommand('LLScriptHelper.runner', () => {
 		runTerminal();
 	});
-	let disposable2 = vscode.commands.registerCommand('LXLDevHelper.stop', () => {
+	let disposable2 = vscode.commands.registerCommand('LLScriptHelper.stop', () => {
 		stopTerminal();
 	});
 
 	//showDocs
-	let disposable = vscode.commands.registerCommand('LXLDevHelper.showDocs', () => {
+	let disposable = vscode.commands.registerCommand('LLScriptHelper.showDocs', () => {
 		ReminderView.show(context);
 	});
 
 	context.subscriptions.push(disposable, disposable2, disposable3, disposable4, disposable5, jsapi);
 
 
-	vscode.workspace.getConfiguration().update('LXLDevHelper.isrunning', false);
+	vscode.workspace.getConfiguration().update('LLScriptHelper.isrunning', false);
 	vscode.window.onDidCloseTerminal(() => {
-		vscode.workspace.getConfiguration().update('LXLDevHelper.isrunning', false);
+		vscode.workspace.getConfiguration().update('LLScriptHelper.isrunning', false);
 		terminal?.dispose();
 		reSetTerminal();
 	});
@@ -149,7 +149,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 
 exports.deactivate = function () {
-	vscode.workspace.getConfiguration().update('LXLDevHelper.isrunning', false);
+	vscode.workspace.getConfiguration().update('LLScriptHelper.isrunning', false);
 	terminal?.dispose();
 	reSetTerminal();
 };

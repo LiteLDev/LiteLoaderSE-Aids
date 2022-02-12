@@ -4,7 +4,7 @@ import * as fs from "fs";
 export let terminal: vscode.Terminal | undefined;
 
 export function runTerminal() {
-    var bdsDir = String(vscode.workspace.getConfiguration().get('LXLDevHelper.bds-lxlDir'));
+    var bdsDir = String(vscode.workspace.getConfiguration().get('LLScriptHelper.bds-LLScriptHelperDir'));
     if (bdsDir === 'null' || bdsDir === null) {
         selectedDir();
     }
@@ -16,12 +16,12 @@ export function runTerminal() {
                 bds = '\\bedrock_server_mod.exe';
             }
             terminal = vscode.window.createTerminal({
-                name: 'LXLDevHelper',
+                name: 'LiteLoaderScript Dev',
                 shellPath: bdsDir + bds,
                 cwd: bdsDir
             });
             terminal.show();
-            vscode.workspace.getConfiguration().update('LXLDevHelper.isrunning', true);
+            vscode.workspace.getConfiguration().update('LLScriptHelper.isrunning', true);
         }
     }
 }
@@ -29,13 +29,13 @@ export function stopTerminal() {
     terminal?.sendText('stop');
     terminal?.dispose();
     terminal = undefined;
-    vscode.workspace.getConfiguration().update('LXLDevHelper.isrunning', false);
+    vscode.workspace.getConfiguration().update('LLScriptHelper.isrunning', false);
 }
 
 export function loadPlugins(fileUri: vscode.Uri) {
     if (terminal === undefined) {
-        vscode.workspace.getConfiguration().update('LXLDevHelper.isrunning', false);
-        vscode.window.showInformationMessage('BDS控制台未启动', '启动').then(function (t) {
+        vscode.workspace.getConfiguration().update('LLScriptHelper.isrunning', false);
+        vscode.window.showInformationMessage('LiteLoader控制台未启动', '启动').then(function (t) {
             if (t === '启动') {
                 runTerminal();
             }
@@ -49,7 +49,7 @@ export function loadPlugins(fileUri: vscode.Uri) {
 }
 export function reloadPlugins(fileUri: vscode.Uri) {
     if (terminal === undefined) {
-        vscode.workspace.getConfiguration().update('LXLDevHelper.isrunning', false);
+        vscode.workspace.getConfiguration().update('LLScriptHelper.isrunning', false);
         vscode.window.showInformationMessage('BDS控制台未启动', '启动').then(function (t) {
             if (t === '启动') {
                 runTerminal();
@@ -64,16 +64,16 @@ export function reloadPlugins(fileUri: vscode.Uri) {
 }
 
     function selectedDir() {
-        vscode.window.showInformationMessage('未配置带有LXL环境的BDS目录', '选择目录').then(function (t) {
+        vscode.window.showInformationMessage('未配置带有LiteLoader环境的BDS目录', '选择目录').then(function (t) {
             if (t === '选择目录') {
                 vscode.window.showOpenDialog({
-                    title: '选择带有LXL环境的BDS根目录',
+                    title: '选择带有LiteLoader环境的BDS根目录',
                     canSelectFolders: true,
                     canSelectMany: false
                 }).then(function (uri) {
                     if (uri !== undefined) {
                         var uris = uri[0].fsPath;
-                        vscode.workspace.getConfiguration('').update('LXLDevHelper.bds-lxlDir', uris);
+                        vscode.workspace.getConfiguration('').update('LLScriptHelper.bds-LLScriptHelperDir', uris);
                         vscode.window.showInformationMessage('选择成功：' + uris);
                     }
                 });
