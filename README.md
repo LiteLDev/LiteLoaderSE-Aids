@@ -1,6 +1,8 @@
-# LXLDevHelper
+# LLScriptHelper-Vscode
 
-![LXLDevHelper-VsCode](https://socialify.git.ci/LiteLDev-LXL/LXLDevHelper-VsCode/image?font=Inter&forks=1&logo=https%3A%2F%2Fftp.bmp.ovh%2Fimgs%2F2021%2F07%2F330e4ee02ded7b58.png&pattern=Signal&pulls=1&stargazers=1&theme=Light)
+# Helper重组计划 2.%￥#&？
+
+![LXLDevHelper-VsCode](https://socialify.git.ci/LiteLDev-LXL/LLScriptHelper-Vscode/image?font=Inter&forks=1&logo=https%3A%2F%2Fftp.bmp.ovh%2Fimgs%2F2021%2F07%2F330e4ee02ded7b58.png&pattern=Signal&pulls=1&stargazers=1&theme=Light)
 
 > #### 一个涵盖LiteXLoader所有API的补全库
 >
