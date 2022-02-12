@@ -11,18 +11,24 @@ function runTerminal() {
     }
     else {
         if (exports.terminal === undefined) {
-            var fileList = fs.readdirSync(bdsDir);
-            var bds = '\\bedrock_server.exe';
-            if (fileList.indexOf('bedrock_server.exe') === -1) {
-                bds = '\\bedrock_server_mod.exe';
-            }
-            exports.terminal = vscode.window.createTerminal({
-                name: 'LiteLoaderScript Dev',
-                shellPath: bdsDir + bds,
-                cwd: bdsDir
+            const libary = vscode.extensions.getExtension('moxicat.LLScriptHelper');
+            const path = (libary === null || libary === void 0 ? void 0 : libary.extensionPath) + "/runningCache.bat";
+            var bds = vscode.workspace.getConfiguration().get('LLScriptHelper.bdsRunType', true);
+            fs.writeFile(path, bdsDir + "\\" + bds + "\npause", err => {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                exports.terminal = vscode.window.createTerminal({
+                    name: 'LiteLoaderScript Dev',
+                    shellPath: path,
+                    cwd: bdsDir,
+                    message: "LiteLoaderScript Helper Debug Mode"
+                });
+                exports.terminal.sendText("pause");
+                exports.terminal.show();
+                vscode.workspace.getConfiguration().update('LLScriptHelper.isrunning', true);
             });
-            exports.terminal.show();
-            vscode.workspace.getConfiguration().update('LLScriptHelper.isrunning', true);
         }
     }
 }

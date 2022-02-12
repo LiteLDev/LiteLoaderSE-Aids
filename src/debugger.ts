@@ -10,18 +10,25 @@ export function runTerminal() {
     }
     else {
         if (terminal === undefined) {
-            var fileList = fs.readdirSync(bdsDir);
-            var bds = '\\bedrock_server.exe';
-            if(fileList.indexOf('bedrock_server.exe') === -1){
-                bds = '\\bedrock_server_mod.exe';
-            }
-            terminal = vscode.window.createTerminal({
-                name: 'LiteLoaderScript Dev',
-                shellPath: bdsDir + bds,
-                cwd: bdsDir
+            const libary = vscode.extensions.getExtension('moxicat.LLScriptHelper');
+            const path = libary?.extensionPath + "/runningCache.bat";
+            var bds = vscode.workspace.getConfiguration().get('LLScriptHelper.bdsRunType', true);
+            fs.writeFile(path, bdsDir + "\\" + bds + "\npause", err => {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                terminal = vscode.window.createTerminal({
+                    name: 'LiteLoaderScript Dev',
+                    shellPath: path,
+                    cwd: bdsDir,
+                    message: "LiteLoaderScript Helper Debug Mode"
+
+                });
+                terminal.sendText("pause");
+                terminal.show();
+                vscode.workspace.getConfiguration().update('LLScriptHelper.isrunning', true);
             });
-            terminal.show();
-            vscode.workspace.getConfiguration().update('LLScriptHelper.isrunning', true);
         }
     }
 }
@@ -41,7 +48,7 @@ export function loadPlugins(fileUri: vscode.Uri) {
             }
         });
     }
-    else{
+    else {
         var uris = fileUri.fsPath;
         terminal.sendText('lxl load ' + '"' + uris + '"');
         vscode.window.showInformationMessage('插件 ' + uris + ' 已加载');
@@ -56,31 +63,31 @@ export function reloadPlugins(fileUri: vscode.Uri) {
             }
         });
     }
-    else{
+    else {
         var uris = path.basename(fileUri.fsPath);
         terminal.sendText('lxl reload ' + '"' + uris + '"');
         vscode.window.showInformationMessage('插件 ' + uris + ' 已重载');
     }
 }
 
-    function selectedDir() {
-        vscode.window.showInformationMessage('未配置带有LiteLoader环境的BDS目录', '选择目录').then(function (t) {
-            if (t === '选择目录') {
-                vscode.window.showOpenDialog({
-                    title: '选择带有LiteLoader环境的BDS根目录',
-                    canSelectFolders: true,
-                    canSelectMany: false
-                }).then(function (uri) {
-                    if (uri !== undefined) {
-                        var uris = uri[0].fsPath;
-                        vscode.workspace.getConfiguration('').update('LLScriptHelper.bds-LLScriptHelperDir', uris);
-                        vscode.window.showInformationMessage('选择成功：' + uris);
-                    }
-                });
-            }
-        });
-    }
+function selectedDir() {
+    vscode.window.showInformationMessage('未配置带有LiteLoader环境的BDS目录', '选择目录').then(function (t) {
+        if (t === '选择目录') {
+            vscode.window.showOpenDialog({
+                title: '选择带有LiteLoader环境的BDS根目录',
+                canSelectFolders: true,
+                canSelectMany: false
+            }).then(function (uri) {
+                if (uri !== undefined) {
+                    var uris = uri[0].fsPath;
+                    vscode.workspace.getConfiguration('').update('LLScriptHelper.bds-LLScriptHelperDir', uris);
+                    vscode.window.showInformationMessage('选择成功：' + uris);
+                }
+            });
+        }
+    });
+}
 
-    export function reSetTerminal() {
-        terminal = undefined;
-    }
+export function reSetTerminal() {
+    terminal = undefined;
+}

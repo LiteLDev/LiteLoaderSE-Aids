@@ -128,6 +128,12 @@
           "description": "LiteLoader的运行环境根目录",
           "scope": "resource"
         },
+        "LLScriptHelper.bdsRunType": {
+          "type": "string",
+          "default": "bedrock_server_mod.exe",
+          "description": "LiteLoader启动命令",
+          "scope": "resource"
+        },
         "LLScriptHelper.isrunning": {
           "type": "boolean",
           "default": false,

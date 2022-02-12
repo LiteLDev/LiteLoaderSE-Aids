@@ -8,7 +8,7 @@ class ReminderView {
             this.panel.reveal();
         }
         else {
-            this.panel = vscode.window.createWebviewPanel("hana", "LXLDocs", vscode.ViewColumn.Two, {
+            this.panel = vscode.window.createWebviewPanel("hana", "LiteLoaderScript Docs", vscode.ViewColumn.Two, {
                 enableScripts: true,
                 retainContextWhenHidden: true,
             });

@@ -79,6 +79,10 @@ function activate(context) {
                 description: " 导入LLScriptHelper补全",
                 label: "lls"
             });
+            const snippetCompletion2 = new vscode.CompletionItem({
+                description: " 导入LLScriptHelper补全",
+                label: "lxl"
+            });
             const dir = vscode.workspace.getConfiguration().get("LLScriptHelper.LibraryPath");
             if (dir === null || dir === "") {
                 vscode.window.showErrorMessage("未配置Library", "配置").then(function (p) {
@@ -89,9 +93,11 @@ function activate(context) {
             }
             else {
                 snippetCompletion.insertText = new vscode.SnippetString('//LiteLoaderScript Dev Helper\n/// <reference path="' + dir + '/JS/Api.js" /> \n\n\n$1');
+                snippetCompletion2.insertText = new vscode.SnippetString('//LiteLoaderScript Dev Helper\n/// <reference path="' + dir + '/JS/Api.js" /> \n\n\n$1');
             }
             return [
-                snippetCompletion
+                snippetCompletion,
+                snippetCompletion2
             ];
         }
     }, '.' // triggered whenever a '.' is being typed
@@ -120,9 +126,12 @@ function activate(context) {
     context.subscriptions.push(disposable, disposable2, disposable3, disposable4, disposable5, jsapi);
     vscode.workspace.getConfiguration().update('LLScriptHelper.isrunning', false);
     vscode.window.onDidCloseTerminal(() => {
-        vscode.workspace.getConfiguration().update('LLScriptHelper.isrunning', false);
-        debugger_1.terminal === null || debugger_1.terminal === void 0 ? void 0 : debugger_1.terminal.dispose();
-        debugger_1.reSetTerminal();
+        if (vscode.workspace.getConfiguration().get('LLScriptHelper.isrunning', true)) {
+            vscode.window.showWarningMessage("进程退出 调试已结束");
+            vscode.workspace.getConfiguration().update('LLScriptHelper.isrunning', false);
+            debugger_1.terminal === null || debugger_1.terminal === void 0 ? void 0 : debugger_1.terminal.dispose();
+            debugger_1.reSetTerminal();
+        }
     });
 }
 exports.activate = activate;
