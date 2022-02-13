@@ -9,6 +9,7 @@ const fs = require('fs');
 const fetch = require('node-fetch');
 exports.apiHost = "https://lxl-upgrade.amd.rocks/Helper/Version.json";
 function activate(context) {
+    debugger_1.reSetTerminal();
     function fsExistsSync(path) {
         try {
             fs.accessSync(path, fs.F_OK);
