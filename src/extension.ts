@@ -144,6 +144,13 @@ export function activate(context: vscode.ExtensionContext) {
 		reSetTerminal();
 	});
 
+	//VSC开启关闭终端
+	vscode.window.onDidOpenTerminal(() => {
+		vscode.workspace.getConfiguration().update('LLScriptHelper.isrunning', false);
+		terminal?.dispose();
+		reSetTerminal();
+	})
+
 }
 
 

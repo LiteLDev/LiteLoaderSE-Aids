@@ -147,6 +147,12 @@
           "default": null,
           "description": "补全库的固定存放地址",
           "scope": "resource"
+        },
+        "LLScriptHelper.bds-TaskCmd": {
+          "type": "string",
+          "default": "bedrock_server_mod.exe",
+          "description": "LiteLoader启动命令",
+          "scope": "resource"
         }
       }
     }

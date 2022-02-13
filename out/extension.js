@@ -124,6 +124,12 @@ function activate(context) {
         debugger_1.terminal === null || debugger_1.terminal === void 0 ? void 0 : debugger_1.terminal.dispose();
         debugger_1.reSetTerminal();
     });
+    //VSC开启关闭终端
+    vscode.window.onDidOpenTerminal(() => {
+        vscode.workspace.getConfiguration().update('LLScriptHelper.isrunning', false);
+        debugger_1.terminal === null || debugger_1.terminal === void 0 ? void 0 : debugger_1.terminal.dispose();
+        debugger_1.reSetTerminal();
+    });
 }
 exports.activate = activate;
 exports.deactivate = function () {
