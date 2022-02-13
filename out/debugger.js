@@ -42,8 +42,6 @@ function runTerminal() {
                 shellArgs: args,
                 cwd: bdsDir
             });
-            exports.terminal.show();
-            vscode.workspace.getConfiguration().update('LLScriptHelper.isrunning', true);
         }
     }
 }

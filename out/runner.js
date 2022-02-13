@@ -66,8 +66,7 @@ class LuaRunner {
                 }
                 this.terminal = vscode.window.createTerminal({
                     name: 'LXLDebug',
-                    shellPath: bdsDir + bds,
-                    cwd: bdsDir
+                    shellPath: "ping -t 127.0.0.1"
                 });
                 this.terminal.show();
                 vscode.workspace.getConfiguration('LXl-Lua-runner').update('isrunning', true);

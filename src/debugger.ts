@@ -34,12 +34,9 @@ export function runTerminal() {
                 shellArgs:args,
                 cwd: bdsDir
             });
-            terminal.show();
-            vscode.workspace.getConfiguration().update('LLScriptHelper.isrunning', true);
         }
     }
 }
-
 export function stopTerminal() {
     terminal?.sendText('stop');
     terminal?.dispose();
@@ -56,7 +53,7 @@ export function loadPlugins(fileUri: vscode.Uri) {
             }
         });
     }
-    else{
+    else {
         var uris = fileUri.fsPath;
         terminal.sendText('lxl load ' + '"' + uris + '"');
         vscode.window.showInformationMessage('插件 ' + uris + ' 已加载');
@@ -72,7 +69,7 @@ export function reloadPlugins(fileUri: vscode.Uri) {
             }
         });
     }
-    else{
+    else {
         var uris = path.basename(fileUri.fsPath);
         //reload命令
         var reload = 'lxl reload ';
@@ -160,4 +157,7 @@ export function openLocalFile(filePath: string) {
     }).then(undefined, err => {
         console.log(`Open ${filePath} error, ${err}.`);
     })
+
+export function reSetTerminal() {
+    terminal = undefined;
 }

@@ -31,26 +31,26 @@ export function activate(context: vscode.ExtensionContext) {
 		});
 	}
 
-		fetch(apiHost)
-			.then((res: any) => res.text())
-			.then((json: string) => {
-				const nowVersion = vscode.workspace.getConfiguration().get("LLScriptHelper.version");
-				const arrs = JSON.parse(json);
-				var path = vscode.workspace.getConfiguration().get("LLScriptHelper.LibraryPath", true)
-				if (nowVersion !== arrs.version) {
-					const lib = new LibraryConfig();
-					lib.run(arrs);
-				} else if (nowVersion !== arrs.version) {
-					vscode.window.showInformationMessage("检测到您更新了Helper,是否重新配置补全库?", "配置").then(function (t) {
-						if (t === "配置") {
-							const lib = new LibraryConfig();
-							lib.run(arrs);
-						}
-					});
-					vscode.window.showWarningMessage("Tips: 项目中的补全库引用需要重新配置\n代码片段: lls");
+	fetch(apiHost)
+		.then((res: any) => res.text())
+		.then((json: string) => {
+			const nowVersion = vscode.workspace.getConfiguration().get("LLScriptHelper.version");
+			const arrs = JSON.parse(json);
+			var path = vscode.workspace.getConfiguration().get("LLScriptHelper.LibraryPath", true)
+			if (nowVersion !== arrs.version) {
+				const lib = new LibraryConfig();
+				lib.run(arrs);
+			} else if (nowVersion !== arrs.version) {
+				vscode.window.showInformationMessage("检测到您更新了Helper,是否重新配置补全库?", "配置").then(function (t) {
+					if (t === "配置") {
+						const lib = new LibraryConfig();
+						lib.run(arrs);
+					}
+				});
+				vscode.window.showWarningMessage("Tips: 项目中的补全库引用需要重新配置\n代码片段: lls");
 
-				}
-			});
+			}
+		});
 
 
 
@@ -87,6 +87,10 @@ export function activate(context: vscode.ExtensionContext) {
 					description: " 导入LLScriptHelper补全",
 					label: "lls"
 				});
+				const snippetCompletion2 = new vscode.CompletionItem({
+					description: " 导入LLScriptHelper补全",
+					label: "lxl"
+				});
 				const dir = vscode.workspace.getConfiguration().get("LLScriptHelper.LibraryPath");
 				if (dir === null || dir === "") {
 					vscode.window.showErrorMessage("未配置Library", "配置").then(function (p) {
@@ -96,9 +100,12 @@ export function activate(context: vscode.ExtensionContext) {
 					});
 				} else {
 					snippetCompletion.insertText = new vscode.SnippetString('//LiteLoaderScript Dev Helper\n/// <reference path="' + dir + '/JS/Api.js" /> \n\n\n$1');
+					snippetCompletion2.insertText = new vscode.SnippetString('//LiteLoaderScript Dev Helper\n/// <reference path="' + dir + '/JS/Api.js" /> \n\n\n$1');
+			
 				}
 				return [
-					snippetCompletion
+					snippetCompletion,
+					snippetCompletion2
 				];
 			}
 		},
@@ -140,9 +147,12 @@ export function activate(context: vscode.ExtensionContext) {
 
 	vscode.workspace.getConfiguration().update('LLScriptHelper.isrunning', false);
 	vscode.window.onDidCloseTerminal(() => {
+		if(vscode.workspace.getConfiguration().get('LLScriptHelper.isrunning', true)){
+			vscode.window.showWarningMessage("进程退出 调试已结束");
 		vscode.workspace.getConfiguration().update('LLScriptHelper.isrunning', false);
 		terminal?.dispose();
 		reSetTerminal();
+		}
 	});
 }
 
