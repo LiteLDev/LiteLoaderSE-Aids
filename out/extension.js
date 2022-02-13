@@ -9,6 +9,7 @@ const fs = require('fs');
 const fetch = require('node-fetch');
 exports.apiHost = "https://lxl-upgrade.amd.rocks/Helper/Version.json";
 function activate(context) {
+    debugger_1.reSetTerminal();
     function fsExistsSync(path) {
         try {
             fs.accessSync(path, fs.F_OK);
@@ -120,12 +121,6 @@ function activate(context) {
     context.subscriptions.push(disposable, disposable2, disposable3, disposable4, disposable5, jsapi);
     vscode.workspace.getConfiguration().update('LLScriptHelper.isrunning', false);
     vscode.window.onDidCloseTerminal(() => {
-        vscode.workspace.getConfiguration().update('LLScriptHelper.isrunning', false);
-        debugger_1.terminal === null || debugger_1.terminal === void 0 ? void 0 : debugger_1.terminal.dispose();
-        debugger_1.reSetTerminal();
-    });
-    //VSC开启关闭终端
-    vscode.window.onDidOpenTerminal(() => {
         vscode.workspace.getConfiguration().update('LLScriptHelper.isrunning', false);
         debugger_1.terminal === null || debugger_1.terminal === void 0 ? void 0 : debugger_1.terminal.dispose();
         debugger_1.reSetTerminal();

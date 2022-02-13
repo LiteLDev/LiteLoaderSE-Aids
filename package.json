@@ -153,6 +153,12 @@
           "default": "bedrock_server_mod.exe",
           "description": "LiteLoader启动命令",
           "scope": "resource"
+        },
+        "LLScriptHelper.bds-TaskCmd-Args": {
+          "type": "array",
+          "default": [],
+          "description": "LiteLoader启动命令参数",
+          "scope": "resource"
         }
       }
     }

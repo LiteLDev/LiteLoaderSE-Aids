@@ -7,6 +7,7 @@ const fs = require('fs');
 const fetch = require('node-fetch');
 export const apiHost = "https://lxl-upgrade.amd.rocks/Helper/Version.json";
 export function activate(context: vscode.ExtensionContext) {
+	reSetTerminal();
 	function fsExistsSync(path: any) {
 		try {
 			fs.accessSync(path, fs.F_OK);
@@ -143,14 +144,6 @@ export function activate(context: vscode.ExtensionContext) {
 		terminal?.dispose();
 		reSetTerminal();
 	});
-
-	//VSC开启关闭终端
-	vscode.window.onDidOpenTerminal(() => {
-		vscode.workspace.getConfiguration().update('LLScriptHelper.isrunning', false);
-		terminal?.dispose();
-		reSetTerminal();
-	})
-
 }
 
 
