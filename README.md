@@ -2,6 +2,14 @@
 
 # :earth_asia: Rewritting
 
+# Development
+1.
+```shell
+npm install -g vscode
+```
+1. install extension `TODO Highlight`
+
+2. follow TODO
 
 # Library format
 如果您想要自定义源或库，请按照以下格式

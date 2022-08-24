@@ -45,7 +45,7 @@ export class ConfigPanel {
     <script type="module" src="${mainUri}">
     </script>
     <title>ConfigPanel!</title>
-    <style>.div_s{ position: relative; top: 5px; } .little_title{ font-size: 12px; } .div_s_h{ position: relative; top: 5px; display: flex; }</style>
+    <style>.div_s{ position: relative; top: 5px; }.div_ss{ position: relative; top: 10px; } .little_title{ font-size: 12px; } .div_s_h{ position: relative; top: 5px; display: flex; }</style>
   </head>
   
   <body>

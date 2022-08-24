@@ -1,8 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LibraryHandler = void 0;
+/* eslint-disable @typescript-eslint/naming-convention */
 const vscode = require("vscode");
 const fs = require("fs");
+const request = require('request');
 const SomeUtil_1 = require("../utils/SomeUtil");
 const ConfigPanel_1 = require("../panels/ConfigPanel");
 class LibraryHandler {
@@ -20,7 +22,39 @@ class LibraryHandler {
                 vscode.window.showErrorMessage('库存放地址配置错误');
                 return;
             }
+            // 开始获取清单
+            ConfigPanel_1.ConfigPanel._changeProgress(true);
+            LibraryHandler.output.appendLine('开始获取清单从 ' + libraryUrl);
+            request(libraryUrl, { json: true }, (err, res, body) => {
+                LibraryHandler.output.show();
+                if (err) {
+                    ConfigPanel_1.ConfigPanel._changeProgress(false);
+                    LibraryHandler.output.appendLine('获取清单失败');
+                    LibraryHandler.output.appendLine(err);
+                    return;
+                }
+                var library = body.library;
+                LibraryHandler.output.appendLine('获取到清单内容 \n Name: ' + body.name + ' Version: ' + body.version + ' author: ' + body.author + ' desc: ' + body.description);
+                if (library.javascript === undefined || library.javascript === null) {
+                    LibraryHandler.output.appendLine('没有找到javascript库信息');
+                }
+                else {
+                    LibraryHandler.output.appendLine('开始配置Lirary: javascript');
+                    new LibraryHandler().handleJavaScript(library.javascript);
+                }
+                if (library.lua === undefined || library.lua === null) {
+                    LibraryHandler.output.appendLine('没有找到lua库信息');
+                    return;
+                }
+                else {
+                    // TODO: 对lua的支持
+                }
+            });
         });
+    }
+    handleJavaScript(obj) {
+        console.log(obj.index);
+        // TODO: 处理下载和配置
     }
     static selectLibrary(callback) {
         // 选择目录
@@ -53,4 +87,5 @@ class LibraryHandler {
     }
 }
 exports.LibraryHandler = LibraryHandler;
+LibraryHandler.output = vscode.window.createOutputChannel('LLScriptHelper');
 //# sourceMappingURL=LibraryHandler.js.map

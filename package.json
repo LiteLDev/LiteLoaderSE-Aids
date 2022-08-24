@@ -30,8 +30,7 @@
       }
     ],
     "menus": {
-      "editor/title": [
-      ]
+      "editor/title": []
     },
     "configuration": {
       "title": "LLScriptHelper",
@@ -48,8 +47,8 @@
           "description": "补全库的本地存储地址",
           "scope": "resource"
         }
+      }
     }
-  }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
