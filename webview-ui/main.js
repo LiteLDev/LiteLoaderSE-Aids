@@ -34,11 +34,7 @@ function main() {
 
 function libraryLoadingStatus(isShow) {
   const libraryRing = document.getElementById("library_ring");
-  if (isShow) {
-    libraryRing.style.visibility = "visible";
-  } else {
-    libraryRing.style.visibility = "hidden";
-  }
+  libraryRing.style.visibility = isShow ? "visible" : "hidden";
 }
 
 function setDefaultConfig(args) {
