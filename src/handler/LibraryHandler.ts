@@ -13,11 +13,13 @@ export class LibraryHandler {
         }
         // 更新配置文件
         vscode.workspace.getConfiguration().update('LLScriptHelper.libraryUrl', libraryUrl, vscode.ConfigurationTarget.Global);
+        ConfigPanel._updateLibraryUrl(libraryUrl);
         this.getLibraryPath((path) => {
             if (path === null || path === undefined || fs.existsSync(path) === false) {
                 vscode.window.showErrorMessage('库存放地址配置错误');
                 return;
             }
+            
         });
     }
     public static selectLibrary(callback: (path: String | any) => any): any {

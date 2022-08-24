@@ -13,14 +13,23 @@ function main() {
     const message = event.data; // The JSON data our extension sent
     console.log(message);
     switch (message.command) {
-        case 'change_library_ring':
-            libraryLoadingStatus(message.data);
-            break;
-        case 'set_default_config':
-            setDefaultConfig(message.data);
-            break;
+      case 'set_library_progress':
+        libraryLoadingStatus(message.data);
+        break;
+      case 'set_default_config':
+        setDefaultConfig(message.data);
+        break;
+      // some set 
+      case 'set_library_path':
+        const libraryPathText = document.getElementById("library_path");
+        libraryPathText.value = message.data;
+        break;
+      case 'set_library_url':
+        const libraryUrlText = document.getElementById("library_url");
+        libraryUrlText.value = message.data;
+        break;
     }
-});
+  });
 }
 
 function libraryLoadingStatus(isShow) {
@@ -41,15 +50,15 @@ function setDefaultConfig(args) {
 
 function libraryGetButtonClick() {
   const libraryUrlText = document.getElementById("library_url");
-  postMessage("library_get",libraryUrlText.value);
+  postMessage("library_get", libraryUrlText.value);
 
 }
 
 function librarySelectButtonClick() {
   const libraryPathText = document.getElementById("library_path");
-  postMessage("library_select",libraryPathText.value);
+  postMessage("library_select", libraryPathText.value);
 }
 
-function postMessage(command,args) {
-  vscode.postMessage({command: command, data: args});
+function postMessage(command, args) {
+  vscode.postMessage({ command: command, data: args });
 }

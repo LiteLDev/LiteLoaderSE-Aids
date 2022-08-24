@@ -109,8 +109,7 @@ class ConfigPanel {
                 case "library_select":
                     LibraryHandler_1.LibraryHandler.selectLibrary((uri) => {
                         vscode.workspace.getConfiguration().update('LLScriptHelper.libraryPath', uri, vscode.ConfigurationTarget.Global).then(() => {
-                            vscode.window.showInformationMessage("路径以保存");
-                            ConfigPanel._setDefaultConfig();
+                            ConfigPanel._updateLibraryPath(uri);
                         });
                     });
             }
@@ -137,6 +136,18 @@ class ConfigPanel {
         if (e.webviewPanel.active) {
             ConfigPanel._setDefaultConfig();
         }
+    }
+    static _updateLibraryPath(path) {
+        var _a;
+        (_a = ConfigPanel.currentPanel) === null || _a === void 0 ? void 0 : _a._panel.webview.postMessage({ command: "set_library_path", data: path });
+    }
+    static _updateLibraryUrl(url) {
+        var _a;
+        (_a = ConfigPanel.currentPanel) === null || _a === void 0 ? void 0 : _a._panel.webview.postMessage({ command: "set_library_url", data: url });
+    }
+    static _changeProgress(state) {
+        var _a;
+        (_a = ConfigPanel.currentPanel) === null || _a === void 0 ? void 0 : _a._panel.webview.postMessage({ command: "set_library_progress", data: state });
     }
     // dispose it :D
     dispose() {

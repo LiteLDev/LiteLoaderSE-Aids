@@ -1,0 +1,12 @@
+{
+    "name": "official library",
+    "version": "1.0.0",
+    "description": "支持99%的llse接口",
+    "author": "HuoHuas001",
+    "library": {
+        "javascript": {
+            "index": "/src/index.d.ts",
+            "download_url": "https://github.com/LiteLScript-Dev/LLseHelper/archive/refs/heads/master.zip"
+        }
+    }
+}
