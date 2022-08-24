@@ -156,8 +156,5 @@ export function openLocalFile(filePath: string) {
         console.log(`Open ${filePath} error, ${err}.`);
     }).then(undefined, err => {
         console.log(`Open ${filePath} error, ${err}.`);
-    })
-
-export function reSetTerminal() {
-    terminal = undefined;
+    });
 }

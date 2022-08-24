@@ -1,5 +1,5 @@
 {
-  "name": "LLScriptHelper",
+  "name": "liteloaderseaids",
   "displayName": "LLScriptHelper",
   "publisher": "moxicat",
   "description": "Assist in the development of LLScript's plugin",
@@ -19,155 +19,37 @@
   "contributes": {
     "commands": [
       {
-        "command": "LLScriptHelper.showDocs",
-        "title": "显示LLScriptHelper文档",
-        "category": "LLScriptHelper",
-        "icon": {
-          "light": "./images/docs-light.svg",
-          "dark": "./images/docs-dark.svg"
-        }
+        "command": "LLScriptHelper.config",
+        "title": "LiteLoaderSE 配置页",
+        "category": "LLScriptHelper"
       },
       {
-        "command": "LLScriptHelper.runner",
-        "title": "启动LLScriptHelper(BDS)控制台",
-        "category": "LLScriptHelper",
-        "icon": {
-          "light": "./images/run-light.svg",
-          "dark": "./images/run-dark.svg"
-        }
-      },
-      {
-        "command": "LLScriptHelper.stop",
-        "title": "结束LLScriptHelper(BDS)控制台",
-        "category": "LLScriptHelper",
-        "icon": {
-          "light": "./images/stop-light.svg",
-          "dark": "./images/stop-dark.svg"
-        }
-      },
-      {
-        "command": "LLScriptHelper.load",
-        "title": "加载此文件到LLScriptHelper",
-        "category": "LLScriptHelper",
-        "icon": {
-          "light": "./images/load-light.svg",
-          "dark": "./images/load-dark.svg"
-        }
-      },
-      {
-        "command": "LLScriptHelper.reload",
-        "title": "重载此文件到LLScriptHelper",
-        "category": "LLScriptHelper",
-        "icon": {
-          "light": "./images/reload-light.svg",
-          "dark": "./images/reload-dark.svg"
-        }
-      },
-      {
-        "command": "LLScriptHelper.configDir",
-        "title": "配置LLScriptHelper(BDS)目录",
+        "command": "LLScriptHelper.test",
+        "title": "LiteLoaderSE test",
         "category": "LLScriptHelper"
       }
     ],
     "menus": {
       "editor/title": [
-        {
-          "when": "resourceLangId == lua && config.LLScriptHelper.isrunning",
-          "command": "LLScriptHelper.stop",
-          "group": "navigation@2"
-        },
-        {
-          "when": "resourceLangId == lua && !config.LLScriptHelper.isrunning",
-          "command": "LLScriptHelper.runner",
-          "group": "navigation@1"
-        },
-        {
-          "when": "resourceLangId == lua && config.LLScriptHelper.isrunning",
-          "command": "LLScriptHelper.load",
-          "group": "navigation@3"
-        },
-        {
-          "when": "resourceLangId == lua && config.LLScriptHelper.isrunning",
-          "command": "LLScriptHelper.reload",
-          "group": "navigation@4"
-        },
-        {
-          "when": "resourceLangId == javascript && config.LLScriptHelper.isrunning",
-          "command": "LLScriptHelper.stop",
-          "group": "navigation@2"
-        },
-        {
-          "when": "resourceLangId == javascript && !config.LLScriptHelper.isrunning",
-          "command": "LLScriptHelper.runner",
-          "group": "navigation@1"
-        },
-        {
-          "when": "resourceLangId == javascript && config.LLScriptHelper.isrunning",
-          "command": "LLScriptHelper.load",
-          "group": "navigation@3"
-        },
-        {
-          "when": "resourceLangId == javascript && config.LLScriptHelper.isrunning",
-          "command": "LLScriptHelper.reload",
-          "group": "navigation@4"
-        },
-        {
-          "when": "resourceLangId == lua || resourceLangId== javascript",
-          "command": "LLScriptHelper.showDocs",
-          "group": "navigation@5"
-        }
       ]
     },
-    
     "configuration": {
       "title": "LLScriptHelper",
       "properties": {
-        "LLScriptHelper.bds-LLScriptHelperDir": {
+        "LLScriptHelper.libraryUrl": {
           "type": "string",
           "default": null,
-          "description": "LiteLoader的运行环境根目录",
+          "description": "补全库的远程库地址",
           "scope": "resource"
         },
-        "LLScriptHelper.bdsRunType": {
-          "type": "string",
-          "default": "bedrock_server_mod.exe",
-          "description": "LiteLoader启动命令",
-          "scope": "resource"
-        },
-        "LLScriptHelper.isrunning": {
-          "type": "boolean",
-          "default": false,
-          "readOnly": true,
-          "description": "LiteLoader的运行状态",
-          "scope": "resource"
-        },
-        "LLScriptHelper.version": {
+        "LLScriptHelper.libraryPath": {
           "type": "string",
           "default": null,
-          "readOnly": true,
-          "description": "Library当前版本",
-          "scope": "resource"
-        },
-        "LLScriptHelper.LibraryPath": {
-          "type": "string",
-          "default": null,
-          "description": "补全库的固定存放地址",
-          "scope": "resource"
-        },
-        "LLScriptHelper.bds-TaskCmd": {
-          "type": "string",
-          "default": "bedrock_server_mod.exe",
-          "description": "LiteLoader启动命令",
-          "scope": "resource"
-        },
-        "LLScriptHelper.bds-TaskCmd-Args": {
-          "type": "array",
-          "default": [],
-          "description": "LiteLoader启动命令参数",
+          "description": "补全库的本地存储地址",
           "scope": "resource"
         }
-      }
     }
+  }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
@@ -187,15 +69,16 @@
     "@typescript-eslint/parser": "^4.26.0",
     "eslint": "^7.27.0",
     "glob": "^7.1.7",
-    "mocha": "^8.4.0",
+    "mocha": "^10.0.0",
     "typescript": "^4.3.2",
     "vscode-test": "^1.5.2"
   },
   "dependencies": {
+    "@vscode/webview-ui-toolkit": "^1.0.1",
     "adm-zip": "^0.5.5",
     "async": "^3.2.0",
     "co": "^4.6.0",
-    "marked": "^2.1.3",
+    "marked": "^4.0.19",
     "node-fetch": "^2.6.1",
     "node-stream-zip": "^1.13.6",
     "path": "^0.12.7",
