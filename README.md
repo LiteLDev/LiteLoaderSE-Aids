@@ -1,4 +1,4 @@
-# LLScriptHelper-Vscode
+# LiteLoaderSE-Aids
 
 # :earth_asia: Rewritting
 
