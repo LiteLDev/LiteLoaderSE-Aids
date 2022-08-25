@@ -6,7 +6,11 @@ import { LibraryHandler } from "../handler/LibraryHandler";
 import { randomUUID } from "crypto";
 import fetch from "node-fetch";
 
-// 空判断
+/**
+ * 判断是否为空
+ * @param obj 需判断的对象
+ * @returns boolean 是否是`空`
+ */
 export function isNotEmpty(obj: any): boolean {
   return (
     obj !== null &&
@@ -17,7 +21,12 @@ export function isNotEmpty(obj: any): boolean {
   );
 }
 
-// 下载文件
+/**
+ * 下载文件
+ * @param url 文件Url
+ * @param path 下载的路径
+ * @param callback 回调函数
+ */
 export function downloadFile(
   url: any,
   path: any,
@@ -42,6 +51,10 @@ export function downloadFile(
     });
 }
 
+/**
+ * 选择Library目录
+ * @param callback 回调函数
+ */
 export function selectLibrary(callback: (path: String | any) => any): any {
   // 选择目录
   var back = vscode.window.showOpenDialog({
@@ -60,6 +73,12 @@ export function selectLibrary(callback: (path: String | any) => any): any {
   });
 }
 
+/**
+ * 查找文件匹配同步
+ * @param sourceDir 
+ * @param rule 
+ * @returns 
+ */
 export function findFileMatchSync(
   sourceDir: string,
   rule: string
@@ -85,6 +104,12 @@ export function findFileMatchSync(
   return null;
 }
 
+/**
+ * 异步解压
+ * @param filePath 文件路径
+ * @param target 文件夹
+ * @param callback 回调函数
+ */
 export function unzipAsync(
   filePath: string,
   target: string,
@@ -111,6 +136,10 @@ export function unzipAsync(
   });
 }
 
+/**
+ * 取消链接所有文件
+ * @param target 文件夹
+ */
 export function unlinkAllFiles(target: string) {
   var files = fs.readdirSync(target);
   for (var i = 0; i < files.length; i++) {
@@ -125,6 +154,11 @@ export function unlinkAllFiles(target: string) {
   }
 }
 
+/**
+ * 获取Js库引入代码
+ * @param referencePath 
+ * @returns string 引入的代码
+ */
 export function getReferenceHeader(referencePath: string | unknown): string {
   return (
     "//LiteLoaderScript Dev Helper\n/// <reference path=" +
