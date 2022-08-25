@@ -85,7 +85,7 @@
     "co": "^4.6.0",
     "marked": "^4.0.19",
     "node-fetch": "^2.6.1",
-    "node-stream-zip": "^1.13.6",
+    "node-stream-zip": "^1.15.0",
     "path": "^0.12.7",
     "request": "^2.88.2",
     "step": "^1.0.0"

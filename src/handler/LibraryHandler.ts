@@ -2,9 +2,8 @@
 import * as vscode from 'vscode';
 import fs = require('fs');
 const request = require('request');
-import { isNotEmpty, downloadFile, selectLibrary } from '../utils/SomeUtil';
+import { isNotEmpty, downloadFile, selectLibrary, unzipAsync, findFileMatchSync } from '../utils/SomeUtil';
 import { ConfigPanel } from '../panels/ConfigPanel';
-import { randomUUID } from 'crypto';
 export class LibraryHandler {
     static output = vscode.window.createOutputChannel('LLScriptHelper');
     public static libraryPath = vscode.workspace.getConfiguration().get('LLScriptHelper.libraryPath');
@@ -41,6 +40,7 @@ export class LibraryHandler {
                     return;
                 }
                 var library = body.library;
+                var callbackJs = undefined;
                 LibraryHandler.output.appendLine('获取到清单内容 \nName: ' + body.name + ' Version: ' + body.version + ' author: ' + body.author + ' desc: ' + body.description);
                 if (library.javascript === undefined || library.javascript === null) {
                     LibraryHandler.output.appendLine('没有找到javascript库信息');
@@ -49,8 +49,7 @@ export class LibraryHandler {
                     new LibraryHandler().handleJavaScript(library.javascript);
                 }
                 if (library.lua === undefined || library.lua === null) {
-                    LibraryHandler.output.appendLine('没有找到lua库信息');
-                    return;
+                    //LibraryHandler.output.appendLine('没有找到lua库信息');
                 } else {
                     // TODO: 对lua的支持
                 }
@@ -69,8 +68,27 @@ export class LibraryHandler {
             }
             LibraryHandler.output.appendLine('javascript库下载成功');
             var filePath = msg;
-            // 寻遍历找src目录
-            
+            unzipAsync(filePath, LibraryHandler.libraryPath + '/JS', (success, msg) => {
+                fs.unlink(filePath,()=>{});
+                if (!success) {
+                    LibraryHandler.output.appendLine(msg);
+                    vscode.window.showErrorMessage('javascript库解压失败');
+                    return;
+                }
+                LibraryHandler.output.appendLine('javascript库解压成功');
+                var apiPath = findFileMatchSync(msg, obj.index.toString());
+                if (apiPath === null) {
+                    vscode.window.showErrorMessage('找不到指定的库');
+                    return;
+                }
+                LibraryHandler.output.appendLine('找到Api文件' + apiPath);
+                vscode.workspace.getConfiguration().update('LLScriptHelper.javascriptApiPath', apiPath.replace('\\', "/"), vscode.ConfigurationTarget.Global).then(() => {
+                    LibraryHandler.output.appendLine('javascript补全库配置成功');
+                    LibraryHandler.output.hide();
+                    ConfigPanel._changeProgress(false);
+                    vscode.window.showInformationMessage('JS补全库配置成功');
+                });
+            });
         });
     }
 

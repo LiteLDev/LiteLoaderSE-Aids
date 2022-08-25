@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import fs = require('fs');
+import StreamZip = require('node-stream-zip');
 import * as vscode from 'vscode';
 import { LibraryHandler } from '../handler/LibraryHandler';
 import { randomUUID } from 'crypto';
@@ -54,18 +55,53 @@ export function findFileMatchSync(sourceDir: string, rule: string): string | nul
     var fileName = files[i];
     var filePath = sourceDir + '/' + fileName;
     var stat = fs.lstatSync(filePath);
-    if (stat.isDirectory()) {
-      var result = findFileMatchSync(filePath, rule);
-      if (result) {
-        return result;
-      }
-    } else {
+    if (stat.isFile()) {
       if (filePath.match(rule)) {
         return filePath;
       } else {
         continue;
       }
+    } else {
+      var result = findFileMatchSync(filePath, rule);
+      if (result) {
+        return result;
+      }
     }
   }
   return null;
+}
+
+export function unzipAsync(filePath: string, target: string, callback: (success: Boolean, msg: any) => void) {
+  fs.mkdir(target,(err:any)=>{});
+  const zip = new StreamZip({
+    file: filePath,
+    storeEntries: true
+  });
+  zip.on('ready', () => {
+    unlinkAllFiles(target);
+    zip.extract(null, target, (err, count) => {
+      LibraryHandler.output.appendLine(err ? 'Extract error' : `Extracted ${count} entries`);
+      zip.close();
+      callback(true, target);
+      return;
+    });
+
+  });
+  zip.on('error', (err) => {
+    callback(false, err);
+  });
+}
+
+export function unlinkAllFiles(target: string) {
+  var files = fs.readdirSync(target);
+  for (var i = 0; i < files.length; i++) {
+    var fileName = files[i];
+    var filePath = target + '/' + fileName;
+    var stat = fs.lstatSync(filePath);
+    if (stat.isFile()) {
+      fs.unlinkSync(filePath);
+    } else {
+      unlinkAllFiles(filePath);
+    }
+  }
 }

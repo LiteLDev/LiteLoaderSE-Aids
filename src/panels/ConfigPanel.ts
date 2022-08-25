@@ -91,9 +91,9 @@ export class ConfigPanel {
             <!-- todo -->
         </div>
       </vscode-panel-view>
-      <vscode-panel-view id="view-2">... Insert Complex Content ...</vscode-panel-view>
-      <vscode-panel-view id="view-3">... Insert Complex Content ...</vscode-panel-view>
-      <vscode-panel-view id="view-4">... Insert Complex Content ...</vscode-panel-view>
+      <vscode-panel-view id="view-2">... Nothing ...</vscode-panel-view>
+      <vscode-panel-view id="view-3">... Nothing ...</vscode-panel-view>
+      <vscode-panel-view id="view-4">... Nothing ...</vscode-panel-view>
     </vscode-panels>
 
 </html>

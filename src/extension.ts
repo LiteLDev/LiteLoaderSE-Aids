@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 import { ConfigPanel } from './panels/ConfigPanel';
-import { findFileMatchSync } from './utils/SomeUtil';
 export function activate(context: vscode.ExtensionContext) {
 	// show config panel
 	const configCommand = vscode.commands.registerCommand("LLScriptHelper.config", () => {
@@ -10,7 +9,7 @@ export function activate(context: vscode.ExtensionContext) {
 		ConfigPanel.postMessage("change_library_ring", true);
 	});
 	context.subscriptions.push(configCommand, testCommand);
-	findFileMatchSync('D:\test\LLseHelper-master', "index.d.ts");
+	vscode.commands.executeCommand('LLScriptHelper.config');
 }
 
 
