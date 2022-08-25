@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import { getUri } from "../utils/getUri";
 import { LibraryHandler } from "../handler/LibraryHandler";
-import { selectLibrary } from '../utils/SomeUtil';
+import { selectLibrary } from "../utils/SomeUtil";
 
 export class ConfigPanel {
   public static currentPanel: ConfigPanel | undefined;
@@ -11,19 +11,33 @@ export class ConfigPanel {
   private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
     this._panel = panel;
     this._panel.onDidDispose(this.dispose, null, this._disposables);
-    this._panel.webview.html = this._getWebviewContent(this._panel.webview, extensionUri);
-    this._panel.onDidChangeViewState(this.onChangeState, null, this._disposables);
+    this._panel.webview.html = this._getWebviewContent(
+      this._panel.webview,
+      extensionUri
+    );
+    this._panel.onDidChangeViewState(
+      this.onChangeState,
+      null,
+      this._disposables
+    );
     this._setWebviewMessageListener(this._panel.webview);
   }
 
   public static _setDefaultConfig() {
-    var libraryUrl = vscode.workspace.getConfiguration("LLScriptHelper").get("libraryUrl", true);
-    var libraryPath = vscode.workspace.getConfiguration("LLScriptHelper").get("libraryPath", true);
+    var libraryUrl = vscode.workspace
+      .getConfiguration("LLScriptHelper")
+      .get("libraryUrl", true);
+    var libraryPath = vscode.workspace
+      .getConfiguration("LLScriptHelper")
+      .get("libraryPath", true);
     console.log(libraryPath);
     var args = { libraryUrl: libraryUrl, libraryPath: libraryPath };
     ConfigPanel.postMessage("set_default_config", args);
   }
-  private _getWebviewContent(webview: vscode.Webview, extensionUri: vscode.Uri) {
+  private _getWebviewContent(
+    webview: vscode.Webview,
+    extensionUri: vscode.Uri
+  ) {
     const toolkitUri = getUri(webview, extensionUri, [
       "node_modules",
       "@vscode",
@@ -112,11 +126,17 @@ export class ConfigPanel {
             break;
           case "library_select":
             selectLibrary((uri) => {
-              vscode.workspace.getConfiguration().update('LLScriptHelper.libraryPath', uri, vscode.ConfigurationTarget.Global).then(() => {
-                ConfigPanel._updateLibraryPath(uri);
-                LibraryHandler.libraryPath = uri;
-              });
-
+              vscode.workspace
+                .getConfiguration()
+                .update(
+                  "LLScriptHelper.libraryPath",
+                  uri,
+                  vscode.ConfigurationTarget.Global
+                )
+                .then(() => {
+                  ConfigPanel._updateLibraryPath(uri);
+                  LibraryHandler.libraryPath = uri;
+                });
             });
         }
       },
@@ -125,16 +145,24 @@ export class ConfigPanel {
     );
   }
   public static postMessage(command: String, args: any) {
-    ConfigPanel.currentPanel?._panel.webview.postMessage({ command: command, data: args });
+    ConfigPanel.currentPanel?._panel.webview.postMessage({
+      command: command,
+      data: args,
+    });
   }
   //render :D
   public static render(extensionUri: vscode.Uri) {
     if (ConfigPanel.currentPanel) {
       ConfigPanel.currentPanel._panel.reveal(vscode.ViewColumn.One);
     } else {
-      const panel = vscode.window.createWebviewPanel("ConfigPanel", "ConfigPanel", vscode.ViewColumn.One, {
-        enableScripts: true,
-      });
+      const panel = vscode.window.createWebviewPanel(
+        "ConfigPanel",
+        "ConfigPanel",
+        vscode.ViewColumn.One,
+        {
+          enableScripts: true,
+        }
+      );
 
       ConfigPanel.currentPanel = new ConfigPanel(panel, extensionUri);
     }
@@ -146,13 +174,22 @@ export class ConfigPanel {
     }
   }
   public static _updateLibraryPath(path: String) {
-    ConfigPanel.currentPanel?._panel.webview.postMessage({ command: "set_library_path", data: path });
+    ConfigPanel.currentPanel?._panel.webview.postMessage({
+      command: "set_library_path",
+      data: path,
+    });
   }
   public static _updateLibraryUrl(url: String) {
-    ConfigPanel.currentPanel?._panel.webview.postMessage({ command: "set_library_url", data: url });
+    ConfigPanel.currentPanel?._panel.webview.postMessage({
+      command: "set_library_url",
+      data: url,
+    });
   }
   public static _changeProgress(state: boolean) {
-    ConfigPanel.currentPanel?._panel.webview.postMessage({ command: "set_library_progress", data: state });
+    ConfigPanel.currentPanel?._panel.webview.postMessage({
+      command: "set_library_progress",
+      data: state,
+    });
   }
 
   // dispose it :D
@@ -166,7 +203,6 @@ export class ConfigPanel {
           disposable.dispose();
         }
       }
-
     }
   }
 }
