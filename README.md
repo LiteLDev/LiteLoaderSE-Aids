@@ -23,7 +23,7 @@ npm install -g vscode
     "author": "",
     "library":{
         "javascript": {
-            "index": "index.d.ts",
+            "index": ".*/index.d.ts",
             "download_url": ""
         },
         "lua":{

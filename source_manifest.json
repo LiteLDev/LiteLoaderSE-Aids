@@ -5,7 +5,7 @@
     "author": "HuoHuas001",
     "library": {
         "javascript": {
-            "index": "index.d.ts",
+            "index": ".*/index.d.ts",
             "download_url": "https://github.com/LiteLScript-Dev/LLseHelper/archive/refs/heads/master.zip"
         }
     }
