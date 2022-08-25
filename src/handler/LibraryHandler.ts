@@ -58,7 +58,6 @@ export class LibraryHandler {
     }
     public handleJavaScript(obj: { index: String, download_url: String }) {
         console.log(obj.index);
-        // TODO: 处理下载和配置
         downloadFile(obj.download_url, LibraryHandler.libraryPath, (success, msg) => {
             if (!success) {
                 LibraryHandler.output.appendLine('javascript库下载失败');

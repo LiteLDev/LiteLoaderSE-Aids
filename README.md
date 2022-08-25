@@ -1,12 +1,22 @@
 # LiteLoaderSE-Aids
 
-# :earth_asia: Rewritting
+# Usage
+
+# Features
+
+- 傻瓜式的窗口化配置页面
+- 自动从配置源拉取库并配置
+- 自动配置引用(JS)
+## TODO
+- [ ] 支持内嵌文档阅读
+- [ ] 支持更新检测
+- [ ] 支持拉取 [Lua库](src\handler\LibraryHandler.ts)
+- [ ] 支持QuickJS调试
+- [ ] 更多可配置项
+- [ ] [i18n](https://github.com/microsoft/vscode-extension-samples/tree/main/i18n-sample)
 
 # Development
-1.
-```shell
-npm install -g vscode
-```
+
 1. install extension `TODO Highlight`
 
 2. follow TODO

@@ -72,7 +72,7 @@ export function findFileMatchSync(sourceDir: string, rule: string): string | nul
 }
 
 export function unzipAsync(filePath: string, target: string, callback: (success: Boolean, msg: any) => void) {
-  fs.mkdir(target,(err:any)=>{});
+  fs.mkdir(target, (err: any) => { });
   const zip = new StreamZip({
     file: filePath,
     storeEntries: true
@@ -104,4 +104,8 @@ export function unlinkAllFiles(target: string) {
       unlinkAllFiles(filePath);
     }
   }
+}
+
+export function getReferenceHeader(referencePath: string|unknown): string {
+  return '//LiteLoaderScript Dev Helper\n/// <reference path=' + referencePath + '/> \n\n\n$1';
 }

@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import { getUri } from "../utils/getUri";
 import { LibraryHandler } from "../handler/LibraryHandler";
-import {selectLibrary} from '../utils/SomeUtil';
+import { selectLibrary } from '../utils/SomeUtil';
 
 export class ConfigPanel {
   public static currentPanel: ConfigPanel | undefined;
@@ -17,7 +17,6 @@ export class ConfigPanel {
   }
 
   public static _setDefaultConfig() {
-    // TODO problem with this
     var libraryUrl = vscode.workspace.getConfiguration("LLScriptHelper").get("libraryUrl", true);
     var libraryPath = vscode.workspace.getConfiguration("LLScriptHelper").get("libraryPath", true);
     console.log(libraryPath);
@@ -133,7 +132,7 @@ export class ConfigPanel {
     if (ConfigPanel.currentPanel) {
       ConfigPanel.currentPanel._panel.reveal(vscode.ViewColumn.One);
     } else {
-      const panel = vscode.window.createWebviewPanel("ConfigPanel", "LLSEConfigPanel", vscode.ViewColumn.One, {
+      const panel = vscode.window.createWebviewPanel("ConfigPanel", "ConfigPanel", vscode.ViewColumn.One, {
         enableScripts: true,
       });
 
