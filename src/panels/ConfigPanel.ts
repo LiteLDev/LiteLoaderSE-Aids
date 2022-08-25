@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import { getUri } from "../utils/getUri";
 import { LibraryHandler } from "../handler/LibraryHandler";
+import {selectLibrary} from '../utils/SomeUtil';
 
 export class ConfigPanel {
   public static currentPanel: ConfigPanel | undefined;
@@ -111,9 +112,10 @@ export class ConfigPanel {
             LibraryHandler.getLibrary(data);
             break;
           case "library_select":
-            LibraryHandler.selectLibrary((uri) => {
+            selectLibrary((uri) => {
               vscode.workspace.getConfiguration().update('LLScriptHelper.libraryPath', uri, vscode.ConfigurationTarget.Global).then(() => {
                 ConfigPanel._updateLibraryPath(uri);
+                LibraryHandler.libraryPath = uri;
               });
 
             });

@@ -46,6 +46,12 @@
           "default": null,
           "description": "补全库的本地存储地址",
           "scope": "resource"
+        },
+        "LLScriptHelper.javascriptApiPath": {
+          "type": "string",
+          "default": null,
+          "description": "补全库的javascript API地址",
+          "scope": "resource"
         }
       }
     }

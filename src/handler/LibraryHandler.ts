@@ -2,10 +2,12 @@
 import * as vscode from 'vscode';
 import fs = require('fs');
 const request = require('request');
-import { isNotEmpty } from '../utils/SomeUtil';
+import { isNotEmpty, downloadFile, selectLibrary } from '../utils/SomeUtil';
 import { ConfigPanel } from '../panels/ConfigPanel';
+import { randomUUID } from 'crypto';
 export class LibraryHandler {
     static output = vscode.window.createOutputChannel('LLScriptHelper');
+    public static libraryPath = vscode.workspace.getConfiguration().get('LLScriptHelper.libraryPath');
     public static getLibrary(libraryUrl: String) {
 
         // 链接合法性检查
@@ -23,7 +25,8 @@ export class LibraryHandler {
             }
             // 开始获取清单
             ConfigPanel._changeProgress(true);
-            LibraryHandler.output.appendLine('开始获取清单从 ' + libraryUrl);
+            LibraryHandler.output.appendLine('开始获取清单');
+            LibraryHandler.output.appendLine(libraryUrl.toString());
             request(libraryUrl, { json: true }, (err: any, res: any, body: any) => {
                 LibraryHandler.output.show();
                 if (err) {
@@ -32,8 +35,13 @@ export class LibraryHandler {
                     LibraryHandler.output.appendLine(err);
                     return;
                 }
+                if (body.version === undefined) {
+                    this.output.appendLine('清单无效');
+                    vscode.window.showErrorMessage('补全库配置失败');
+                    return;
+                }
                 var library = body.library;
-                LibraryHandler.output.appendLine('获取到清单内容 \n Name: ' + body.name + ' Version: ' + body.version + ' author: ' + body.author + ' desc: ' + body.description);
+                LibraryHandler.output.appendLine('获取到清单内容 \nName: ' + body.name + ' Version: ' + body.version + ' author: ' + body.author + ' desc: ' + body.description);
                 if (library.javascript === undefined || library.javascript === null) {
                     LibraryHandler.output.appendLine('没有找到javascript库信息');
                 } else {
@@ -52,35 +60,32 @@ export class LibraryHandler {
     public handleJavaScript(obj: { index: String, download_url: String }) {
         console.log(obj.index);
         // TODO: 处理下载和配置
-    }
-
-    public static selectLibrary(callback: (path: String | any) => any): any {
-        // 选择目录
-        var back = vscode.window.showOpenDialog({
-            canSelectFiles: false,
-            canSelectFolders: true,
-            canSelectMany: false,
-            openLabel: '选择库存放目录'
-        });
-
-        back.then(uri => {
-            if (uri === undefined || uri === null) {
-                vscode.window.showWarningMessage('请重新选择库存放目录 !');
-                return null;
+        downloadFile(obj.download_url, LibraryHandler.libraryPath, (success, msg) => {
+            if (!success) {
+                LibraryHandler.output.appendLine('javascript库下载失败');
+                LibraryHandler.output.appendLine(msg);
+                vscode.window.showErrorMessage('补全库配置失败');
+                return;
             }
-            callback(uri[0].fsPath);
+            LibraryHandler.output.appendLine('javascript库下载成功');
+            var filePath = msg;
+            // 寻遍历找src目录
+            
         });
     }
+
+
     public static getLibraryPath(callback: (path: String | any) => any): String | any {
         var path = vscode.workspace.getConfiguration().get('LLScriptHelper.libraryPath');
         if (isNotEmpty(path)) {
             callback(path);
             return;
         }
-        path = this.selectLibrary((path) => {
+        path = selectLibrary((path) => {
             callback(path);
             vscode.workspace.getConfiguration().update('LLScriptHelper.libraryPath', path, vscode.ConfigurationTarget.Global).then(() => {
-                ConfigPanel._setDefaultConfig();
+                ConfigPanel._updateLibraryPath(path);
+                LibraryHandler.libraryPath = path;
             });
         });
     }
