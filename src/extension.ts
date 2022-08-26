@@ -11,14 +11,31 @@ async function activate(context: vscode.ExtensionContext) {
   // show config panel
   context.subscriptions.push(
     vscode.commands.registerCommand("extension.llseaids.config", (uri) => {
-        ConfigPanel.render(context.extensionUri);
-    
+      ConfigPanel.render(context.extensionUri);
     }),
     vscode.commands.registerCommand("extension.llseaids.docs", () => {
-        DocsPanel.render();
+      DocsPanel.render();
     })
   );
-
+  var sourceUrl = vscode.workspace
+    .getConfiguration()
+    .get("LLScriptHelper.sourceUrl");
+  // may first time run
+  var libraryPath = vscode.workspace
+    .getConfiguration()
+    .get("LLScriptHelper.libraryPath");
+  var javascriptApiPath = vscode.workspace
+    .getConfiguration()
+    .get("LLScriptHelper.javascriptApiPath");
+  if (
+    sourceUrl === null ||
+    libraryPath === null ||
+    javascriptApiPath === null
+  ) {
+    vscode.commands.executeCommand("extension.llseaids.config");
+  }
+  // init handler
+  new WorkspaceHandler(context).snippetCompletion().onCreateFile();
 }
 
 exports.deactivate = function () {};
