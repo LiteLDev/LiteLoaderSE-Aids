@@ -52,41 +52,58 @@ export class LibraryHandler {
           ConfigPanel._changeProgress(false);
           LibraryHandler.output.appendLine("获取清单失败");
           LibraryHandler.output.appendLine(err);
-          return;
-        }
-        if (body.version === undefined) {
-          this.output.appendLine("清单无效");
-          vscode.window.showErrorMessage("补全库配置失败");
+          ConfigPanel._changeProgress(false);
           return;
         }
         var library = body.library;
-        var callbackJs = undefined;
-        LibraryHandler.output.appendLine(
-          "获取到清单内容 \nName: " +
-            body.name +
-            " Version: " +
-            body.version +
-            " author: " +
-            body.author +
-            " desc: " +
-            body.description
-        );
-        if (library.javascript === undefined || library.javascript === null) {
-          LibraryHandler.output.appendLine("没有找到javascript库信息");
-        } else {
-          LibraryHandler.output.appendLine("开始配置Lirary: javascript");
-          new LibraryHandler().handleJavaScript(library.javascript);
+        if (library === undefined) {
+          this.output.appendLine("清单无效");
+          vscode.window.showErrorMessage("补全库配置失败");
+          ConfigPanel._changeProgress(false);
+          return;
         }
-        if (library.lua === undefined || library.lua === null) {
-          //LibraryHandler.output.appendLine('没有找到lua库信息');
-        } else {
-          // TODO: 对lua的支持
+        LibraryHandler.output.appendLine(JSON.stringify(library, null, 4));
+        LibraryHandler.output.appendLine("库名: " + body.name);
+        LibraryHandler.output.appendLine("库地址: " + body.source);
+        if (library.javascript !== undefined && library.javascript !== null) {
+          LibraryHandler.output.appendLine(
+            "JavaScript库版本: " + library.javascript.version
+          );
         }
+        if (library.lua !== undefined && library.lua !== null) {
+          LibraryHandler.output.appendLine(
+            "Lua库版本: " + library.lua.version
+          );
+        }
+        vscode.window
+          .showInformationMessage("是否继续?", "继续", "取消")
+          .then((s: any) => {
+            if (s === "继续") {
+              if (
+                library.javascript === undefined ||
+                library.javascript === null
+              ) {
+                LibraryHandler.output.appendLine("没有找到javascript库信息");
+              } else {
+                LibraryHandler.output.appendLine("开始配置Lirary: javascript");
+                new LibraryHandler().handleJavaScript(library.javascript);
+              }
+              if (library.lua === undefined || library.lua === null) {
+                //LibraryHandler.output.appendLine('没有找到lua库信息');
+              } else {
+                // TODO: 对lua的支持
+              }
+              return;
+            }
+            this.output.appendLine("取消操作");
+            this.output.hide();
+            ConfigPanel._changeProgress(false);
+            return;
+          });
       });
     });
   }
   public handleJavaScript(obj: { index: String; download_url: String }) {
-    console.log(obj.index);
     downloadFile(
       obj.download_url,
       LibraryHandler.libraryPath,
@@ -95,6 +112,7 @@ export class LibraryHandler {
           LibraryHandler.output.appendLine("javascript库下载失败");
           LibraryHandler.output.appendLine(msg);
           vscode.window.showErrorMessage("补全库配置失败");
+          ConfigPanel._changeProgress(false);
           return;
         }
         LibraryHandler.output.appendLine("javascript库下载成功");
@@ -127,7 +145,7 @@ export class LibraryHandler {
                 LibraryHandler.output.appendLine("javascript补全库配置成功");
                 LibraryHandler.output.hide();
                 ConfigPanel._changeProgress(false);
-                vscode.window.showInformationMessage("JS补全库配置成功");
+                vscode.window.showInformationMessage("JS补全库配置成功 ");
               });
           }
         );

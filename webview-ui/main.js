@@ -1,20 +1,24 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /*
  * @Author: moxi moxiout@gmail.com
  * @Date: 2022-08-24 11:22:00
- * @LastEditTime: 2022-08-26 10:48:10
+ * @LastEditTime: 2022-08-26 13:17:28
  */
 const vscode = acquireVsCodeApi();
-
 window.addEventListener("load", main);
 
 function main() {
-  const libraryGetButton = document.getElementById("library_get");
-  libraryGetButton.addEventListener("click", libraryGetButtonClick);
-  const librarySelectButton = document.getElementById("library_select");
-  librarySelectButton.addEventListener("click", librarySelectButtonClick);
+  document
+    .getElementById("source_get")
+    .addEventListener("click", sourceGetButtonClick);
+  document
+    .getElementById("library_select")
+    .addEventListener("click", librarySelectButtonClick);
+  document
+    .getElementById("source_radio_group")
+    .addEventListener("click", sourceGroupClick);
 
-
-  window.addEventListener('message', event => {
+  window.addEventListener("message", (event) => {
     const message = event.data; // The JSON data our extension sent
     console.log(message);
     switch (message.command) {
@@ -43,24 +47,61 @@ function libraryLoadingStatus(isShow) {
 }
 
 function sourceGroupClick() {
-  const sdiyText = document.getElementById("library_url");
-  const sdiy = document.getElementById("sourcediy");
-  if (sdiy.checked) {
-    sdiyText.style.display = "block";
+  // 自定义输入框隐藏状态切换
+  const source_diy_url = document.getElementById("source_diy_url");
+  const source_diy = document.getElementById("source_diy");
+  if (source_diy.checked) {
+    source_diy_url.style.display = "block";
   } else {
-    sdiyText.style.display = "none";
+    source_diy_url.style.display = "none";
   }
 }
 function setDefaultConfig(args) {
-  const libraryUrlText = document.getElementById("library_url");
-  libraryUrlText.value = args.libraryUrl;
+  const source1 = document.getElementById("source_radio_1");
+  const source2 = document.getElementById("source_radio_2");
+  const source_diy = document.getElementById("source_diy");
+  const source_diy_url = document.getElementById("source_diy_url");
+  switch (args.sourceUrl) {
+    case source1.value:
+      source1.checked = true;
+      source_diy.checked = false;
+      source_diy_url.style.display = "none";
+      break;
+    case source2.value:
+      source2.checked = true;
+      source_diy.checked = false;
+      source_diy_url.style.display = "none";
+      break;
+    case source_diy_url.value:
+      source_diy.checked = true;
+      source_diy_url.style.display = "block";
+      break;
+    default:
+      source1.checked = false;
+      source2.checked = false;
+      source_diy.checked = true;
+      source_diy_url.style.display = "block";
+      source_diy_url.value = args.sourceUrl;
+      break;
+  }
   const libraryPathText = document.getElementById("library_path");
   libraryPathText.value = args.libraryPath;
 }
 
-function libraryGetButtonClick() {
-  const libraryUrlText = document.getElementById("library_url");
-  postMessage("library_get", libraryUrlText.value);
+function sourceGetButtonClick() {
+  const source1 = document.getElementById("source_radio_1");
+  const source2 = document.getElementById("source_radio_2");
+  const source_diy = document.getElementById("source_diy");
+  const source_diy_url = document.getElementById("source_diy_url");
+  var defaultUrl = source1.value;
+  if (source1.checked) {
+    defaultUrl = source1.value;
+  } else if (source2.checked) {
+    defaultUrl = source2.value;
+  } else if (source_diy.checked) {
+    defaultUrl = source_diy_url.value;
+  }
+  postMessage("source_get", defaultUrl);
 }
 
 function librarySelectButtonClick() {
