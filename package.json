@@ -53,10 +53,10 @@
     "configuration": {
       "title": "LLScriptHelper",
       "properties": {
-        "LLScriptHelper.libraryUrl": {
+        "LLScriptHelper.sourceUrl": {
           "type": "string",
-          "default": null,
-          "description": "补全库的远程库地址",
+          "default": "https://github.com/LiteLScript-Dev/HelperLib/raw/master/manifest.json",
+          "description": "补全库的清单源地址",
           "scope": "resource"
         },
         "LLScriptHelper.libraryPath": {
