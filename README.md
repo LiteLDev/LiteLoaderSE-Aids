@@ -1,7 +1,7 @@
 <!--
  * @Author: moxi moxiout@gmail.com
  * @Date: 2022-08-24 10:09:31
- * @LastEditTime: 2022-08-26 14:51:33
+ * @LastEditTime: 2022-08-26 16:54:32
 -->
 
 # LiteLoaderSE-Aids
@@ -11,7 +11,7 @@
 # Installation
 
 - 在扩展商店中搜索扩展 `LiteLodaerSE-Aids`
-- 在 vsc 中使用快捷键 `Ctrl+Shift+P` 然后输入 `ext install LiteLoaderSE-Aids`
+- 在 vsc 中使用快捷键 `Ctrl+Shift+P` 然后输入 `ext install moxicat.LLScriptHelper`
 
 # Usage
 

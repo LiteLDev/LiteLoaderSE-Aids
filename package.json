@@ -1,9 +1,9 @@
 {
-  "name": "liteloaderseaids",
+  "name": "LLScriptHelper",
   "displayName": "LiteLoaderSE-Aids",
   "publisher": "moxicat",
   "description": "Assist in the development of LLScript's plugin",
-  "version": "0.2.1",
+  "version": "2.0.2",
   "icon": "images/icon.png",
   "repository": "https://github.com/LiteLScript-Dev/LiteLoaderSE-Aids",
   "engines": {
@@ -13,39 +13,34 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:LLScriptHelper.config",
-    "onCommand:LLScriptHelper.docs",
-    "onCommand:LLScriptHelper.test",
-    "onStartupFinished"
+    "onStartupFinished",
+    "onCommand:extension.llseaids.config",
+    "onCommand:extension.llseaids.docs",
+    "onCommand:extension.llseaids.test"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "LLScriptHelper.config",
-        "title": "LiteLoaderSE-Aids 配置页",
-        "category": "LLScriptHelper"
+        "command": "llseaids.config",
+        "title": "LiteLoaderSE-Aids ConfigPanel",
+        "category": "llseaids"
       },
       {
-        "command": "LLScriptHelper.docs",
-        "title": "LiteLoaderSE-Aids 内嵌文档",
-        "category": "LLScriptHelper",
+        "command": "llseaids.docs",
+        "title": "LiteLoaderSE Docs",
+        "category": "llseaids",
         "icon": {
           "light": "./images/docs-light.svg",
           "dark": "./images/docs-dark.svg"
         }
-      },
-      {
-        "command": "LLScriptHelper.test",
-        "title": "LiteLoaderSE test",
-        "category": "LLScriptHelper"
       }
     ],
     "menus": {
       "editor/title": [
         {
           "when": "resourceLangId == lua || resourceLangId== javascript",
-          "command": "LLScriptHelper.docs",
+          "command": "llseaids.docs",
           "group": "navigation@1"
         }
       ]
