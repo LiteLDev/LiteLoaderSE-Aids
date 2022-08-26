@@ -169,8 +169,8 @@ export function unlinkAllFiles(target: string) {
  */
 export function getReferenceHeader(referencePath: string | unknown): string {
   return (
-    "//LiteLoaderScript Dev Helper\n/// <reference path=" +
+    "//LiteLoaderScript Dev Helper\n/// <reference path=\"" +
     referencePath +
-    "/> \n\n\n$1"
+    "\"/> \n\n\n$1"
   );
 }
