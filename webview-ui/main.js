@@ -8,6 +8,9 @@ function main() {
   const librarySelectButton = document.getElementById("library_select");
   librarySelectButton.addEventListener("click", librarySelectButtonClick);
 
+  const sourceGroup = document.getElementById("source_group");
+  sourceGroup.addEventListener("click", sourceGroupClick);
+
 
   window.addEventListener('message', event => {
     const message = event.data; // The JSON data our extension sent
@@ -37,6 +40,15 @@ function libraryLoadingStatus(isShow) {
   libraryRing.style.visibility = isShow ? "visible" : "hidden";
 }
 
+function sourceGroupClick() {
+  const sdiyText = document.getElementById("library_url");
+  const sdiy = document.getElementById("sourcediy");
+  if (sdiy.checked) {
+    sdiyText.style.display = "block";
+  } else {
+    sdiyText.style.display = "none";
+  }
+}
 function setDefaultConfig(args) {
   const libraryUrlText = document.getElementById("library_url");
   libraryUrlText.value = args.libraryUrl;

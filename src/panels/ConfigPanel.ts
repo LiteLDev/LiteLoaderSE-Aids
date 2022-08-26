@@ -62,9 +62,9 @@ export class ConfigPanel {
       <vscode-panel-view id="view-1">
         <div>
         <!-- Path -->
-          <div>
+          <div style="display: vertical;">
+          <label slot="label" >源地址</label>
             <vscode-text-field size="50" id="library_path">
-              <p class="little_title">库存放地址</p>
             </vscode-text-field>
           </div>
           <div class="div_s_h">
@@ -74,9 +74,11 @@ export class ConfigPanel {
           </div>
           <!-- Source -->
           <div>
-            <vscode-text-field size="50" id="library_url">
-              <p class="little_title">源地址</p>
-            </vscode-text-field>
+            <vscode-radio-group orientation="vertical" id="source_group" class="div_s">
+            <label slot="label" >源地址</label>
+            <vscode-radio id='source1'>https://github.com/microsoft/vscode-webview-ui-toolkit/blob/main/src/radio-group/README.md</vscode-radio>
+            <vscode-radio id='source2'>https://github.com/microsoft/vscode-webview-ui-toolkit/blob/main/src/radio-group/README.md</vscode-radio>
+            </vscode-radio-group>
           </div>
           <div class="div_s_h">
             <div>
@@ -94,7 +96,6 @@ export class ConfigPanel {
       <vscode-panel-view id="view-3">... Nothing ...</vscode-panel-view>
       <vscode-panel-view id="view-4">... Nothing ...</vscode-panel-view>
     </vscode-panels>
-
 </html>
   `;
   }

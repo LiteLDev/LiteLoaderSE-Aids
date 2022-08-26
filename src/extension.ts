@@ -23,7 +23,6 @@ export function activate(context: vscode.ExtensionContext) {
 	if (libraryUrl === null || libraryPath === null) {
 		vscode.commands.executeCommand('LLScriptHelper.config');
 	}
-
 	// init handler
 	new WorkspaceHandler(context)
 		.snippetCompletion()

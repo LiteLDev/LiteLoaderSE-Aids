@@ -13,7 +13,10 @@
     "Other"
   ],
   "activationEvents": [
-    "*"
+    "onCommand:LLScriptHelper.config",
+    "onCommand:LLScriptHelper.docs",
+    "onCommand:LLScriptHelper.test",
+    "onStartupFinished"
   ],
   "main": "./out/extension.js",
   "contributes": {
