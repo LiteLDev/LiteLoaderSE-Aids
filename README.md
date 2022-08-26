@@ -88,6 +88,12 @@
 
 # Development
 
-1. install extension `TODO Highlight`
+1. 初始化node库
 
-2. follow TODO
+```shell
+npm install
+```
+
+2. 下载扩展 `TODO Highlight`
+
+3. 遵循 TODO
