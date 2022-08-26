@@ -1,3 +1,8 @@
+/*
+ * @Author: moxi moxiout@gmail.com
+ * @Date: 2022-08-24 11:22:00
+ * @LastEditTime: 2022-08-26 10:48:10
+ */
 const vscode = acquireVsCodeApi();
 
 window.addEventListener("load", main);
@@ -8,26 +13,23 @@ function main() {
   const librarySelectButton = document.getElementById("library_select");
   librarySelectButton.addEventListener("click", librarySelectButtonClick);
 
-  const sourceGroup = document.getElementById("source_group");
-  sourceGroup.addEventListener("click", sourceGroupClick);
-
 
   window.addEventListener('message', event => {
     const message = event.data; // The JSON data our extension sent
     console.log(message);
     switch (message.command) {
-      case 'set_library_progress':
+      case "set_library_progress":
         libraryLoadingStatus(message.data);
         break;
-      case 'set_default_config':
+      case "set_default_config":
         setDefaultConfig(message.data);
         break;
-      // some set 
-      case 'set_library_path':
+      // some set
+      case "set_library_path":
         const libraryPathText = document.getElementById("library_path");
         libraryPathText.value = message.data;
         break;
-      case 'set_library_url':
+      case "set_library_url":
         const libraryUrlText = document.getElementById("library_url");
         libraryUrlText.value = message.data;
         break;
@@ -59,7 +61,6 @@ function setDefaultConfig(args) {
 function libraryGetButtonClick() {
   const libraryUrlText = document.getElementById("library_url");
   postMessage("library_get", libraryUrlText.value);
-
 }
 
 function librarySelectButtonClick() {

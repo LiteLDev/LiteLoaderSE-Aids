@@ -1,59 +1,92 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import fs = require('fs');
-import StreamZip = require('node-stream-zip');
-import * as vscode from 'vscode';
-import { LibraryHandler } from '../handler/LibraryHandler';
-import { randomUUID } from 'crypto';
-import fetch from 'node-fetch';
+import fs = require("fs");
+import StreamZip = require("node-stream-zip");
+import * as vscode from "vscode";
+import { LibraryHandler } from "../handler/LibraryHandler";
+import { randomUUID } from "crypto";
+import fetch from "node-fetch";
 
-// 空判断
+/**
+ * 判断是否为空
+ * @param obj 需判断的对象
+ * @returns boolean 是否是`空`
+ */
 export function isNotEmpty(obj: any): boolean {
-  return (obj !== null && obj !== '' && obj !== undefined && obj !== 'undefined' && obj !== 'null');
+  return (
+    obj !== null &&
+    obj !== "" &&
+    obj !== undefined &&
+    obj !== "undefined" &&
+    obj !== "null"
+  );
 }
 
-// 下载文件
-export function downloadFile(url: any, path: any, callback: (success: Boolean, msg: any) => void) {
-  LibraryHandler.output.appendLine('开始下载文件');
+/**
+ * 下载文件
+ * @param url 文件Url
+ * @param path 下载的路径
+ * @param callback 回调函数
+ */
+export function downloadFile(
+  url: any,
+  path: any,
+  callback: (success: Boolean, msg: any) => void
+) {
+  LibraryHandler.output.appendLine("开始下载文件");
   LibraryHandler.output.appendLine(url);
-  var filePath = path + '/' + randomUUID() + '.zip';
+  var filePath = path + "/" + randomUUID() + ".zip";
   fetch(url, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/octet-stream' },
-  }).then((res: any) => res.buffer()).then((_: any) => {
-    fs.writeFile(filePath, _, "binary", function (err: any) {
-      if (err) {
-        callback(false, err);
-      }
-      else {
-        callback(true, filePath);
-      };
+    method: "GET",
+    headers: { "Content-Type": "application/octet-stream" },
+  })
+    .then((res: any) => res.buffer())
+    .then((_: any) => {
+      fs.writeFile(filePath, _, "binary", function (err: any) {
+        if (err) {
+          callback(false, err);
+        } else {
+          callback(true, filePath);
+        }
+      });
     });
-  });
 }
 
+/**
+ * 选择Library目录
+ * @param callback 回调函数
+ */
 export function selectLibrary(callback: (path: String | any) => any): any {
   // 选择目录
   var back = vscode.window.showOpenDialog({
     canSelectFiles: false,
     canSelectFolders: true,
     canSelectMany: false,
-    openLabel: '选择目录'
+    openLabel: "选择目录",
   });
 
-  back.then(uri => {
+  back.then((uri) => {
     if (uri === undefined || uri === null) {
-      vscode.window.showWarningMessage('请重新选择目录 !');
+      vscode.window.showWarningMessage("请重新选择目录 !");
       return null;
     }
     callback(uri[0].fsPath);
   });
 }
 
-export function findFileMatchSync(sourceDir: string, rule: string): string | null {
+/**
+ * 查找文件匹配同步
+ * @param sourceDir 
+ * @param rule 
+ * @returns 
+ */
+export function findFileMatchSync(
+  sourceDir: string,
+  rule: string
+): string | null {
   var files = fs.readdirSync(sourceDir);
   for (var i = 0; i < files.length; i++) {
     var fileName = files[i];
-    var filePath = sourceDir + '/' + fileName;
+    var filePath = sourceDir + "/" + fileName;
     var stat = fs.lstatSync(filePath);
     if (stat.isFile()) {
       if (filePath.match(rule)) {
@@ -71,32 +104,47 @@ export function findFileMatchSync(sourceDir: string, rule: string): string | nul
   return null;
 }
 
-export function unzipAsync(filePath: string, target: string, callback: (success: Boolean, msg: any) => void) {
-  fs.mkdir(target, (err: any) => { });
+/**
+ * 异步解压
+ * @param filePath 文件路径
+ * @param target 文件夹
+ * @param callback 回调函数
+ */
+export function unzipAsync(
+  filePath: string,
+  target: string,
+  callback: (success: Boolean, msg: any) => void
+) {
+  fs.mkdir(target, (err: any) => {});
   const zip = new StreamZip({
     file: filePath,
-    storeEntries: true
+    storeEntries: true,
   });
-  zip.on('ready', () => {
+  zip.on("ready", () => {
     unlinkAllFiles(target);
     zip.extract(null, target, (err, count) => {
-      LibraryHandler.output.appendLine(err ? 'Extract error' : `Extracted ${count} entries`);
+      LibraryHandler.output.appendLine(
+        err ? "Extract error" : `Extracted ${count} entries`
+      );
       zip.close();
       callback(true, target);
       return;
     });
-
   });
-  zip.on('error', (err) => {
+  zip.on("error", (err) => {
     callback(false, err);
   });
 }
 
+/**
+ * 取消链接所有文件
+ * @param target 文件夹
+ */
 export function unlinkAllFiles(target: string) {
   var files = fs.readdirSync(target);
   for (var i = 0; i < files.length; i++) {
     var fileName = files[i];
-    var filePath = target + '/' + fileName;
+    var filePath = target + "/" + fileName;
     var stat = fs.lstatSync(filePath);
     if (stat.isFile()) {
       fs.unlinkSync(filePath);
@@ -106,6 +154,15 @@ export function unlinkAllFiles(target: string) {
   }
 }
 
-export function getReferenceHeader(referencePath: string|unknown): string {
-  return '//LiteLoaderScript Dev Helper\n/// <reference path=' + referencePath + '/> \n\n\n$1';
+/**
+ * 获取Js库引入代码
+ * @param referencePath 
+ * @returns string 引入的代码
+ */
+export function getReferenceHeader(referencePath: string | unknown): string {
+  return (
+    "//LiteLoaderScript Dev Helper\n/// <reference path=" +
+    referencePath +
+    "/> \n\n\n$1"
+  );
 }
