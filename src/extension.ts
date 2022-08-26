@@ -1,7 +1,7 @@
 /*
  * @Author: moxi moxiout@gmail.com
  * @Date: 2022-08-24 10:09:36
- * @LastEditTime: 2022-08-26 10:47:55
+ * @LastEditTime: 2022-08-26 13:11:22
  */
 import * as vscode from "vscode";
 import { WorkspaceHandler } from "./handler/WorkSpaceHandler";
@@ -31,13 +31,13 @@ export function activate(context: vscode.ExtensionContext) {
   );
   context.subscriptions.push(configCommand, testCommand, docsCommand);
 
-	var libraryUrl = vscode.workspace.getConfiguration().get('LLScriptHelper.libraryUrl');
+	var sourceUrl = vscode.workspace.getConfiguration().get('LLScriptHelper.sourceUrl');
 	// may first time run
 	var libraryPath = vscode.workspace.getConfiguration().get('LLScriptHelper.libraryPath');
-	if (libraryUrl === null || libraryPath === null) {
+  var javascriptApiPath = vscode.workspace.getConfiguration().get('LLScriptHelper.javascriptApiPath');
+	if (sourceUrl === null || libraryPath === null || javascriptApiPath === null) {
 		vscode.commands.executeCommand('LLScriptHelper.config');
 	}
-
 	// init handler
 	new WorkspaceHandler(context)
 		.snippetCompletion()
