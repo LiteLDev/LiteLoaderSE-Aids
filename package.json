@@ -15,6 +15,8 @@
   "activationEvents": [
     "onCommand:extension.llseaids.config",
     "onCommand:extension.llseaids.docs",
+    "workspaceContains:*.js",
+    "workspaceContains:*.lua",
     "onStartupFinished"
   ],
   "main": "./out/extension.js",
