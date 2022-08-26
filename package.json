@@ -13,23 +13,20 @@
     "Other"
   ],
   "activationEvents": [
-    "onStartupFinished",
     "onCommand:extension.llseaids.config",
     "onCommand:extension.llseaids.docs",
-    "onCommand:extension.llseaids.test"
+    "onStartupFinished"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "llseaids.config",
-        "title": "LiteLoaderSE-Aids ConfigPanel",
-        "category": "llseaids"
+        "command": "extension.llseaids.config",
+        "title": "LiteLoaderSE-Aids ConfigPanel"
       },
       {
-        "command": "llseaids.docs",
+        "command": "extension.llseaids.docs",
         "title": "LiteLoaderSE Docs",
-        "category": "llseaids",
         "icon": {
           "light": "./images/docs-light.svg",
           "dark": "./images/docs-dark.svg"
@@ -40,7 +37,7 @@
       "editor/title": [
         {
           "when": "resourceLangId == lua || resourceLangId== javascript",
-          "command": "llseaids.docs",
+          "command": "extension.llseaids.docs",
           "group": "navigation@1"
         }
       ]
