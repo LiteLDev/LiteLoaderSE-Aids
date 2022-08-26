@@ -35,10 +35,15 @@ export function downloadFile(
   LibraryHandler.output.appendLine("开始下载文件");
   LibraryHandler.output.appendLine(url);
   var filePath = path + "/" + randomUUID() + ".zip";
-  fetch(url, {
-    method: "GET",
-    headers: { "Content-Type": "application/octet-stream" },
-  })
+  Promise.race([
+    fetch(url, {
+      method: "GET",
+      headers: { "Content-Type": "application/octet-stream" },
+    }),
+    new Promise(function (resolve, reject) {
+      setTimeout(() => reject(new Error("request timeout")), 10000);
+    }),
+  ])
     .then((res: any) => res.buffer())
     .then((_: any) => {
       fs.writeFile(filePath, _, "binary", function (err: any) {
@@ -48,6 +53,9 @@ export function downloadFile(
           callback(true, filePath);
         }
       });
+    })
+    .catch((msg) => {
+      callback(false, msg);
     });
 }
 
@@ -75,9 +83,9 @@ export function selectLibrary(callback: (path: String | any) => any): any {
 
 /**
  * 查找文件匹配同步
- * @param sourceDir 
- * @param rule 
- * @returns 
+ * @param sourceDir
+ * @param rule
+ * @returns
  */
 export function findFileMatchSync(
   sourceDir: string,
@@ -156,7 +164,7 @@ export function unlinkAllFiles(target: string) {
 
 /**
  * 获取Js库引入代码
- * @param referencePath 
+ * @param referencePath
  * @returns string 引入的代码
  */
 export function getReferenceHeader(referencePath: string | unknown): string {
