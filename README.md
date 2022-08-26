@@ -1,9 +1,3 @@
-<!--
- * @Author: moxi moxiout@gmail.com
- * @Date: 2022-08-24 10:09:31
- * @LastEditTime: 2022-08-26 17:01:59
--->
-
 # LiteLoaderSE-Aids
 
 适用于 Visual Studio Code 的 [LiteLoaderSE](https://github.com/LiteLDev/LiteLoaderBDS) 开发辅助工具
