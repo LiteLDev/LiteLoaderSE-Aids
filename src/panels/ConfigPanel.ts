@@ -119,8 +119,8 @@ export class ConfigPanel {
                      官方源 (Github Raw)
                    </vscode-radio>
                    <vscode-radio id='source_radio_2'
-                     value='https://cdn.jsdelivr.net/gh/LiteLScript-Dev/HelperLib@latest/manifest_cdn.json'>
-                     CDN源 (JsDelivr)
+                     value='https://raw.fastgit.org/LiteLScript-Dev/HelperLib/master/manifest_cdn.json'>
+                     镜像源 (FastGit)
                    </vscode-radio>
                    <vscode-radio id='source_diy'>
                      自定义
