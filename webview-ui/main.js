@@ -19,6 +19,9 @@ function initListener() {
     .getElementById("library_select")
     .addEventListener("click", librarySelectButtonClick);
   document
+    .getElementById("bdsPath_select")
+    .addEventListener("click", bdsPathSelectButtonClick);
+  document
     .getElementById("source_radio_group")
     .addEventListener("click", sourceGroupClick);
   document.getElementById("command_reload").onblur = onDebuggerfocus;
@@ -44,6 +47,9 @@ function initListener() {
         const libraryUrlText = document.getElementById("library_url");
         libraryUrlText.value = message.data;
         break;
+      case "set_bdsPath":
+        const bdsPathText = document.getElementById("bdsPath");
+        bdsPathText.value = message.data;
     }
   });
 }
@@ -98,9 +104,11 @@ function setDefaultConfig(args) {
   const debug_reload = document.getElementById("command_reload");
   const debug_load = document.getElementById("command_load");
   const debug_unload = document.getElementById("command_unload");
+  const debug_bds_path = document.getElementById("bdsPath");
   debug_load.value = args.debugger.load;
   debug_reload.value = args.debugger.reload;
   debug_unload.value = args.debugger.unload;
+  debug_bds_path.value = args.debugger.bdsPath;
 }
 
 function sourceGetButtonClick() {
@@ -120,8 +128,10 @@ function sourceGetButtonClick() {
 }
 
 function librarySelectButtonClick() {
-  const libraryPathText = document.getElementById("library_path");
-  postMessage("library_select", libraryPathText.value);
+  postMessage("library_select",null);
+}
+function bdsPathSelectButtonClick() {
+  postMessage("bdsPath_select", null);
 }
 
 function onDebuggerfocus() {

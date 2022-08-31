@@ -89,6 +89,13 @@
           "description": "调试器卸载指令",
           "scope": "resource",
           "order": 5
+        },
+        "LLScriptHelper.bdsPath": {
+          "type": "string",
+          "default": null,
+          "description": "BDS根目录",
+          "scope": "resource",
+          "order": 6
         }
       }
     }

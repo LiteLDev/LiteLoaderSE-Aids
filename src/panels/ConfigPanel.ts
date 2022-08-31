@@ -40,6 +40,9 @@ export class ConfigPanel {
       unload: vscode.workspace
         .getConfiguration("LLScriptHelper")
         .get("unloadCommand", true),
+      bdsPath: vscode.workspace
+        .getConfiguration("LLScriptHelper")
+        .get("bdsPath", true),
     };
     var args = {
       sourceUrl: sourceUrl,
@@ -61,6 +64,7 @@ export class ConfigPanel {
       "toolkit.js", // A toolkit.min.js file is also available
     ]);
     const mainUri = getUri(webview, extensionUri, ["webview-ui", "main.js"]);
+    const imageUri = getUri(webview, extensionUri, ["images", "icon.png"]);
     // Tip: Install the es6-string-html VS Code extension to enable code highlighting below (必要)
     return /*html*/ `
         <!DOCTYPE html>
@@ -170,11 +174,30 @@ export class ConfigPanel {
                 <p>卸载指令</p>
                 <vscode-text-field size="30" id="command_unload">
                 </vscode-text-field>
-              </div>
-            </vscode-panel-view>
-            <vscode-panel-view id="view-3">... Nothing ...</vscode-panel-view>
-            <vscode-panel-view id="view-4">... Nothing ...</vscode-panel-view>
-            </vscode-panels>
+                <p>BDS根目录</p>
+                <div class="div_s_h">
+                  <vscode-text-field size="30" id="bdsPath">
+                  </vscode-text-field>
+                  <vscode-button id="bdsPath_select" style="position: relative; left: 10px;">选择</vscode-button>
+                </div>
+                </div>
+                </vscode-panel-view>
+                <vscode-panel-view id="view-3">... Nothing ...</vscode-panel-view>
+                <vscode-panel-view id="view-4">
+                  <div>
+                    <!-- Logo -->
+                    <div style="text-align: center">
+                      <img src="${imageUri}" alt="logo" />
+                      <!-- Title -->
+                      <h1>LiteLoaderSE-Aids</h1>
+                      <p>Assist in the development of LLScript's plugin</p>
+                      <!-- Link -->
+                      <vscode-link href="https://github.com/LiteLScript-Dev/LiteLoaderSE-Aids">LiteLoaderSE-Aids</vscode-link>
+                      <vscode-link href="https://github.com/LiteLDev/LiteLoaderBDS">LiteLoaderBDS</vscode-link>
+                    </div>
+                  </div>
+                </vscode-panel-view>
+                </vscode-panels>
         </html>
   `;
   }
@@ -205,6 +228,20 @@ export class ConfigPanel {
                 });
             });
             break;
+          case "bdsPath_select":
+            selectLibrary((uri) => {
+              vscode.workspace
+                .getConfiguration()
+                .update(
+                  "LLScriptHelper.bdsPath",
+                  uri,
+                  vscode.ConfigurationTarget.Global
+                )
+                .then(() => {
+                  ConfigPanel._updatebdsPathPath(uri);
+                });
+            });
+            break;
           case "debugger_config":
             vscode.workspace
               .getConfiguration()
@@ -222,6 +259,7 @@ export class ConfigPanel {
       this._disposables
     );
   }
+
   public static postMessage(command: String, args: any) {
     ConfigPanel.currentPanel?._panel.webview.postMessage({
       command: command,
@@ -255,6 +293,12 @@ export class ConfigPanel {
     ConfigPanel.currentPanel?._panel.webview.postMessage({
       command: "set_library_path",
       data: path,
+    });
+  }
+  private static _updatebdsPathPath(uri: any) {
+    ConfigPanel.currentPanel?._panel.webview.postMessage({
+      command: "set_bdsPath",
+      data: uri,
     });
   }
   public static _updateLibraryUrl(url: String) {
