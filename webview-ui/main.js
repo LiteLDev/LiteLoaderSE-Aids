@@ -7,7 +7,11 @@
 const vscode = acquireVsCodeApi();
 window.addEventListener("load", main);
 
-function main() {
+function postMessage(command, args) {
+  vscode.postMessage({ command: command, data: args });
+}
+
+function initListener() {
   document
     .getElementById("source_get")
     .addEventListener("click", sourceGetButtonClick);
@@ -17,6 +21,9 @@ function main() {
   document
     .getElementById("source_radio_group")
     .addEventListener("click", sourceGroupClick);
+  document.getElementById("command_reload").onblur = onDebuggerfocus;
+  document.getElementById("command_load").onblur = onDebuggerfocus;
+  document.getElementById("command_unload").onblur = onDebuggerfocus;
 
   window.addEventListener("message", (event) => {
     const message = event.data; // The JSON data our extension sent
@@ -40,7 +47,6 @@ function main() {
     }
   });
 }
-
 function libraryLoadingStatus(isShow) {
   const libraryRing = document.getElementById("library_ring");
   libraryRing.style.visibility = isShow ? "visible" : "hidden";
@@ -57,6 +63,7 @@ function sourceGroupClick() {
   }
 }
 function setDefaultConfig(args) {
+  // library config page
   const source1 = document.getElementById("source_radio_1");
   const source2 = document.getElementById("source_radio_2");
   const source_diy = document.getElementById("source_diy");
@@ -86,6 +93,14 @@ function setDefaultConfig(args) {
   }
   const libraryPathText = document.getElementById("library_path");
   libraryPathText.value = args.libraryPath;
+
+  //debugger config page
+  const debug_reload = document.getElementById("command_reload");
+  const debug_load = document.getElementById("command_load");
+  const debug_unload = document.getElementById("command_unload");
+  debug_load.value = args.debugger.load;
+  debug_reload.value = args.debugger.reload;
+  debug_unload.value = args.debugger.unload;
 }
 
 function sourceGetButtonClick() {
@@ -109,6 +124,17 @@ function librarySelectButtonClick() {
   postMessage("library_select", libraryPathText.value);
 }
 
-function postMessage(command, args) {
-  vscode.postMessage({ command: command, data: args });
+function onDebuggerfocus() {
+  const debug_reload = document.getElementById("command_reload");
+  const debug_load = document.getElementById("command_load");
+  const debug_unload = document.getElementById("command_unload");
+  postMessage("debugger_config", {
+    load: debug_load.value,
+    reload: debug_reload.value,
+    unload: debug_unload.value,
+  });
+}
+
+function main() {
+  initListener();
 }

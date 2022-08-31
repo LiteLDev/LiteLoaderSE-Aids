@@ -51,19 +51,44 @@
           "type": "string",
           "default": "https://github.com/LiteLScript-Dev/HelperLib/raw/master/manifest.json",
           "description": "补全库的清单源地址",
-          "scope": "resource"
+          "scope": "resource",
+          "order": 0
+          
         },
         "LLScriptHelper.libraryPath": {
           "type": "string",
           "default": null,
           "description": "补全库的本地存储地址",
-          "scope": "resource"
+          "scope": "resource",
+          "order": 1
         },
         "LLScriptHelper.javascriptApiPath": {
           "type": "string",
           "default": null,
           "description": "补全库的javascript API地址",
-          "scope": "resource"
+          "scope": "resource",
+          "order": 2
+        },
+        "LLScriptHelper.reloadCommand": {
+          "type": "string",
+          "default": "ll reload \"{fileName}\"",
+          "description": "调试器重载指令",
+          "scope": "resource",
+          "order": 3
+        },
+        "LLScriptHelper.loadCommand": {
+          "type": "string",
+          "default": "ll load \"{filePath}\"",
+          "description": "调试器加载指令",
+          "scope": "resource",
+          "order": 4
+        },
+        "LLScriptHelper.unloadCommand": {
+          "type": "string",
+          "default": "ll unload \"{fileName}\"",
+          "description": "调试器卸载指令",
+          "scope": "resource",
+          "order": 5
         }
       }
     }

@@ -30,7 +30,22 @@ export class ConfigPanel {
     var libraryPath = vscode.workspace
       .getConfiguration("LLScriptHelper")
       .get("libraryPath", true);
-    var args = { sourceUrl: sourceUrl, libraryPath: libraryPath };
+    var debuggerData = {
+      reload: vscode.workspace
+        .getConfiguration("LLScriptHelper")
+        .get("reloadCommand", true),
+      load: vscode.workspace
+        .getConfiguration("LLScriptHelper")
+        .get("loadCommand", true),
+      unload: vscode.workspace
+        .getConfiguration("LLScriptHelper")
+        .get("unloadCommand", true),
+    };
+    var args = {
+      sourceUrl: sourceUrl,
+      libraryPath: libraryPath,
+      debugger: debuggerData,
+    };
     ConfigPanel.postMessage("set_default_config", args);
   }
 
@@ -49,105 +64,118 @@ export class ConfigPanel {
     // Tip: Install the es6-string-html VS Code extension to enable code highlighting below (必要)
     return /*html*/ `
         <!DOCTYPE html>
-       <html lang="en">
-       <head>
-         <meta charset="UTF-8">
-         <meta name="viewport" content="width=device-width,initial-scale=1.0">
-         <script type="module" src="${toolkitUri}">
-         </script>
-         <script type="module" src="${mainUri}">
-         </script>
-         <title>ConfigPanel!</title>
-         <style>
-           .div_s {
-             position: relative;
-             top: 5px;
-           }
+        <html lang="en">
 
-           .div_ss {
-             position: relative;
-             top: 10px;
-           }
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width,initial-scale=1.0">
+          <script type="module" src="${toolkitUri}">
+          </script>
+          <script type="module" src="${mainUri}">
+          </script>
+          <title>ConfigPanel!</title>
+          <style>
+            .div_s {
+              position: relative;
+              top: 5px;
+            }
 
-           .div_ssss {
-             position: relative;
-             top: 30px;
-           }
+            .div_ss {
+              position: relative;
+              top: 10px;
+            }
 
-           .little_title {
-             font-size: 12px;
-           }
+            .div_ssss {
+              position: relative;
+              top: 30px;
+            }
 
-           .div_s_h {
-             position: relative;
-             top: 5px;
-             display: flex;
-           }
-         </style>
-       </head>
+            .little_title {
+              font-size: 12px;
+            }
 
-       <body>
-         <h1>LiteLoaderSE-Aids</h1>
-         <p>这里可以方便你进行一些配置</p>
-         <p>可以使用快捷键Ctrl+Shift+P 然后输入LLScriptHelper.config再次打开本页</p>
-         <vscode-divider>
-         </vscode-divider>
-         <vscode-panels>
-           <vscode-panel-tab id="tab-1">补全库</vscode-panel-tab>
-           <vscode-panel-tab id="tab-2">调试器</vscode-panel-tab>
-           <vscode-panel-tab id="tab-3">设置</vscode-panel-tab>
-           <vscode-panel-tab id="tab-4">关于</vscode-panel-tab>
-           <vscode-panel-view id="view-1">
-             <div>
-               <!-- Path -->
-               <div style="display: vertical;">
-                 <p>本地库存放目录</p>
-                 <vscode-text-field size="50" id="library_path">
-                 </vscode-text-field>
-               </div>
-               <div class="div_s_h">
-                 <div>
-                   <vscode-button id="library_select">选择</vscode-button>
-                 </div>
-               </div>
-               <!-- Source -->
-               <div>
-                 <vscode-radio-group orientation="vertical" class="div_s" id='source_radio_group'>
-                   <label slot="label">源地址</label>
-                   <!-- 必须同时在Package.json配置-->
-                   <vscode-radio id='source_radio_1' value='https://github.com/LiteLScript-Dev/HelperLib/raw/master/manifest.json'>
-                     官方源 (Github Raw)
-                   </vscode-radio>
-                   <vscode-radio id='source_radio_2'
-                     value='https://raw.fastgit.org/LiteLScript-Dev/HelperLib/master/manifest_cdn.json'>
-                     镜像源 (FastGit)
-                   </vscode-radio>
-                   <vscode-radio id='source_diy'>
-                     自定义
-                   </vscode-radio>
-                   <vscode-text-field size="50" id="source_diy_url" style='display:none;'>
-                   </vscode-text-field>
-                 </vscode-radio-group>
-               </div>
-               <div class="div_s_h">
-                 <div>
-                   <vscode-button id="source_get">拉取并保存</vscode-button>
-                 </div>
-                 <div style="position: relative; left: 10px;">
-                   <vscode-progress-ring id="library_ring" style="visibility:hidden;">
-                   </vscode-progress-ring>
-                 </div>
-               </div>
-               <!-- todo -->
-             </div>
-             </div>
-           </vscode-panel-view>
-           <vscode-panel-view id="view-2">... Nothing ...</vscode-panel-view>
-           <vscode-panel-view id="view-3">... Nothing ...</vscode-panel-view>
-           <vscode-panel-view id="view-4">... Nothing ...</vscode-panel-view>
-         </vscode-panels>
+            .div_s_h {
+              position: relative;
+              top: 5px;
+              display: flex;
+            }
+          </style>
+        </head>
 
-       </html>
+        <body>
+          <h1>LiteLoaderSE-Aids</h1>
+          <p>这里可以方便你进行一些配置</p>
+          <p>可以使用快捷键Ctrl+Shift+P 然后输入LLScriptHelper.config再次打开本页</p>
+          <vscode-divider>
+          </vscode-divider>
+          <vscode-panels>
+            <vscode-panel-tab id="tab-1">补全库</vscode-panel-tab>
+            <vscode-panel-tab id="tab-2">调试器</vscode-panel-tab>
+            <vscode-panel-tab id="tab-3">设置</vscode-panel-tab>
+            <vscode-panel-tab id="tab-4">关于</vscode-panel-tab>
+            <vscode-panel-view id="view-1">
+              <div>
+                <!-- Path -->
+                <div style="display: vertical;">
+                  <p>本地库存放目录</p>
+                  <vscode-text-field size="50" id="library_path">
+                  </vscode-text-field>
+                </div>
+                <div class="div_s_h">
+                  <div>
+                    <vscode-button id="library_select">选择</vscode-button>
+                  </div>
+                </div>
+                <!-- Source -->
+                <div>
+                  <vscode-radio-group orientation="vertical" class="div_s" id='source_radio_group'>
+                    <label slot="label">源地址</label>
+                    <!-- 必须同时在Package.json配置-->
+                    <vscode-radio id='source_radio_1'
+                      value='https://github.com/LiteLScript-Dev/HelperLib/raw/master/manifest.json'>
+                      官方源 (Github Raw)
+                    </vscode-radio>
+                    <vscode-radio id='source_radio_2'
+                      value='https://raw.fastgit.org/LiteLScript-Dev/HelperLib/master/manifest_cdn.json'>
+                      镜像源 (FastGit)
+                    </vscode-radio>
+                    <vscode-radio id='source_diy'>
+                      自定义
+                    </vscode-radio>
+                    <vscode-text-field size="50" id="source_diy_url" style='display:none;'>
+                    </vscode-text-field>
+                  </vscode-radio-group>
+                </div>
+                <div class="div_s_h">
+                  <div>
+                    <vscode-button id="source_get">拉取并保存</vscode-button>
+                  </div>
+                  <div style="position: relative; left: 10px;">
+                    <vscode-progress-ring id="library_ring" style="visibility:hidden;">
+                    </vscode-progress-ring>
+                  </div>
+                </div>
+                <!-- todo -->
+              </div>
+              </div>
+            </vscode-panel-view>
+            <vscode-panel-view id="view-2">
+              <div style="display: vertical;">
+                <p>重载指令</p>
+                <vscode-text-field size="30" id="command_reload">
+                </vscode-text-field>
+                <p>加载指令</p>
+                <vscode-text-field size="30" id="command_load">
+                </vscode-text-field>
+                <p>卸载指令</p>
+                <vscode-text-field size="30" id="command_unload">
+                </vscode-text-field>
+              </div>
+            </vscode-panel-view>
+            <vscode-panel-view id="view-3">... Nothing ...</vscode-panel-view>
+            <vscode-panel-view id="view-4">... Nothing ...</vscode-panel-view>
+            </vscode-panels>
+        </html>
   `;
   }
 
@@ -176,6 +204,18 @@ export class ConfigPanel {
                   LibraryHandler.libraryPath = uri;
                 });
             });
+            break;
+          case "debugger_config":
+            vscode.workspace
+              .getConfiguration()
+              .update("LLScriptHelper.reloadCommand", data.reload, true);
+            vscode.workspace
+              .getConfiguration()
+              .update("LLScriptHelper.loadCommand", data.load, true);
+            vscode.workspace
+              .getConfiguration()
+              .update("LLScriptHelper.unloadCommand", data.unload, true);
+            break;
         }
       },
       undefined,
