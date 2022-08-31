@@ -41,11 +41,12 @@
 
 ## TODO
 
-- [ ] 支持内嵌文档阅读
+- [ ] WIKI
+- [x] 支持内嵌文档阅读
 - [ ] 支持更新检测
 - [ ] 支持拉取 [Lua 库](src\handler\LibraryHandler.ts)
 - [ ] 支持 QuickJS 调试
-- [ ] 更多可配置项
+- [ ] 更多可配置项 80%
 - [ ] [i18n](https://github.com/microsoft/vscode-extension-samples/tree/main/i18n-sample)
 
 # Library
