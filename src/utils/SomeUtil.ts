@@ -41,7 +41,7 @@ export function downloadFile(
       headers: { "Content-Type": "application/octet-stream" },
     }),
     new Promise(function (resolve, reject) {
-      setTimeout(() => reject(new Error("request timeout")), 10000);
+      setTimeout(() => reject(new Error("request timeout")), 25000);
     }),
   ])
     .then((res: any) => res.buffer())
