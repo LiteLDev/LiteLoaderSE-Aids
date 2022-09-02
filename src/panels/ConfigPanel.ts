@@ -109,7 +109,7 @@ export class ConfigPanel {
         <body>
           <h1>LiteLoaderSE-Aids</h1>
           <p>这里可以方便你进行一些配置</p>
-          <p>可以使用快捷键Ctrl+Shift+P 然后输入LLScriptHelper.config再次打开本页</p>
+          <p>可以使用快捷键Ctrl+Shift+P 然后输入extension.llseaids.config再次打开本页</p>
           <vscode-divider>
           </vscode-divider>
           <vscode-panels>
@@ -218,7 +218,7 @@ export class ConfigPanel {
               vscode.workspace
                 .getConfiguration()
                 .update(
-                  "LLScriptHelper.libraryPath",
+                  "extension.llseaids.libraryPath",
                   uri,
                   vscode.ConfigurationTarget.Global
                 )
@@ -233,7 +233,7 @@ export class ConfigPanel {
               vscode.workspace
                 .getConfiguration()
                 .update(
-                  "LLScriptHelper.bdsPath",
+                  "extension.llseaids.bdsPath",
                   uri,
                   vscode.ConfigurationTarget.Global
                 )
@@ -245,13 +245,13 @@ export class ConfigPanel {
           case "debugger_config":
             vscode.workspace
               .getConfiguration()
-              .update("LLScriptHelper.reloadCommand", data.reload, true);
+              .update("extension.llseaids.reloadCommand", data.reload, true);
             vscode.workspace
               .getConfiguration()
-              .update("LLScriptHelper.loadCommand", data.load, true);
+              .update("extension.llseaids.loadCommand", data.load, true);
             vscode.workspace
               .getConfiguration()
-              .update("LLScriptHelper.unloadCommand", data.unload, true);
+              .update("extension.llseaids.unloadCommand", data.unload, true);
             break;
         }
       },

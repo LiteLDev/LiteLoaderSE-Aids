@@ -14,7 +14,7 @@ export class LibraryHandler {
   static output = vscode.window.createOutputChannel("LLScriptHelper");
   public static libraryPath = vscode.workspace
     .getConfiguration()
-    .get("LLScriptHelper.libraryPath");
+    .get("extension.llseaids.libraryPath");
   public static getLibrary(libraryUrl: String) {
     // 链接合法性检查
     if (
@@ -28,7 +28,7 @@ export class LibraryHandler {
     vscode.workspace
       .getConfiguration()
       .update(
-        "LLScriptHelper.libraryUrl",
+        "extension.llseaids.libraryUrl",
         libraryUrl,
         vscode.ConfigurationTarget.Global
       );
@@ -137,7 +137,7 @@ export class LibraryHandler {
             vscode.workspace
               .getConfiguration()
               .update(
-                "LLScriptHelper.javascriptApiPath",
+                "extension.llseaids.javascriptApiPath",
                 apiPath.replace("\\", "/"),
                 vscode.ConfigurationTarget.Global
               )
@@ -158,7 +158,7 @@ export class LibraryHandler {
   ): String | any {
     var path = vscode.workspace
       .getConfiguration()
-      .get("LLScriptHelper.libraryPath");
+      .get("extension.llseaids.libraryPath");
     if (isNotEmpty(path)) {
       callback(path);
       return;
@@ -168,7 +168,7 @@ export class LibraryHandler {
       vscode.workspace
         .getConfiguration()
         .update(
-          "LLScriptHelper.libraryPath",
+          "extension.llseaids.libraryPath",
           path,
           vscode.ConfigurationTarget.Global
         )

@@ -17,21 +17,60 @@
     "onCommand:extension.llseaids.docs",
     "workspaceContains:*.js",
     "workspaceContains:*.lua",
-    "onStartupFinished"
+    "onStartupFinished",
+    "onDebug"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
         "command": "extension.llseaids.config",
-        "title": "LiteLoaderSE-Aids ConfigPanel"
+        "title": "LiteLoaderSE-Aids ConfigPanel",
+        "category": "llse"
       },
       {
         "command": "extension.llseaids.docs",
         "title": "LiteLoaderSE Docs",
+        "category": "llse",
         "icon": {
           "light": "./images/docs-light.svg",
           "dark": "./images/docs-dark.svg"
+        }
+      },
+      {
+        "command": "extension.llseaids.runconsole",
+        "title": "Start BDS from the console",
+        "category": "llse",
+        "icon": {
+          "light": "./images/run-light.svg",
+          "dark": "./images/run-dark.svg"
+        }
+      },
+      {
+        "command": "extension.llseaids.stopconsole",
+        "title": "Stop BDS from the console(stop command)",
+        "category": "llse",
+        "icon": {
+          "light": "./images/stop-light.svg",
+          "dark": "./images/stop-dark.svg"
+        }
+      },
+      {
+        "command": "extension.llseaids.loadfile",
+        "title": "Load this file to LiteLoaderBDS",
+        "category": "llse",
+        "icon": {
+          "light": "./images/load-light.svg",
+          "dark": "./images/load-dark.svg"
+        }
+      },
+      {
+        "command": "extension.llseaids.reloadfile",
+        "title": "Reload this file to LiteLoaderBDS",
+        "category": "llse",
+        "icon": {
+          "light": "./images/reload-light.svg",
+          "dark": "./images/reload-dark.svg"
         }
       }
     ],
@@ -40,6 +79,11 @@
         {
           "when": "resourceLangId == lua || resourceLangId== javascript",
           "command": "extension.llseaids.docs",
+          "group": "navigation@3"
+        },
+        {
+          "when": "resourceLangId == lua || resourceLangId == javascript && !config.extension.llseaids.runningStatus",
+          "command": "extension.llseaids.runconsole",
           "group": "navigation@1"
         }
       ]
@@ -47,7 +91,7 @@
     "configuration": {
       "title": "LLScriptHelper",
       "properties": {
-        "LLScriptHelper.sourceUrl": {
+        "extension.llseaids.sourceUrl": {
           "type": "string",
           "default": "https://github.com/LiteLScript-Dev/HelperLib/raw/master/manifest.json",
           "description": "补全库的清单源地址",
@@ -55,42 +99,42 @@
           "order": 0
           
         },
-        "LLScriptHelper.libraryPath": {
+        "extension.llseaids.libraryPath": {
           "type": "string",
           "default": null,
           "description": "补全库的本地存储地址",
           "scope": "resource",
           "order": 1
         },
-        "LLScriptHelper.javascriptApiPath": {
+        "extension.llseaids.javascriptApiPath": {
           "type": "string",
           "default": null,
           "description": "补全库的javascript API地址",
           "scope": "resource",
           "order": 2
         },
-        "LLScriptHelper.reloadCommand": {
+        "extension.llseaids.reloadCommand": {
           "type": "string",
           "default": "ll reload \"{fileName}\"",
           "description": "调试器重载指令",
           "scope": "resource",
           "order": 3
         },
-        "LLScriptHelper.loadCommand": {
+        "extension.llseaids.loadCommand": {
           "type": "string",
           "default": "ll load \"{filePath}\"",
           "description": "调试器加载指令",
           "scope": "resource",
           "order": 4
         },
-        "LLScriptHelper.unloadCommand": {
+        "extension.llseaids.unloadCommand": {
           "type": "string",
           "default": "ll unload \"{fileName}\"",
           "description": "调试器卸载指令",
           "scope": "resource",
           "order": 5
         },
-        "LLScriptHelper.bdsPath": {
+        "extension.llseaids.bdsPath": {
           "type": "string",
           "default": null,
           "description": "BDS根目录",

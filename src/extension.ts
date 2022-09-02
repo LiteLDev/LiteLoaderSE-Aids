@@ -19,14 +19,14 @@ async function activate(context: vscode.ExtensionContext) {
   );
   var sourceUrl = vscode.workspace
     .getConfiguration()
-    .get("LLScriptHelper.sourceUrl");
+    .get("extension.llseaids.sourceUrl");
   // may first time run
   var libraryPath = vscode.workspace
     .getConfiguration()
-    .get("LLScriptHelper.libraryPath");
+    .get("extension.llseaids.libraryPath");
   var javascriptApiPath = vscode.workspace
     .getConfiguration()
-    .get("LLScriptHelper.javascriptApiPath");
+    .get("extension.llseaids.javascriptApiPath");
   if (
     sourceUrl === null ||
     libraryPath === null ||
