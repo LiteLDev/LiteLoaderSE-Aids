@@ -15,63 +15,30 @@
   "activationEvents": [
     "onCommand:extension.llseaids.config",
     "onCommand:extension.llseaids.docs",
+    "onCommand:extension.llseaids.runconsole",
     "workspaceContains:*.js",
     "workspaceContains:*.lua",
     "onStartupFinished",
-    "onDebug"
+    "onDebugResolve:llse",
+    "onDebugDynamicConfigurations:llse"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
         "command": "extension.llseaids.config",
-        "title": "LiteLoaderSE-Aids ConfigPanel",
-        "category": "llse"
+        "title": "LiteLoaderSE-Aids ConfigPanel"
       },
       {
         "command": "extension.llseaids.docs",
         "title": "LiteLoaderSE Docs",
-        "category": "llse",
-        "icon": {
-          "light": "./images/docs-light.svg",
-          "dark": "./images/docs-dark.svg"
-        }
+        "icon": "$(file-code)"
       },
       {
         "command": "extension.llseaids.runconsole",
-        "title": "Start BDS from the console",
-        "category": "llse",
-        "icon": {
-          "light": "./images/run-light.svg",
-          "dark": "./images/run-dark.svg"
-        }
-      },
-      {
-        "command": "extension.llseaids.stopconsole",
-        "title": "Stop BDS from the console(stop command)",
-        "category": "llse",
-        "icon": {
-          "light": "./images/stop-light.svg",
-          "dark": "./images/stop-dark.svg"
-        }
-      },
-      {
-        "command": "extension.llseaids.loadfile",
-        "title": "Load this file to LiteLoaderBDS",
-        "category": "llse",
-        "icon": {
-          "light": "./images/load-light.svg",
-          "dark": "./images/load-dark.svg"
-        }
-      },
-      {
-        "command": "extension.llseaids.reloadfile",
-        "title": "Reload this file to LiteLoaderBDS",
-        "category": "llse",
-        "icon": {
-          "light": "./images/reload-light.svg",
-          "dark": "./images/reload-dark.svg"
-        }
+        "title": "run LiteLoaderBDS",
+        "enablement": "!inDebugMode",
+        "icon": "$(debug-alt)"
       }
     ],
     "menus": {
@@ -79,62 +46,121 @@
         {
           "when": "resourceLangId == lua || resourceLangId== javascript",
           "command": "extension.llseaids.docs",
-          "group": "navigation@3"
+          "group": "navigation@2"
         },
         {
-          "when": "resourceLangId == lua || resourceLangId == javascript && !config.extension.llseaids.runningStatus",
+          "when": "resourceLangId == lua || resourceLangId== javascript",
           "command": "extension.llseaids.runconsole",
           "group": "navigation@1"
         }
       ]
     },
+    "breakpoints": [
+      {
+        "language": "markdown"
+      }
+    ],
+    "debuggers": [
+      {
+        "type": "llse",
+        "label": "LiteLoaderBDS Debug",
+        "languages": [
+          "javascript",
+          "lua"
+        ],
+        "program": "./out/debugger/debugAdapter.js",
+        "runtime": "node",
+        "configurationAttributes": {
+          "launch": {
+            "required": [
+              "program"
+            ],
+            "properties": {
+              "program": {
+                "type": "string",
+                "description": "Absolute path to a text file.",
+                "default": "${workspaceFolder}/${command:AskForProgramName}"
+              },
+              "stopOnEntry": {
+                "type": "boolean",
+                "description": "Automatically stop after launch.",
+                "default": true
+              }
+            }
+          }
+        },
+        "initialConfigurations": [
+          {
+            "type": "llse",
+            "request": "launch",
+            "name": "Ask for file name",
+            "program": "${workspaceFolder}/${command:AskForProgramName}",
+            "stopOnEntry": true
+          }
+        ],
+        "configurationSnippets": [
+          {
+            "label": "Mock Debug: Launch",
+            "description": "A new configuration for launching a mock debug program",
+            "body": {
+              "type": "llse",
+              "request": "launch",
+              "name": "${2:Launch Program}",
+              "program": "^\"\\${workspaceFolder}/${1:Program}\""
+            }
+          }
+        ],
+        "variables": {
+          "AskForProgramName": "extension.mock-debug.getProgramName"
+        }
+      }
+    ],
     "configuration": {
       "title": "LLScriptHelper",
       "properties": {
-        "extension.llseaids.sourceUrl": {
+        "LLScriptHelper.sourceUrl": {
           "type": "string",
           "default": "https://github.com/LiteLScript-Dev/HelperLib/raw/master/manifest.json",
           "description": "补全库的清单源地址",
           "scope": "resource",
           "order": 0
-          
         },
-        "extension.llseaids.libraryPath": {
+        "LLScriptHelper.libraryPath": {
           "type": "string",
           "default": null,
           "description": "补全库的本地存储地址",
           "scope": "resource",
           "order": 1
         },
-        "extension.llseaids.javascriptApiPath": {
+        "LLScriptHelper.javascriptApiPath": {
           "type": "string",
           "default": null,
           "description": "补全库的javascript API地址",
           "scope": "resource",
           "order": 2
         },
-        "extension.llseaids.reloadCommand": {
+        "LLScriptHelper.reloadCommand": {
           "type": "string",
           "default": "ll reload \"{fileName}\"",
           "description": "调试器重载指令",
           "scope": "resource",
           "order": 3
         },
-        "extension.llseaids.loadCommand": {
+        "LLScriptHelper.loadCommand": {
           "type": "string",
           "default": "ll load \"{filePath}\"",
           "description": "调试器加载指令",
           "scope": "resource",
           "order": 4
         },
-        "extension.llseaids.unloadCommand": {
+        "LLScriptHelper.unloadCommand": {
           "type": "string",
           "default": "ll unload \"{fileName}\"",
           "description": "调试器卸载指令",
           "scope": "resource",
           "order": 5
         },
-        "extension.llseaids.bdsPath": {
+        "LLScriptHelper.bdsPath": {
           "type": "string",
           "default": null,
           "description": "BDS根目录",
@@ -167,6 +193,7 @@
     "vscode-test": "^1.5.2"
   },
   "dependencies": {
+    "@vscode/debugadapter": "^1.57.0",
     "@vscode/webview-ui-toolkit": "^1.0.1",
     "adm-zip": "^0.5.5",
     "async": "^3.2.0",

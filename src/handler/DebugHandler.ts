@@ -7,7 +7,7 @@ class DebugHandler {
   }
 
   public runConsole(): DebugHandler {
-    const provider = vscode.debug.registerDebugConfigurationProvider(
+    var a = 0;
     return this;
   }
 }
