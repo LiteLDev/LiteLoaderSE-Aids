@@ -22,27 +22,26 @@ export class ConfigPanel {
     );
     this._setWebviewMessageListener(this._panel.webview);
   }
-
   public static _setDefaultConfig() {
     var sourceUrl = vscode.workspace
-      .getConfiguration("LLScriptHelper")
-      .get("sourceUrl", true);
+      .getConfiguration("extension.llseaids")
+      .get("sourceUrl");
     var libraryPath = vscode.workspace
-      .getConfiguration("LLScriptHelper")
-      .get("libraryPath", true);
+      .getConfiguration("extension.llseaids")
+      .get("libraryPath");
     var debuggerData = {
       reload: vscode.workspace
-        .getConfiguration("LLScriptHelper")
-        .get("reloadCommand", true),
+        .getConfiguration("extension.llseaids")
+        .get("reloadCommand"),
       load: vscode.workspace
-        .getConfiguration("LLScriptHelper")
-        .get("loadCommand", true),
+        .getConfiguration("extension.llseaids")
+        .get("loadCommand"),
       unload: vscode.workspace
-        .getConfiguration("LLScriptHelper")
-        .get("unloadCommand", true),
+        .getConfiguration("extension.llseaids")
+        .get("unloadCommand"),
       bdsPath: vscode.workspace
-        .getConfiguration("LLScriptHelper")
-        .get("bdsPath", true),
+        .getConfiguration("extension.llseaids")
+        .get("bdsPath"),
     };
     var args = {
       sourceUrl: sourceUrl,

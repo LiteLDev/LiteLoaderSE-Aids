@@ -12,6 +12,11 @@
   "categories": [
     "Other"
   ],
+  "keywords": [
+    "LLSE",
+    "LiteLoader",
+    "BDS"
+  ],
   "activationEvents": [
     "onCommand:extension.llseaids.config",
     "onCommand:extension.llseaids.docs",
@@ -63,104 +68,59 @@
     "debuggers": [
       {
         "type": "llse",
-        "label": "LiteLoaderBDS Debug",
+        "label": "LLSE Debug",
         "languages": [
           "javascript",
           "lua"
-        ],
-        "program": "./out/debugger/debugAdapter.js",
-        "runtime": "node",
-        "configurationAttributes": {
-          "launch": {
-            "required": [
-              "program"
-            ],
-            "properties": {
-              "program": {
-                "type": "string",
-                "description": "Absolute path to a text file.",
-                "default": "${workspaceFolder}/${command:AskForProgramName}"
-              },
-              "stopOnEntry": {
-                "type": "boolean",
-                "description": "Automatically stop after launch.",
-                "default": true
-              }
-            }
-          }
-        },
-        "initialConfigurations": [
-          {
-            "type": "llse",
-            "request": "launch",
-            "name": "Ask for file name",
-            "program": "${workspaceFolder}/${command:AskForProgramName}",
-            "stopOnEntry": true
-          }
-        ],
-        "configurationSnippets": [
-          {
-            "label": "Mock Debug: Launch",
-            "description": "A new configuration for launching a mock debug program",
-            "body": {
-              "type": "llse",
-              "request": "launch",
-              "name": "${2:Launch Program}",
-              "program": "^\"\\${workspaceFolder}/${1:Program}\""
-            }
-          }
-        ],
-        "variables": {
-          "AskForProgramName": "extension.mock-debug.getProgramName"
-        }
+        ]
       }
     ],
     "configuration": {
       "title": "LLScriptHelper",
       "properties": {
-        "LLScriptHelper.sourceUrl": {
+        "extension.llseaids.sourceUrl": {
           "type": "string",
           "default": "https://github.com/LiteLScript-Dev/HelperLib/raw/master/manifest.json",
           "description": "补全库的清单源地址",
           "scope": "resource",
           "order": 0
         },
-        "LLScriptHelper.libraryPath": {
+        "extension.llseaids.libraryPath": {
           "type": "string",
           "default": null,
           "description": "补全库的本地存储地址",
           "scope": "resource",
           "order": 1
         },
-        "LLScriptHelper.javascriptApiPath": {
+        "extension.llseaids.javascriptApiPath": {
           "type": "string",
           "default": null,
           "description": "补全库的javascript API地址",
           "scope": "resource",
           "order": 2
         },
-        "LLScriptHelper.reloadCommand": {
+        "extension.llseaids.reloadCommand": {
           "type": "string",
           "default": "ll reload \"{fileName}\"",
           "description": "调试器重载指令",
           "scope": "resource",
           "order": 3
         },
-        "LLScriptHelper.loadCommand": {
+        "extension.llseaids.loadCommand": {
           "type": "string",
           "default": "ll load \"{filePath}\"",
           "description": "调试器加载指令",
           "scope": "resource",
           "order": 4
         },
-        "LLScriptHelper.unloadCommand": {
+        "extension.llseaids.unloadCommand": {
           "type": "string",
           "default": "ll unload \"{fileName}\"",
           "description": "调试器卸载指令",
           "scope": "resource",
           "order": 5
         },
-        "LLScriptHelper.bdsPath": {
+        "extension.llseaids.bdsPath": {
           "type": "string",
           "default": null,
           "description": "BDS根目录",

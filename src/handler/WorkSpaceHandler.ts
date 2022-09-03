@@ -1,4 +1,6 @@
 import * as vscode from "vscode";
+import { ConfigPanel } from "../panels/ConfigPanel";
+import { DocsPanel } from "../panels/DocsPanel";
 import { getReferenceHeader, isNotEmpty } from "../utils/SomeUtil";
 
 export class WorkspaceHandler {
@@ -73,5 +75,37 @@ export class WorkspaceHandler {
     });
     return this;
   }
-
+  /**
+   * 初始化
+   * @param context
+   */
+  init(context: vscode.ExtensionContext): WorkspaceHandler {
+    // commands
+    context.subscriptions.push(
+      vscode.commands.registerCommand("extension.llseaids.config", (uri) => {
+        ConfigPanel.render(context.extensionUri);
+      }),
+      vscode.commands.registerCommand("extension.llseaids.docs", () => {
+        DocsPanel.render();
+      }),
+    );
+    var sourceUrl = vscode.workspace
+      .getConfiguration()
+      .get("extension.llseaids.sourceUrl");
+    // may first time run
+    var libraryPath = vscode.workspace
+      .getConfiguration()
+      .get("extension.llseaids.libraryPath");
+    var javascriptApiPath = vscode.workspace
+      .getConfiguration()
+      .get("extension.llseaids.javascriptApiPath");
+    if (
+      sourceUrl === null ||
+      libraryPath === null ||
+      javascriptApiPath === null
+    ) {
+      vscode.commands.executeCommand("extension.llseaids.config");
+    }
+    return this;
+  }
 }
