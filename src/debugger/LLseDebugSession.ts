@@ -3,6 +3,7 @@ import {
   StoppedEvent,
   Logger,
   logger,
+  OutputEvent,
 } from "@vscode/debugadapter";
 import * as vscode from "vscode";
 import { FileAccessor } from "../utils/FileAccessor";
@@ -28,9 +29,8 @@ export class LLseDebugSession extends LoggingDebugSession {
 
   public constructor(fileAccessor: FileAccessor) {
     super();
-    vscode.window.showErrorMessage("okk");
     // 初始化运行时
-    this._runtime = new LLseRuntime(fileAccessor);
+    this._runtime = new LLseRuntime(fileAccessor, this);
   }
   protected async launchRequest(
     _response: DebugProtocol.LaunchResponse,
