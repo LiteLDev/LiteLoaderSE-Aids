@@ -24,8 +24,7 @@
     "workspaceContains:*.js",
     "workspaceContains:*.lua",
     "onStartupFinished",
-    "onDebugResolve:llse",
-    "onDebugDynamicConfigurations:llse"
+    "ondebug"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -60,21 +59,6 @@
         }
       ]
     },
-    "breakpoints": [
-      {
-        "language": "markdown"
-      }
-    ],
-    "debuggers": [
-      {
-        "type": "llse",
-        "label": "LLSE Debug",
-        "languages": [
-          "javascript",
-          "lua"
-        ]
-      }
-    ],
     "configuration": {
       "title": "LLScriptHelper",
       "properties": {
