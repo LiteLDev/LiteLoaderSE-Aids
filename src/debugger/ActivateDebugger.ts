@@ -1,12 +1,11 @@
 /*
  * @Author: DevMoxi moxiout@gmail.com
  * @Date: 2022-09-04 13:46:32
- * @LastEditTime: 2022-09-04 14:58:50
+ * @LastEditTime: 2022-09-04 15:02:06
  */
 import * as vscode from "vscode";
 import { InlineDebugAdapterFactory } from "./InlineDebugAdapterFactory";
 import { LLConfigurationProvider } from "./LLConfigurationProvider";
-import { LLDebugAdapterDescriptorFactory } from "./LLDebugAdapterDescriptorFactory";
 export function activateDebugger(context: vscode.ExtensionContext) {
 	const provider = new LLConfigurationProvider();
 	context.subscriptions.push(
