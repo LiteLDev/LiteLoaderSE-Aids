@@ -1,152 +1,164 @@
 {
-  "name": "LLScriptHelper",
-  "displayName": "LiteLoaderSE-Aids",
-  "publisher": "moxicat",
-  "description": "Assist in the development of LLScript's plugin",
-  "version": "2.0.5",
-  "icon": "images/icon.png",
-  "repository": "https://github.com/LiteLScript-Dev/LiteLoaderSE-Aids",
-  "engines": {
-    "vscode": "^1.58.0"
-  },
-  "categories": [
-    "Other"
-  ],
-  "keywords": [
-    "LLSE",
-    "LiteLoader",
-    "BDS"
-  ],
-  "activationEvents": [
-    "onCommand:extension.llseaids.config",
-    "onCommand:extension.llseaids.docs",
-    "onCommand:extension.llseaids.runconsole",
-    "workspaceContains:*.js",
-    "workspaceContains:*.lua",
-    "onStartupFinished",
-    "ondebug"
-  ],
-  "main": "./out/extension.js",
-  "contributes": {
-    "commands": [
-      {
-        "command": "extension.llseaids.config",
-        "title": "LiteLoaderSE-Aids ConfigPanel"
-      },
-      {
-        "command": "extension.llseaids.docs",
-        "title": "LiteLoaderSE Docs",
-        "icon": "$(file-code)"
-      },
-      {
-        "command": "extension.llseaids.runconsole",
-        "title": "run LiteLoaderBDS",
-        "enablement": "!inDebugMode",
-        "icon": "$(debug-alt)"
-      }
-    ],
-    "menus": {
-      "editor/title": [
-        {
-          "when": "resourceLangId == lua || resourceLangId== javascript",
-          "command": "extension.llseaids.docs",
-          "group": "navigation@2"
-        },
-        {
-          "when": "resourceLangId == lua || resourceLangId== javascript",
-          "command": "extension.llseaids.runconsole",
-          "group": "navigation@1"
-        }
-      ]
-    },
-    "configuration": {
-      "title": "LLScriptHelper",
-      "properties": {
-        "extension.llseaids.sourceUrl": {
-          "type": "string",
-          "default": "https://github.com/LiteLScript-Dev/HelperLib/raw/master/manifest.json",
-          "description": "补全库的清单源地址",
-          "scope": "resource",
-          "order": 0
-        },
-        "extension.llseaids.libraryPath": {
-          "type": "string",
-          "default": null,
-          "description": "补全库的本地存储地址",
-          "scope": "resource",
-          "order": 1
-        },
-        "extension.llseaids.javascriptApiPath": {
-          "type": "string",
-          "default": null,
-          "description": "补全库的javascript API地址",
-          "scope": "resource",
-          "order": 2
-        },
-        "extension.llseaids.reloadCommand": {
-          "type": "string",
-          "default": "ll reload \"{fileName}\"",
-          "description": "调试器重载指令",
-          "scope": "resource",
-          "order": 3
-        },
-        "extension.llseaids.loadCommand": {
-          "type": "string",
-          "default": "ll load \"{filePath}\"",
-          "description": "调试器加载指令",
-          "scope": "resource",
-          "order": 4
-        },
-        "extension.llseaids.unloadCommand": {
-          "type": "string",
-          "default": "ll unload \"{fileName}\"",
-          "description": "调试器卸载指令",
-          "scope": "resource",
-          "order": 5
-        },
-        "extension.llseaids.bdsPath": {
-          "type": "string",
-          "default": null,
-          "description": "BDS根目录",
-          "scope": "resource",
-          "order": 6
-        }
-      }
-    }
-  },
-  "scripts": {
-    "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile && npm run lint",
-    "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
-  },
-  "devDependencies": {
-    "@types/glob": "^7.1.3",
-    "@types/mocha": "^8.2.2",
-    "@types/node": "14.x",
-    "@types/node-fetch": "^2.5.11",
-    "@types/vscode": "^1.58.0",
-    "@typescript-eslint/eslint-plugin": "^4.26.0",
-    "@typescript-eslint/parser": "^4.26.0",
-    "eslint": "^7.27.0",
-    "glob": "^7.1.7",
-    "mocha": "^10.0.0",
-    "typescript": "^4.3.2",
-    "vscode-test": "^1.5.2"
-  },
-  "dependencies": {
-    "@vscode/debugadapter": "^1.57.0",
-    "@vscode/webview-ui-toolkit": "^1.0.1",
-    "adm-zip": "^0.5.5",
-    "async": "^3.2.0",
-    "co": "^4.6.0",
-    "marked": "^4.0.19",
-    "node-fetch": "^2.6.1",
-    "node-stream-zip": "^1.15.0",
-    "path": "^0.12.7",
-    "request": "^2.88.2",
-    "step": "^1.0.0"
-  }
+	"name": "LLScriptHelper",
+	"displayName": "LiteLoaderSE-Aids",
+	"publisher": "moxicat",
+	"description": "Assist in the development of LLScript's plugin",
+	"version": "2.0.5",
+	"icon": "images/icon.png",
+	"repository": "https://github.com/LiteLScript-Dev/LiteLoaderSE-Aids",
+	"engines": {
+		"vscode": "^1.58.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"keywords": [
+		"LLSE",
+		"LiteLoader",
+		"BDS"
+	],
+	"activationEvents": [
+		"onCommand:extension.llseaids.config",
+		"onCommand:extension.llseaids.docs",
+		"onCommand:extension.llseaids.runconsole",
+		"workspaceContains:*.js",
+		"workspaceContains:*.lua",
+		"onStartupFinished",
+		"ondebug"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"debuggers": [
+			{
+				"type": "llse",
+				"label": "LLScript Debug",
+				"languages": [
+					"javascript",
+					"lua"
+				],
+				"program": "${file}",
+				"runtime": "node"
+			}
+		],
+		"commands": [
+			{
+				"command": "extension.llseaids.config",
+				"title": "LiteLoaderSE-Aids ConfigPanel"
+			},
+			{
+				"command": "extension.llseaids.docs",
+				"title": "LiteLoaderSE Docs",
+				"icon": "$(file-code)"
+			},
+			{
+				"command": "extension.llseaids.runconsole",
+				"title": "run LiteLoaderBDS",
+				"enablement": "!inDebugMode",
+				"icon": "$(debug-alt)"
+			}
+		],
+		"menus": {
+			"editor/title": [
+				{
+					"when": "resourceLangId == lua || resourceLangId== javascript",
+					"command": "extension.llseaids.docs",
+					"group": "navigation@2"
+				},
+				{
+					"when": "resourceLangId == lua || resourceLangId== javascript",
+					"command": "extension.llseaids.runconsole",
+					"group": "navigation@1"
+				}
+			]
+		},
+		"configuration": {
+			"title": "LLScriptHelper",
+			"properties": {
+				"extension.llseaids.sourceUrl": {
+					"type": "string",
+					"default": "https://github.com/LiteLScript-Dev/HelperLib/raw/master/manifest.json",
+					"description": "补全库的清单源地址",
+					"scope": "resource",
+					"order": 0
+				},
+				"extension.llseaids.libraryPath": {
+					"type": "string",
+					"default": null,
+					"description": "补全库的本地存储地址",
+					"scope": "resource",
+					"order": 1
+				},
+				"extension.llseaids.javascriptApiPath": {
+					"type": "string",
+					"default": null,
+					"description": "补全库的javascript API地址",
+					"scope": "resource",
+					"order": 2
+				},
+				"extension.llseaids.reloadCommand": {
+					"type": "string",
+					"default": "ll reload \"{fileName}\"",
+					"description": "调试器重载指令",
+					"scope": "resource",
+					"order": 3
+				},
+				"extension.llseaids.loadCommand": {
+					"type": "string",
+					"default": "ll load \"{filePath}\"",
+					"description": "调试器加载指令",
+					"scope": "resource",
+					"order": 4
+				},
+				"extension.llseaids.unloadCommand": {
+					"type": "string",
+					"default": "ll unload \"{fileName}\"",
+					"description": "调试器卸载指令",
+					"scope": "resource",
+					"order": 5
+				},
+				"extension.llseaids.bdsPath": {
+					"type": "string",
+					"default": null,
+					"description": "BDS根目录",
+					"scope": "resource",
+					"order": 6
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile && npm run lint",
+		"lint": "eslint src --ext ts",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.1.3",
+		"@types/mocha": "^8.2.2",
+		"@types/node": "14.x",
+		"@types/node-fetch": "^2.5.11",
+		"@types/vscode": "^1.58.0",
+		"@typescript-eslint/eslint-plugin": "^4.26.0",
+		"@typescript-eslint/parser": "^4.26.0",
+		"eslint": "^7.27.0",
+		"glob": "^7.1.7",
+		"mocha": "^10.0.0",
+		"typescript": "^4.3.2",
+		"vscode-test": "^1.5.2"
+	},
+	"dependencies": {
+		"@vscode/debugadapter": "^1.57.0",
+		"@vscode/webview-ui-toolkit": "^1.0.1",
+		"adm-zip": "^0.5.5",
+		"async": "^3.2.0",
+		"co": "^4.6.0",
+		"marked": "^4.0.19",
+		"node-fetch": "^2.6.1",
+		"node-stream-zip": "^1.15.0",
+		"path": "^0.12.7",
+		"request": "^2.88.2",
+		"step": "^1.0.0"
+	}
 }
