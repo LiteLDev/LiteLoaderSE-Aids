@@ -1,27 +1,26 @@
-// Place your settings in this file to overwrite default and user settings.
 {
-    "files.exclude": {
-        "**/.git": true,
-        "**/.svn": true,
-        "**/.hg": true,
-        "**/CVS": true,
-        "**/.DS_Store": true,
-        "**/Thumbs.db": true,
-        "out": false
-    },
-    "search.exclude": {
-        "out": true // set this to false to include "out" folder in search results
-    },
-    // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
-    "typescript.tsc.autoDetect": "off",
-    "github.copilot.advanced": {
-    
-    },
-    "LXl-Lua-runner.isrunning": false,
-    "Lua.workspace.library": [
-        "c:\\Users\\36015\\.vscode-insiders\\extensions\\moxicat.lxldevhelper-0.0.16\\Helper"
-    ],
-    "LXLDevHelper.isrunning": false,
-    "commentTranslate.source": "Baidu",
-    "svg.preview.background": "transparent"
+	"files.exclude": {
+		"**/.git": true,
+		"**/.svn": true,
+		"**/.hg": true,
+		"**/CVS": true,
+		"**/.DS_Store": true,
+		"**/Thumbs.db": true,
+		"images": true,
+		"node_modules": true,
+		"out": true,
+		".eslintrc.json": true,
+		"tsconfig.json": true,
+		"package-lock.json": true,
+		"LICENSE": true
+	},
+	"hide-files.files": [
+		"images",
+		"node_modules",
+		"out",
+		".eslintrc.json",
+		"tsconfig.json",
+		"package-lock.json",
+		"LICENSE"
+	]
 }
