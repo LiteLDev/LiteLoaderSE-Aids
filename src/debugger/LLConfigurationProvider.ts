@@ -18,8 +18,11 @@ export class LLConfigurationProvider
 		// if launch.json is missing or empty
 		if (!config.type && !config.request && !config.name) {
 			const editor = vscode.window.activeTextEditor;
-			// TODO: 改进
-			if (editor && editor.document.languageId === "javascript") {
+			if (
+				editor &&
+				(editor.document.languageId === "javascript" ||
+					editor.document.languageId === "lua")
+			) {
 				config.type = "llse";
 				config.name = "Launch";
 				config.request = "launch";
@@ -34,7 +37,6 @@ export class LLConfigurationProvider
 					return undefined; // abort launch
 				});
 		}
-
 		return config;
 	}
 }

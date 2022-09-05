@@ -1,7 +1,7 @@
 /*
  * @Author: DevMoxi moxiout@gmail.com
  * @Date: 2022-08-24 10:09:36
- * @LastEditTime: 2022-09-04 13:51:06
+ * @LastEditTime: 2022-09-05 21:52:12
  */
 /*
  * @Author: moxi moxiout@gmail.com
@@ -9,8 +9,10 @@
  * @LastEditTime: 2022-09-04 13:20:29
  */
 import * as vscode from "vscode";
-import { activateDebugger } from "./debugger/ActivateDebugger";
 import { WorkspaceHandler } from "./handler/WorkSpaceHandler";
+import { TerminalHelper } from "./terminal/TerminalHelper";
+import * as nls from "vscode-nls";
+const localize = nls.config({ messageFormat: nls.MessageFormat.file })();
 
 async function activate(context: vscode.ExtensionContext) {
 	// init handler
@@ -19,7 +21,11 @@ async function activate(context: vscode.ExtensionContext) {
 		.snippetCompletion()
 		.onCreateFile();
 	// init debugger
-	activateDebugger(context);
+	//activateDebugger(context);
+	// set menu visibility
+	new TerminalHelper(context);
+	vscode.commands.executeCommand("setContext", "llse:termianl", false);
+	localize("", "");
 }
 
 exports.deactivate = function () {};

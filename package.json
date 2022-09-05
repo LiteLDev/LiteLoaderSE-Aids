@@ -28,18 +28,6 @@
 	],
 	"main": "./out/extension.js",
 	"contributes": {
-		"debuggers": [
-			{
-				"type": "llse",
-				"label": "LLScript Debug",
-				"languages": [
-					"javascript",
-					"lua"
-				],
-				"program": "${file}",
-				"runtime": "node"
-			}
-		],
 		"commands": [
 			{
 				"command": "extension.llseaids.config",
@@ -52,9 +40,31 @@
 			},
 			{
 				"command": "extension.llseaids.runconsole",
-				"title": "run LiteLoaderBDS",
+				"title": "Run LiteLoaderBDS",
+				"category": "llse",
 				"enablement": "!inDebugMode",
 				"icon": "$(debug-alt)"
+			},
+			{
+				"command": "extension.llseaids.stopconsole",
+				"title": "Stop LiteLoaderBDS",
+				"enablement": "!inDebugMode",
+				"icon": "$(debug-stop)"
+			},
+			{
+				"command": "extension.llseaids.load",
+				"title": "load this file to LiteLoaderBDS",
+				"icon": "$(arrow-down)"
+			},
+			{
+				"command": "extension.llseaids.reload",
+				"title": "reload this file to LiteLoaderBDS",
+				"icon": "$(sync)"
+			},
+			{
+				"command": "extension.llseaids.unload",
+				"title": "unload this file to LiteLoaderBDS",
+				"icon": "$(arrow-up)"
 			}
 		],
 		"menus": {
@@ -65,9 +75,29 @@
 					"group": "navigation@2"
 				},
 				{
-					"when": "resourceLangId == lua || resourceLangId== javascript",
+					"when": "resourceLangId == lua || resourceLangId== javascript&& llse:termianl == false",
 					"command": "extension.llseaids.runconsole",
 					"group": "navigation@1"
+				},
+				{
+					"when": "resourceLangId == lua || resourceLangId== javascript && llse:termianl == true",
+					"command": "extension.llseaids.unload",
+					"group": "navigation@5"
+				},
+				{
+					"when": "resourceLangId == lua || resourceLangId== javascript && llse:termianl == true",
+					"command": "extension.llseaids.load",
+					"group": "navigation@3"
+				},
+				{
+					"when": "resourceLangId == lua || resourceLangId== javascript&& llse:termianl == true",
+					"command": "extension.llseaids.reload",
+					"group": "navigation@4"
+				},
+				{
+					"when": "resourceLangId == lua || resourceLangId== javascript && llse:termianl == true",
+					"command": "extension.llseaids.unload",
+					"group": "navigation@5"
 				}
 			]
 		},
@@ -142,6 +172,7 @@
 		"@types/vscode": "^1.58.0",
 		"@typescript-eslint/eslint-plugin": "^4.26.0",
 		"@typescript-eslint/parser": "^4.26.0",
+		"await-notify": "^1.0.1",
 		"eslint": "^7.27.0",
 		"glob": "^7.1.7",
 		"mocha": "^10.0.0",
@@ -154,11 +185,17 @@
 		"adm-zip": "^0.5.5",
 		"async": "^3.2.0",
 		"co": "^4.6.0",
+		"del": "^7.0.0",
+		"gulp": "^4.0.2",
+		"gulp-sourcemaps": "^3.0.0",
+		"gulp-typescript": "^6.0.0-alpha.1",
 		"marked": "^4.0.19",
 		"node-fetch": "^2.6.1",
 		"node-stream-zip": "^1.15.0",
 		"path": "^0.12.7",
 		"request": "^2.88.2",
-		"step": "^1.0.0"
+		"step": "^1.0.0",
+		"vscode-nls": "^5.2.0",
+		"vscode-nls-dev": "^4.0.1"
 	}
 }

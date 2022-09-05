@@ -6,7 +6,7 @@
 import * as vscode from "vscode";
 import { ProviderResult } from "vscode";
 import { workspaceFileAccessor } from "../utils/FileAccessor";
-import { LLseDebugSession } from "./LLseDebugSession";
+import { LLDebugSession } from "./LLDebugSession";
 
 export class InlineDebugAdapterFactory
 	implements vscode.DebugAdapterDescriptorFactory
@@ -15,7 +15,7 @@ export class InlineDebugAdapterFactory
 		_session: vscode.DebugSession
 	): ProviderResult<vscode.DebugAdapterDescriptor> {
 		return new vscode.DebugAdapterInlineImplementation(
-			new LLseDebugSession(workspaceFileAccessor)
+			new LLDebugSession(workspaceFileAccessor)
 		);
 	}
 }
