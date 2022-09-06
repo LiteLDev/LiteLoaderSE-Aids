@@ -1,10 +1,13 @@
 <!--
  * @Author: DevMoxi moxiout@gmail.com
  * @Date: 2022-08-24 10:09:31
- * @LastEditTime: 2022-09-06 13:29:51
+ * @LastEditTime: 2022-09-06 13:37:16
 -->
 
 # LiteLoaderSE-Aids
+
+[![Version](https://vsmarketplacebadge.apphb.com/version-short/moxicat.LLScriptHelper.svg)](https://marketplace.visualstudio.com/items?itemName=moxicat.LLScriptHelper)
+[![Installs](https://vsmarketplacebadge.apphb.com/installs/moxicat.LLScriptHelper.svg)](https://marketplace.visualstudio.com/items?itemName=moxicat.LLScriptHelper)
 
 适用于 Visual Studio Code 的 [LiteLoaderSE](https://github.com/LiteLDev/LiteLoaderBDS) 开发辅助工具
 
