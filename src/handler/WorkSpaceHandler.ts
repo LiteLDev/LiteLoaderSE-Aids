@@ -55,7 +55,10 @@ export class WorkspaceHandler {
 				if (
 					path.includes("lxl.js") ||
 					path.includes("llse.js") ||
-					path.includes("ll.js")
+					path.includes("ll.js") ||
+					path.includes("lxl.ts") ||
+					path.includes("llse.ts") ||
+					path.includes("ll.ts")
 				) {
 					const referencePath = vscode.workspace
 						.getConfiguration()
