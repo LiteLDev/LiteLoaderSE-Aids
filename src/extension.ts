@@ -24,7 +24,6 @@ async function activate(context: vscode.ExtensionContext) {
 	//activateDebugger(context);
 	// set menu visibility
 	new TerminalHelper(context);
-	vscode.commands.executeCommand("setContext", "llse:termianl", false);
 	localize("", "");
 }
 

@@ -47,11 +47,17 @@ export class ConfigPanel {
 				.getConfiguration("extension.llseaids")
 				.get("bdsPath"),
 		};
+		const autoSplitDocs = vscode.workspace
+			.getConfiguration("extension.llseaids")
+			.get("autoSplitDocs");
+
 		var args = {
 			sourceUrl: sourceUrl,
 			libraryPath: libraryPath,
 			debugger: debuggerData,
+			autoSplitDocs: autoSplitDocs,
 		};
+
 		ConfigPanel.postMessage("set_default_config", args);
 	}
 
@@ -185,7 +191,9 @@ export class ConfigPanel {
                 </div>
                 </div>
                 </vscode-panel-view>
-                <vscode-panel-view id="view-3">... Nothing ...</vscode-panel-view>
+                <vscode-panel-view id="view-3">
+				<vscode-checkbox id="autoSplitDocs">打开文档时自动向右分割视图</vscode-checkbox>
+				</vscode-panel-view>
                 <vscode-panel-view id="view-4">
                   <div>
                     <!-- Logo -->
@@ -264,6 +272,15 @@ export class ConfigPanel {
 						vscode.workspace
 							.getConfiguration()
 							.update("extension.llseaids.unloadCommand", data.unload, true);
+						break;
+					case "autoSplitDocs":
+						vscode.workspace
+							.getConfiguration()
+							.update(
+								"extension.llseaids.autoSplitDocs",
+								data.autoSplitDocs,
+								true
+							);
 						break;
 				}
 			},

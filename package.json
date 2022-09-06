@@ -54,7 +54,7 @@
 			{
 				"command": "extension.llseaids.load",
 				"title": "load this file to LiteLoaderBDS",
-				"icon": "$(arrow-down)"
+				"icon": "$(arrow-up)"
 			},
 			{
 				"command": "extension.llseaids.reload",
@@ -64,7 +64,7 @@
 			{
 				"command": "extension.llseaids.unload",
 				"title": "unload this file to LiteLoaderBDS",
-				"icon": "$(arrow-up)"
+				"icon": "$(arrow-down)"
 			}
 		],
 		"menus": {
@@ -72,7 +72,7 @@
 				{
 					"when": "resourceLangId == lua || resourceLangId== javascript",
 					"command": "extension.llseaids.docs",
-					"group": "navigation@2"
+					"group": "navigation@6"
 				},
 				{
 					"when": "resourceLangId == lua || resourceLangId== javascript&& llse:termianl == false",
@@ -82,12 +82,12 @@
 				{
 					"when": "resourceLangId == lua || resourceLangId== javascript && llse:termianl == true",
 					"command": "extension.llseaids.unload",
-					"group": "navigation@5"
+					"group": "navigation@3"
 				},
 				{
 					"when": "resourceLangId == lua || resourceLangId== javascript && llse:termianl == true",
 					"command": "extension.llseaids.load",
-					"group": "navigation@3"
+					"group": "navigation@2"
 				},
 				{
 					"when": "resourceLangId == lua || resourceLangId== javascript&& llse:termianl == true",
@@ -96,8 +96,8 @@
 				},
 				{
 					"when": "resourceLangId == lua || resourceLangId== javascript && llse:termianl == true",
-					"command": "extension.llseaids.unload",
-					"group": "navigation@5"
+					"command": "extension.llseaids.stopconsole",
+					"group": "navigation@1"
 				}
 			]
 		},
@@ -152,6 +152,13 @@
 					"description": "BDS根目录",
 					"scope": "resource",
 					"order": 6
+				},
+				"extension.llseaids.autoSplitDocs": {
+					"type": "boolean",
+					"default": true,
+					"description": "打开文档时自动向右分割视图",
+					"scope": "resource",
+					"order": 7
 				}
 			}
 		}
