@@ -2,7 +2,7 @@
 /*
  * @Author: moxi moxiout@gmail.com
  * @Date: 2022-08-24 11:22:00
- * @LastEditTime: 2022-09-06 12:45:44
+ * @LastEditTime: 2022-09-06 12:46:54
  */
 const vscode = acquireVsCodeApi();
 window.addEventListener("load", main);
