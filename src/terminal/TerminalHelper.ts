@@ -2,7 +2,7 @@
 /*
  * @Author: DevMoxi moxiout@gmail.com
  * @Date: 2022-09-05 20:40:18
- * @LastEditTime: 2022-09-08 08:29:04
+ * @LastEditTime: 2022-09-08 08:30:44
  */
 import * as nls from "vscode-nls";
 import * as vscode from "vscode";
@@ -62,6 +62,10 @@ export class TerminalHelper {
 	stopConsole() {
 		if (TerminalHelper.terminal !== undefined) {
 			TerminalHelper.terminal.sendText("stop");
+			TerminalHelper.context.workspaceState.update(
+				TerminalKeys.STATE,
+				TerminalState.STOPED
+			);
 		} else {
 			const no_open_message = localize(
 				"terminal.no_open.message",
