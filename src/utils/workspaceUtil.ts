@@ -20,7 +20,7 @@ export function checkBDSPath(path: string | null): boolean {
 	return fs.existsSync(path + "/bedrock_server_mod");
 }
 
-export function getBDSPath(): string {
+export function getBDSPath(): string | null {
 	const path = vscode.workspace
 		.getConfiguration("extension.llseaids")
 		.get("bdsPath") as string;
@@ -34,7 +34,7 @@ export function getBDSPath(): string {
 		vscode.window.showErrorMessage("BDS路径不合法,请重新设置BDS路径");
 		vscode.commands.executeCommand("extension.llseaids.config");
 	}
-	return "";
+	return null;
 }
 
 export function getBDSCwdPath(): string {

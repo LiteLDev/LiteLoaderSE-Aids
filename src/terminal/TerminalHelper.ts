@@ -2,7 +2,7 @@
 /*
  * @Author: DevMoxi moxiout@gmail.com
  * @Date: 2022-09-05 20:40:18
- * @LastEditTime: 2022-09-06 12:10:36
+ * @LastEditTime: 2022-09-08 08:29:04
  */
 import * as nls from "vscode-nls";
 import * as vscode from "vscode";
@@ -123,6 +123,9 @@ export class TerminalHelper {
 	createTerminal() {
 		const shellPath = getBDSPath();
 		const cwdPath = getBDSCwdPath();
+		if (shellPath === null || cwdPath === null) {
+			return;
+		}
 		let t = vscode.window.createTerminal({
 			name: TerminalKeys.NAME,
 			shellPath: shellPath,
