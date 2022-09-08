@@ -28,10 +28,10 @@ export class WorkspaceHandler {
 					});
 					const referencePath = vscode.workspace
 						.getConfiguration()
-						.get("LLScriptHelper.javascriptApiPath");
+						.get("extension.llseaids.javascriptApiPath");
 					if (!isNotEmpty(referencePath)) {
 						vscode.window.showWarningMessage("请先配置补全库");
-						vscode.commands.executeCommand("LLScriptHelper.config");
+						vscode.commands.executeCommand("extension.llseaids.docs");
 						return;
 					}
 					snippetCompletion.insertText = new vscode.SnippetString(
@@ -62,10 +62,10 @@ export class WorkspaceHandler {
 				) {
 					const referencePath = vscode.workspace
 						.getConfiguration()
-						.get("LLScriptHelper.javascriptApiPath");
+						.get("extension.llseaids.javascriptApiPath");
 					if (!isNotEmpty(referencePath)) {
 						vscode.window.showWarningMessage("请先配置补全库");
-						vscode.commands.executeCommand("LLScriptHelper.config");
+						vscode.commands.executeCommand("extension.llseaids.docs");
 						return;
 					}
 					setTimeout(function () {
