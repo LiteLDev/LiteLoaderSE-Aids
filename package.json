@@ -75,27 +75,52 @@
 					"group": "navigation@6"
 				},
 				{
-					"when": "resourceLangId == lua || resourceLangId== javascript&& llse:termianl == false",
+					"when": "resourceLangId == javascript && !llse:termianl",
 					"command": "extension.llseaids.runconsole",
 					"group": "navigation@1"
 				},
 				{
-					"when": "resourceLangId == lua || resourceLangId== javascript && llse:termianl == true",
+					"when": "resourceLangId == lua && !llse:termianl",
+					"command": "extension.llseaids.runconsole",
+					"group": "navigation@1"
+				},
+				{
+					"when": "resourceLangId == javascript && llse:termianl",
 					"command": "extension.llseaids.unload",
 					"group": "navigation@3"
 				},
 				{
-					"when": "resourceLangId == lua || resourceLangId== javascript && llse:termianl == true",
+					"when": "resourceLangId == lua && llse:termianl",
+					"command": "extension.llseaids.unload",
+					"group": "navigation@3"
+				},
+				{
+					"when": "resourceLangId == javascript && llse:termianl",
 					"command": "extension.llseaids.load",
 					"group": "navigation@2"
 				},
 				{
-					"when": "resourceLangId == lua || resourceLangId== javascript&& llse:termianl == true",
+					"when": "resourceLangId == lua && llse:termianl",
+					"command": "extension.llseaids.load",
+					"group": "navigation@2"
+				},
+				{
+					"when": "resourceLangId == javascript && llse:termianl",
 					"command": "extension.llseaids.reload",
 					"group": "navigation@4"
 				},
 				{
-					"when": "resourceLangId == lua || resourceLangId== javascript && llse:termianl == true",
+					"when": "resourceLangId == lua && llse:termianl",
+					"command": "extension.llseaids.reload",
+					"group": "navigation@4"
+				},
+				{
+					"when": "resourceLangId == javascript && llse:termianl",
+					"command": "extension.llseaids.stopconsole",
+					"group": "navigation@1"
+				},
+				{
+					"when": "resourceLangId == lua && llse:termianl",
 					"command": "extension.llseaids.stopconsole",
 					"group": "navigation@1"
 				}
