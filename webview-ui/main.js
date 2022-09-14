@@ -2,7 +2,7 @@
 /*
  * @Author: moxi moxiout@gmail.com
  * @Date: 2022-08-24 11:22:00
- * @LastEditTime: 2022-09-06 12:46:54
+ * @LastEditTime: 2022-09-09 08:29:28
  */
 const vscode = acquireVsCodeApi();
 window.addEventListener("load", main);
@@ -15,6 +15,9 @@ function initListener() {
 	document
 		.getElementById("source_get")
 		.addEventListener("click", sourceGetButtonClick);
+	document
+		.getElementById("source_get_local")
+		.addEventListener("click", sourceGetSelfButtonClick);
 	document
 		.getElementById("library_select")
 		.addEventListener("click", librarySelectButtonClick);
@@ -119,7 +122,9 @@ function setDefaultConfig(args) {
 	console.log(args.autoSplitDocs);
 	autoSplitDocsView.checked = args.autoSplitDocs;
 }
-
+function sourceGetSelfButtonClick() {
+	postMessage("source_get_local");
+}
 function sourceGetButtonClick() {
 	const source1 = document.getElementById("source_radio_1");
 	const source2 = document.getElementById("source_radio_2");

@@ -1,5 +1,4 @@
 import * as vscode from "vscode";
-import { ConfigPanel } from "../panels/ConfigPanel";
 import { DocsPanel } from "../panels/DocsPanel";
 import { getReferenceHeader, isNotEmpty } from "../utils/SomeUtil";
 
@@ -30,7 +29,7 @@ export class WorkspaceHandler {
 						.getConfiguration()
 						.get("extension.llseaids.javascriptApiPath");
 					if (!isNotEmpty(referencePath)) {
-						vscode.window.showWarningMessage("请先配置补全库");
+						vscode.window.showWarningMessage("Api引用不存在,请重新配置补全库");
 						vscode.commands.executeCommand("extension.llseaids.docs");
 						return;
 					}
@@ -58,13 +57,14 @@ export class WorkspaceHandler {
 					path.includes("ll.js") ||
 					path.includes("lxl.ts") ||
 					path.includes("llse.ts") ||
+					path.includes("lls.ts") ||
 					path.includes("ll.ts")
 				) {
 					const referencePath = vscode.workspace
 						.getConfiguration()
 						.get("extension.llseaids.javascriptApiPath");
 					if (!isNotEmpty(referencePath)) {
-						vscode.window.showWarningMessage("请先配置补全库");
+						vscode.window.showWarningMessage("Api引用不存在,请重新配置补全库");
 						vscode.commands.executeCommand("extension.llseaids.docs");
 						return;
 					}
@@ -86,27 +86,17 @@ export class WorkspaceHandler {
 		// commands
 		context.subscriptions.push(
 			vscode.commands.registerCommand("extension.llseaids.config", (uri) => {
-				ConfigPanel.render(context.extensionUri);
+				//ConfigPanel.render(context.extensionUri);
 			}),
 			vscode.commands.registerCommand("extension.llseaids.docs", () => {
 				DocsPanel.render();
 			})
 		);
-		var sourceUrl = vscode.workspace
-			.getConfiguration()
-			.get("extension.llseaids.sourceUrl");
 		// may first time run
 		var libraryPath = vscode.workspace
 			.getConfiguration()
 			.get("extension.llseaids.libraryPath");
-		var javascriptApiPath = vscode.workspace
-			.getConfiguration()
-			.get("extension.llseaids.javascriptApiPath");
-		if (
-			sourceUrl === null ||
-			libraryPath === null ||
-			javascriptApiPath === null
-		) {
+		if (libraryPath === null) {
 			vscode.commands.executeCommand("extension.llseaids.config");
 		}
 		return this;

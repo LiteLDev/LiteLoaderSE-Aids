@@ -1,11 +1,10 @@
 /*
  * @Author: DevMoxi moxiout@gmail.com
  * @Date: 2022-09-05 23:52:28
- * @LastEditTime: 2022-09-06 10:36:19
+ * @LastEditTime: 2022-09-14 12:21:18
  */
 import * as fs from "fs";
 import * as vscode from "vscode";
-import { ConfigPanel } from "../panels/ConfigPanel";
 export function checkBDSPath(path: string | null): boolean {
 	if (path === null) {
 		return false;
@@ -37,7 +36,7 @@ export function getBDSPath(): string | null {
 	return null;
 }
 
-export function getBDSCwdPath(): string {
+export function getBDSCwdPath(): string | null {
 	const path = vscode.workspace
 		.getConfiguration("extension.llseaids")
 		.get("bdsPath") as string;
@@ -47,5 +46,5 @@ export function getBDSCwdPath(): string {
 		vscode.window.showErrorMessage("BDS路径不合法,请重新设置BDS路径");
 		vscode.commands.executeCommand("extension.llseaids.config");
 	}
-	return "";
+	return null;
 }

@@ -2,15 +2,13 @@
 /*
  * @Author: DevMoxi moxiout@gmail.com
  * @Date: 2022-09-05 20:40:18
- * @LastEditTime: 2022-09-08 08:30:44
+ * @LastEditTime: 2022-09-14 12:20:04
  */
-import * as nls from "vscode-nls";
 import * as vscode from "vscode";
 import "./TerminalConst";
 import * as path from "path";
 import { CommandType, TerminalKeys, TerminalState } from "./TerminalConst";
 import { getBDSCwdPath, getBDSPath } from "../utils/WorkspaceUtil";
-const localize = nls.loadMessageBundle();
 export class TerminalHelper {
 	static terminal: vscode.Terminal | undefined;
 	static context: vscode.ExtensionContext;
@@ -194,4 +192,8 @@ export class TerminalHelper {
 			}
 		});
 	}
+}
+
+function localize(str: string, str2: string) {
+	return str2;
 }
