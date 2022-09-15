@@ -1,7 +1,7 @@
 /*
  * @Author: DevMoxi moxiout@gmail.com
  * @Date: 2022-09-13 10:56:15
- * @LastEditTime: 2022-09-14 11:09:40
+ * @LastEditTime: 2022-09-15 23:05:55
  */
 /*
  * @Author: DevMoxi moxiout@gmail.com
@@ -72,23 +72,27 @@ export function unzipAsync(
 }
 
 /**
- * 选择Library目录
- * @param callback 回调函数
+ * 调起选择目录
+ * @param  {string} title
  */
-export function selectLibrary(callback: (path: String | any) => any): any {
-	// 选择目录
-	var back = vscode.window.showOpenDialog({
-		canSelectFiles: false,
-		canSelectFolders: true,
-		canSelectMany: false,
-		openLabel: "选择目录",
-	});
+export function selectFolder(title: string): Promise<string> {
+	return new Promise<string>((resolve, reject) => {
+		const USER_HOME = process.env.HOME || process.env.USERPROFILE;
+		// 选择目录
+		var back = vscode.window.showOpenDialog({
+			canSelectFiles: false,
+			canSelectFolders: true,
+			canSelectMany: false,
+			openLabel: title,
+			defaultUri: vscode.Uri.file(USER_HOME as string),
+		});
 
-	back.then((uri) => {
-		if (uri === undefined || uri === null) {
-			vscode.window.showWarningMessage("请重新选择目录 !");
-			return null;
-		}
-		callback(uri[0].fsPath);
+		back.then((uri) => {
+			if (uri === undefined || uri === null) {
+				reject("NULLABLE");
+				return;
+			}
+			resolve(uri[0].fsPath);
+		});
 	});
 }

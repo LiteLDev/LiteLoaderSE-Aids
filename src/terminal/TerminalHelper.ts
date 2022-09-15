@@ -2,7 +2,7 @@
 /*
  * @Author: DevMoxi moxiout@gmail.com
  * @Date: 2022-09-05 20:40:18
- * @LastEditTime: 2022-09-14 12:20:04
+ * @LastEditTime: 2022-09-15 10:43:53
  */
 import * as vscode from "vscode";
 import "./TerminalConst";
@@ -19,7 +19,6 @@ export class TerminalHelper {
 		this.registerCommands();
 		vscode.window.onDidCloseTerminal((t) => {
 			if (t.name === TerminalKeys.NAME) {
-				console.log(t.exitStatus?.code);
 				vscode.commands.executeCommand("setContext", "llse:termianl", false);
 				if (t.exitStatus?.code === 0) {
 					context.workspaceState.update(

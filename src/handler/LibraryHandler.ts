@@ -2,13 +2,19 @@
 import * as vscode from "vscode";
 import fs = require("fs");
 import https = require("https");
-import { findFileMatchSync, unzipAsync } from "../utils/FileUtils";
+import {
+	findFileMatchSync,
+	selectFolder,
+	unzipAsync,
+} from "../utils/FileUtils";
 import * as axios from "axios";
+import * as open from "open";
 export class LibraryHandler {
 	private output: vscode.OutputChannel;
 	private libraryPath: String;
+	private libs: Array<LibraryInfo> = [];
 	constructor() {
-		this.output = vscode.window.createOutputChannel("LLScriptHelper");
+		this.output = vscode.window.createOutputChannel("LLSE-AIDS");
 		let libPath = vscode.workspace
 			.getConfiguration()
 			.get("extension.llseaids.libraryPath") as String;
@@ -19,14 +25,122 @@ export class LibraryHandler {
 		console.log("start");
 		this.output.show();
 		this.log("开始拉取清单");
+
 		this.pullManifest(repo)
 			.then((d) => {
-				console.log(d);
-				this.log(d);
+				this.log("获取到清单内容");
+				this.log(JSON.stringify(d));
+				handleManifest(d as SourceInfo);
 			})
 			.catch((reason) => {
 				this.log(reason);
 			});
+		const handleManifest = (d: SourceInfo) => {
+			this.selectVersion(d)
+				.then((items) => {
+					checkStoragePath();
+				})
+				.catch((reason) => {
+					this.log("选择取消 原因: " + reason, "ERROR");
+				});
+		};
+		const checkStoragePath = () => {
+			if (
+				this.libraryPath === undefined ||
+				this.libraryPath === null ||
+				this.libraryPath === ""
+			) {
+				this.log("未配置库存放路径", "WARNING");
+				selectFolder("选择库存放目录")
+					.then((path) => {
+						this.log("已选择并保存配置 " + path);
+					})
+					.catch((e) => {
+						this.log("未选择任何有效目录", "ERROR");
+					});
+				return;
+			}
+		};
+	}
+	private selectVersion(libInfo: SourceInfo): Promise<LibraryInfo[]> {
+		let p = new Promise<LibraryInfo[]>((resolve, reject) => {
+			const quickPick = vscode.window.createQuickPick();
+			quickPick.title = libInfo.name;
+			let quickItems: Array<vscode.QuickPickItem> = [];
+			libInfo.library.forEach((i) => {
+				quickItems.push({
+					label: i.name,
+					description: "version: " + i.version + " index: " + i.index,
+					picked: true,
+					detail: "Language: " + i.language,
+				});
+			});
+			// Title Bar Buttom
+			quickPick.buttons = [
+				{
+					iconPath: new vscode.ThemeIcon("github-inverted"),
+					tooltip: "View Source",
+				},
+				{
+					iconPath: new vscode.ThemeIcon("warning"),
+					tooltip: "What's this?",
+				},
+				{
+					iconPath: new vscode.ThemeIcon("close"),
+					tooltip: "Bye~",
+				},
+			];
+			quickPick.onDidTriggerButton((e) => {
+				switch ((e.iconPath as vscode.ThemeIcon).id) {
+					case "warning":
+						open("https://github.com/LiteLScript-Dev/LiteLoaderSE-Aids/wiki");
+						break;
+					case "github-inverted":
+						open(libInfo.source);
+						break;
+					case "close":
+						quickPick.hide();
+						quickPick.dispose();
+						break;
+					default:
+						break;
+				}
+			});
+			quickPick.items = quickItems;
+			quickPick.busy = true;
+			quickPick.ignoreFocusOut = true;
+			quickPick.canSelectMany = true;
+			quickPick.matchOnDescription = true;
+			quickPick.matchOnDetail = true;
+			quickPick.onDidAccept((e) => {
+				if (quickPick.selectedItems.length === 0) {
+					quickPick.dispose();
+					quickPick.hide();
+					reject("NOTHING SELECTED");
+					return;
+				}
+				let cache: LibraryInfo[] = [];
+				libInfo.library.forEach((item) => {
+					quickPick.selectedItems.forEach((sitem) => {
+						if (
+							sitem.label === item.name &&
+							sitem.detail?.includes(item.language) &&
+							sitem.description?.includes(item.version)
+						) {
+							cache.push(item);
+						}
+					});
+				});
+				resolve(cache);
+				quickPick.hide();
+				quickPick.dispose();
+			});
+			quickPick.onDidHide((e) => {
+				reject("SELECTED CANCEL");
+			});
+			quickPick.show();
+		});
+		return p;
 	}
 	public download() {}
 	public pullManifest(repoUrl: String): Promise<unknown> {
@@ -34,7 +148,7 @@ export class LibraryHandler {
 			if (!repoUrl.startsWith("http://") && !repoUrl.startsWith("https://")) {
 				reject("清单地址不合法!");
 			}
-			const manifestUrl = repoUrl + "/manifest.json";
+			const manifestUrl = repoUrl + "/manifest_test.json";
 			axios.default
 				.get(manifestUrl)
 				.then(function (response) {
@@ -226,8 +340,8 @@ export class LibraryHandler {
 	// 			});
 	// 	});
 	// }
-	private log(msg: any) {
+	private log(msg: any, type: "INFO" | "ERROR" | "WARNING" = "INFO") {
 		const time = new Date().toLocaleTimeString();
-		this.output.appendLine("[" + time + "] " + msg);
+		this.output.appendLine("[" + time + "] " + type + " " + msg);
 	}
 }
