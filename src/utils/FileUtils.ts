@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /*
  * @Author: DevMoxi moxiout@gmail.com
  * @Date: 2022-09-13 10:56:15
- * @LastEditTime: 2022-09-15 23:05:55
+ * @LastEditTime: 2022-09-16 12:51:34
  */
 /*
  * @Author: DevMoxi moxiout@gmail.com
@@ -9,8 +10,12 @@
  * @LastEditTime: 2022-09-13 11:38:44
  */
 import * as fs from "fs";
+import fetch from "node-fetch";
 import StreamZip = require("node-stream-zip");
 import * as vscode from "vscode";
+import { randomUUID } from "crypto";
+import { rejects } from "assert";
+import { resolve } from "path";
 
 /**
  * 同步查找文件匹配
@@ -51,23 +56,28 @@ export function findFileMatchSync(
  */
 export function unzipAsync(
 	filePath: string,
-	target: string,
-	callback: (success: Boolean, msg: any) => void
-) {
-	fs.mkdir(target, (err: any) => {});
-	const zip = new StreamZip({
-		file: filePath,
-		storeEntries: true,
-	});
-	zip.on("ready", () => {
-		zip.extract(null, target, (err, count) => {
-			zip.close();
-			callback(true, err ? "Extract error" : `Extracted ${count} entries`);
-			return;
+	target: string
+): Promise<string | any> {
+	return new Promise<string | any>((resolve, rejcect) => {
+		fs.mkdir(target, (err: any) => {});
+		const zip = new StreamZip({
+			file: filePath,
+			storeEntries: true,
 		});
-	});
-	zip.on("error", (err) => {
-		callback(false, err);
+		zip.on("ready", () => {
+			zip.extract(null, target, (err, count) => {
+				zip.close();
+				if (err) {
+					rejcect(err);
+				} else {
+					resolve(count);
+				}
+				return;
+			});
+		});
+		zip.on("error", (err) => {
+			rejcect(err);
+		});
 	});
 }
 
@@ -94,5 +104,39 @@ export function selectFolder(title: string): Promise<string> {
 			}
 			resolve(uri[0].fsPath);
 		});
+	});
+}
+
+/**
+ * 下载文件
+ * @param url 文件Url
+ * @param path 下载的路径
+ * @param callback 回调函数
+ */
+export function downloadFile(url: string, path: string): Promise<string> {
+	return new Promise<string>((resolve2, reject2) => {
+		var filePath = path + "/" + randomUUID() + ".zip";
+		Promise.race([
+			fetch(url, {
+				method: "GET",
+				headers: { "Content-Type": "application/octet-stream" },
+			}),
+			new Promise((resolve, reject) => {
+				setTimeout(() => reject(new Error("request timeout")), 25000);
+			}),
+		])
+			.then((res: any) => res.buffer())
+			.then((_: any) => {
+				fs.writeFile(filePath, _, "binary", function (err: any) {
+					if (err) {
+						reject2(err);
+					} else {
+						resolve2(filePath);
+					}
+				});
+			})
+			.catch((msg) => {
+				reject2(msg);
+			});
 	});
 }

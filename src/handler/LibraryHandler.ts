@@ -1,66 +1,104 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+
 import * as vscode from "vscode";
 import fs = require("fs");
 import https = require("https");
 import {
+	downloadFile,
 	findFileMatchSync,
 	selectFolder,
 	unzipAsync,
 } from "../utils/FileUtils";
 import * as axios from "axios";
 import * as open from "open";
+import { ConfigScope, Sections } from "../data/ConfigScope";
+/**
+ * 补全库配置类
+ * @description 主要使用异步+Promise
+ * @todo TODO: i18n高优先级
+ */
 export class LibraryHandler {
 	private output: vscode.OutputChannel;
 	private libraryPath: String;
 	private libs: Array<LibraryInfo> = [];
 	constructor() {
 		this.output = vscode.window.createOutputChannel("LLSE-AIDS");
-		let libPath = vscode.workspace
-			.getConfiguration()
-			.get("extension.llseaids.libraryPath") as String;
-		this.libraryPath = libPath;
+		this.libraryPath = ConfigScope.setting().get(
+			Sections.libraryPath
+		) as String;
 	}
 	public start() {
 		const repo = "https://github.com/LiteLScript-Dev/HelperLib/raw/master/";
 		console.log("start");
 		this.output.show();
-		this.log("开始拉取清单");
-
-		this.pullManifest(repo)
-			.then((d) => {
-				this.log("获取到清单内容");
-				this.log(JSON.stringify(d));
-				handleManifest(d as SourceInfo);
-			})
-			.catch((reason) => {
-				this.log(reason);
-			});
-		const handleManifest = (d: SourceInfo) => {
-			this.selectVersion(d)
-				.then((items) => {
-					checkStoragePath();
+		this.log("Repo: " + repo);
+		const run = () => {
+			this.pullManifest(repo)
+				.then((d) => {
+					this.log("开始拉取清单");
+					this.log("获取到清单内容");
+					this.log(JSON.stringify(d)); // DEBUG:
+					handleManifest(d as SourceInfo);
+				})
+				.catch((reason) => this.log(reason));
+			const handleManifest = (d: SourceInfo) => {
+				this.selectVersion(d)
+					.then((items) => handleSetup(items))
+					.catch((reason) => {
+						this.log("出现错误 原因: " + reason, "ERROR");
+						this.cancel();
+					});
+			};
+			const handleSetup = (items: LibraryInfo[]) => {
+				var wait = false;
+				var i = 0;
+				const func = () => {
+					while (!wait && i <= items.length) {
+						i++;
+						wait = true;
+						this.setup(items[i]).then(() => {
+							wait = false;
+							func();
+						});
+					}
+				};
+				func();
+			};
+		};
+		// check local path config
+		this.config()
+			.then(() => run())
+			.catch(() => this.cancel());
+	}
+	private setup(it: LibraryInfo): Promise<unknown> {
+		return new Promise<unknown>((resolve, reject) => {
+			this.logTag("准备拉取库文件 " + it.download_url, it.name);
+			let savePath = this.libraryPath + "/" + it.type;
+			try {
+				fs.mkdirSync(savePath);
+			} catch (_) {}
+			downloadFile(it.download_url, savePath)
+				.then((path) => {
+					this.logTag("库成文件已保存至 " + path, it.name);
+					unzipArchive(path);
 				})
 				.catch((reason) => {
-					this.log("选择取消 原因: " + reason, "ERROR");
+					this.logTag("拉取库时出现错误" + reason, it.name, "ERROR");
 				});
-		};
-		const checkStoragePath = () => {
-			if (
-				this.libraryPath === undefined ||
-				this.libraryPath === null ||
-				this.libraryPath === ""
-			) {
-				this.log("未配置库存放路径", "WARNING");
-				selectFolder("选择库存放目录")
-					.then((path) => {
-						this.log("已选择并保存配置 " + path);
+			//this.log("准备安装库" + it.name);
+			const unzipArchive = (path: string) => {
+				this.logTag("开始解压库文件", it.name);
+				unzipAsync(path, savePath)
+					.then((count) => {
+						this.logTag("解压完成,共解压了" + count + "个文件", it.name);
+						fs.unlinkSync(path);
+						resolve(null);
 					})
-					.catch((e) => {
-						this.log("未选择任何有效目录", "ERROR");
+					.catch((reason) => {
+						this.logTag("解压库文件时出现错误" + reason, it.name, "ERROR");
 					});
-				return;
-			}
-		};
+			};
+		});
 	}
 	private selectVersion(libInfo: SourceInfo): Promise<LibraryInfo[]> {
 		let p = new Promise<LibraryInfo[]>((resolve, reject) => {
@@ -142,7 +180,7 @@ export class LibraryHandler {
 		});
 		return p;
 	}
-	public download() {}
+
 	public pullManifest(repoUrl: String): Promise<unknown> {
 		return new Promise((resolve, reject) => {
 			if (!repoUrl.startsWith("http://") && !repoUrl.startsWith("https://")) {
@@ -164,13 +202,46 @@ export class LibraryHandler {
 				});
 		});
 	}
-	public config(p: Promise<LibraryHandler>) {
-		let libPath = vscode.workspace
-			.getConfiguration()
-			.get("extension.llseaids.libraryPath");
-		if (libPath === undefined || libPath === null || libPath === "") {
-			vscode.window.showErrorMessage("请先配置库本地存放路径");
-		}
+	public config(): Promise<unknown> {
+		return new Promise<unknown>((resolve, reject) => {
+			if (
+				this.libraryPath === undefined ||
+				this.libraryPath === null ||
+				this.libraryPath === "" ||
+				!fs.existsSync(this.libraryPath.toString())
+			) {
+				this.log("未配置库存放路径", "WARNING");
+				const func = () => {
+					selectFolder("选择库存放目录")
+						.then((path) => {
+							this.log("库将保存至 " + path);
+							ConfigScope.setting()
+								.update(Sections.libraryPath, path, true)
+								.then((_) => {
+									// success
+									this.libraryPath = path;
+									resolve(null);
+								});
+						})
+						.catch((e) => {
+							this.log("未选择任何有效目录", "ERROR");
+							vscode.window
+								.showWarningMessage("未选择任何有效目录", "重新选择", "取消")
+								.then((e) => {
+									if (e === "重新选择") {
+										func();
+									} else {
+										reject();
+									}
+								});
+						});
+				};
+				func();
+			} else {
+				// success
+				resolve(null);
+			}
+		});
 	}
 	// public setup(archive_path: String, language: String) {
 	// 	this.output.appendLine("开始安装" + language + "库文件");
@@ -340,8 +411,27 @@ export class LibraryHandler {
 	// 			});
 	// 	});
 	// }
+	private cancel() {
+		this.log("配置操作取消,此窗口将在10s后关闭", "WARNING");
+		this.log("您可在稍后重新进行配置", "WARNING");
+		setTimeout(() => {
+			this.output.hide();
+			this.output.dispose();
+		}, 10000);
+	}
 	private log(msg: any, type: "INFO" | "ERROR" | "WARNING" = "INFO") {
 		const time = new Date().toLocaleTimeString();
+		if (msg.toString().includes("Error:")) {
+			this.output.appendLine("[" + time + "] ERROR " + msg);
+			return;
+		}
 		this.output.appendLine("[" + time + "] " + type + " " + msg);
+	}
+	private logTag(
+		msg: any,
+		tag: string,
+		type: "INFO" | "ERROR" | "WARNING" = "INFO"
+	) {
+		this.log("[" + tag + "] " + msg, type);
 	}
 }
