@@ -106,7 +106,7 @@ export class LibraryHandler {
 			const setting = (path: string) => {
 				//TODO: 更多语言支持
 				switch (it.type) {
-					case "js":
+					case "dts":
 						let index = findFileMatchSync(path, it.index);
 						if (index === null) {
 							reject();
@@ -137,7 +137,6 @@ export class LibraryHandler {
 				quickItems.push({
 					label: i.name,
 					description: "version: " + i.version + " index: " + i.index,
-					picked: true,
 					detail: "Language: " + i.language,
 				});
 			});
@@ -156,6 +155,9 @@ export class LibraryHandler {
 					tooltip: "Bye~",
 				},
 			];
+			quickPick.onDidChangeSelection((e) => {
+				//TODO: 只能选择一种语言类型
+			});
 			quickPick.onDidTriggerButton((e) => {
 				switch ((e.iconPath as vscode.ThemeIcon).id) {
 					case "warning":

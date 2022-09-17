@@ -73,16 +73,3 @@ export function unlinkAllFiles(target: string) {
 		}
 	}
 }
-
-/**
- * 获取Js库引入代码
- * @param referencePath
- * @returns string 引入的代码
- */
-export function getReferenceHeader(referencePath: string | unknown): string {
-	return (
-		'//LiteLoaderScript Dev Helper\n/// <reference path="' +
-		referencePath +
-		'"/> \n\n\n$1'
-	);
-}
