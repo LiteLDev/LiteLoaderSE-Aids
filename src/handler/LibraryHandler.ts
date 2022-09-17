@@ -12,6 +12,8 @@ import {
 import * as axios from "axios";
 import * as open from "open";
 import { ConfigScope, Sections } from "../data/ConfigScope";
+import { createIterator } from "../utils/ExtraUtil";
+import { globalState } from "../extension";
 /**
  * 补全库配置类
  * @description 主要使用异步+Promise
@@ -46,20 +48,19 @@ export class LibraryHandler {
 					.then((items) => handleSetup(items))
 					.catch((reason) => {
 						this.log("出现错误 原因: " + reason, "ERROR");
-						this.cancel();
+						this.cancel(20);
 					});
 			};
 			const handleSetup = (items: LibraryInfo[]) => {
-				var wait = false;
-				var i = 0;
+				let it = createIterator(items);
 				const func = () => {
-					while (!wait && i <= items.length) {
-						i++;
-						wait = true;
-						this.setup(items[i]).then(() => {
-							wait = false;
-							func();
-						});
+					let now = it.next();
+					if (now.done === true) {
+						this.log("安装已完成 共计" + now.length + "个包");
+					} else {
+						this.setup(now.value)
+							.then(() => func())
+							.catch((reason) => {});
 					}
 				};
 				func();
@@ -68,35 +69,62 @@ export class LibraryHandler {
 		// check local path config
 		this.config()
 			.then(() => run())
-			.catch(() => this.cancel());
+			.catch(() => this.cancel(5));
 	}
+
 	private setup(it: LibraryInfo): Promise<unknown> {
+		const tag = it.name + "(" + it.language + ")";
 		return new Promise<unknown>((resolve, reject) => {
-			this.logTag("准备拉取库文件 " + it.download_url, it.name);
+			this.logTag("准备拉取库文件 " + it.download_url, tag);
 			let savePath = this.libraryPath + "/" + it.type;
 			try {
 				fs.mkdirSync(savePath);
 			} catch (_) {}
 			downloadFile(it.download_url, savePath)
 				.then((path) => {
-					this.logTag("库成文件已保存至 " + path, it.name);
+					this.logTag("库成文件已保存至 " + path, tag);
 					unzipArchive(path);
 				})
 				.catch((reason) => {
-					this.logTag("拉取库时出现错误" + reason, it.name, "ERROR");
+					reject();
+					this.logTag("拉取库时出现错误" + reason, tag, "ERROR");
 				});
-			//this.log("准备安装库" + it.name);
+			//this.log("准备安装库" + tag);
 			const unzipArchive = (path: string) => {
-				this.logTag("开始解压库文件", it.name);
+				this.logTag("开始解压库文件", tag);
 				unzipAsync(path, savePath)
 					.then((count) => {
-						this.logTag("解压完成,共解压了" + count + "个文件", it.name);
+						this.logTag("解压完成,共解压了" + count + "个文件", tag);
 						fs.unlinkSync(path);
-						resolve(null);
+						setting(savePath);
 					})
 					.catch((reason) => {
-						this.logTag("解压库文件时出现错误" + reason, it.name, "ERROR");
+						reject();
+						this.logTag("解压库文件时出现错误" + reason, tag, "ERROR");
 					});
+			};
+			const setting = (path: string) => {
+				//TODO: 更多语言支持
+				switch (it.type) {
+					case "js":
+						let index = findFileMatchSync(path, it.index);
+						if (index === null) {
+							reject();
+							this.logTag("找不到库提供的索引文件", tag, "ERROR");
+						} else {
+							this.logTag("找到库索引文件 " + index, tag);
+							it.recent_index = index;
+							ConfigScope.library()
+								.save(it)
+								.then(() => {
+									resolve(null);
+								});
+						}
+						break;
+					default:
+						this.logTag("非预设类型 " + it.type, tag, "ERROR");
+						break;
+				}
 			};
 		});
 	}
@@ -180,7 +208,6 @@ export class LibraryHandler {
 		});
 		return p;
 	}
-
 	public pullManifest(repoUrl: String): Promise<unknown> {
 		return new Promise((resolve, reject) => {
 			if (!repoUrl.startsWith("http://") && !repoUrl.startsWith("https://")) {
@@ -243,181 +270,13 @@ export class LibraryHandler {
 			}
 		});
 	}
-	// public setup(archive_path: String, language: String) {
-	// 	this.output.appendLine("开始安装" + language + "库文件");
-	// 	let p = new Promise((resolve, reject) => {
-	// 		unzipAsync(archive_path, LibraryHandler.libraryPath + "/JS");
-	// 	});
-	// }
-	// public static getLibrary(libraryUrl: String) {
-	// 	// 链接合法性检查
-	// 	if (
-	// 		!isNotEmpty(libraryUrl) ||
-	// 		(!libraryUrl.startsWith("http://") && !libraryUrl.startsWith("https://"))
-	// 	) {
-	// 		vscode.window.showErrorMessage("请输入合法的url");
-	// 		return;
-	// 	}
-	// 	// 更新配置文件
-	// 	vscode.workspace
-	// 		.getConfiguration()
-	// 		.update(
-	// 			"extension.llseaids.libraryUrl",
-	// 			libraryUrl,
-	// 			vscode.ConfigurationTarget.Global
-	// 		);
-	// 	ConfigPanel._updateLibraryUrl(libraryUrl);
-	// 	this.getLibraryPath((path) => {
-	// 		if (
-	// 			path === null ||
-	// 			path === undefined ||
-	// 			fs.existsSync(path) === false
-	// 		) {
-	// 			vscode.window.showErrorMessage("库存放地址配置错误");
-	// 			return;
-	// 		}
-	// 		// 开始获取清单
-	// 		ConfigPanel._changeProgress(true);
-	// 		LibraryHandler.output.appendLine("开始获取清单");
-	// 		LibraryHandler.output.appendLine(libraryUrl.toString());
-	// 		request(libraryUrl, { json: true }, (err: any, res: any, body: any) => {
-	// 			LibraryHandler.output.show();
-	// 			if (err) {
-	// 				ConfigPanel._changeProgress(false);
-	// 				LibraryHandler.output.appendLine("获取清单失败");
-	// 				LibraryHandler.output.appendLine(err);
-	// 				return;
-	// 			}
-	// 			var library = body.library;
-	// 			if (library === undefined) {
-	// 				this.output.appendLine("清单无效");
-	// 				vscode.window.showErrorMessage("补全库配置失败");
-	// 				ConfigPanel._changeProgress(false);
-	// 				return;
-	// 			}
-	// 			LibraryHandler.output.appendLine(JSON.stringify(library, null, 4));
-	// 			LibraryHandler.output.appendLine("库名: " + body.name);
-	// 			LibraryHandler.output.appendLine("库地址: " + body.source);
-	// 			if (library.javascript !== undefined && library.javascript !== null) {
-	// 				LibraryHandler.output.appendLine(
-	// 					"JavaScript库版本: " + library.javascript.version
-	// 				);
-	// 			}
-	// 			if (library.lua !== undefined && library.lua !== null) {
-	// 				LibraryHandler.output.appendLine("Lua库版本: " + library.lua.version);
-	// 			}
-	// 			vscode.window
-	// 				.showInformationMessage("是否继续?", "继续", "取消")
-	// 				.then((s: any) => {
-	// 					if (s === "继续") {
-	// 						if (
-	// 							library.javascript === undefined ||
-	// 							library.javascript === null
-	// 						) {
-	// 							LibraryHandler.output.appendLine("没有找到javascript库信息");
-	// 						} else {
-	// 							LibraryHandler.output.appendLine("开始配置Lirary: javascript");
-	// 							new LibraryHandler().handleJavaScript(library.javascript);
-	// 						}
-	// 						if (library.lua === undefined || library.lua === null) {
-	// 							//LibraryHandler.output.appendLine('没有找到lua库信息');
-	// 						} else {
-	// 							// TODO: 对lua的支持
-	// 						}
-	// 						return;
-	// 					}
-	// 					this.output.appendLine("取消操作");
-	// 					this.output.hide();
-	// 					ConfigPanel._changeProgress(false);
-	// 					return;
-	// 				});
-	// 		});
-	// 	});
-	// }
-	// public handleJavaScript(obj: { index: String; download_url: String }) {
-	// 	downloadFile(
-	// 		obj.download_url,
-	// 		LibraryHandler.libraryPath,
-	// 		(success, msg) => {
-	// 			if (!success) {
-	// 				LibraryHandler.output.appendLine("javascript库下载失败");
-	// 				LibraryHandler.output.appendLine(msg);
-	// 				vscode.window.showErrorMessage("补全库配置失败");
-	// 				ConfigPanel._changeProgress(false);
-	// 				return;
-	// 			}
-	// 			LibraryHandler.output.appendLine("javascript库下载成功");
-	// 			var filePath = msg;
-	// 			unzipAsync(
-	// 				filePath,
-	// 				LibraryHandler.libraryPath + "/JS",
-	// 				(success, msg) => {
-	// 					fs.unlink(filePath, () => {});
-	// 					if (!success) {
-	// 						LibraryHandler.output.appendLine(msg);
-	// 						vscode.window.showErrorMessage("javascript库解压失败");
-	// 						return;
-	// 					}
-	// 					LibraryHandler.output.appendLine("javascript库解压成功");
-	// 					var apiPath = findFileMatchSync(msg, obj.index.toString());
-	// 					if (apiPath === null) {
-	// 						vscode.window.showErrorMessage("找不到指定的库");
-	// 						return;
-	// 					}
-	// 					LibraryHandler.output.appendLine("找到Api文件" + apiPath);
-	// 					vscode.workspace
-	// 						.getConfiguration()
-	// 						.update(
-	// 							"extension.llseaids.javascriptApiPath",
-	// 							apiPath.replace("\\", "/"),
-	// 							vscode.ConfigurationTarget.Global
-	// 						)
-	// 						.then(() => {
-	// 							LibraryHandler.output.appendLine("javascript补全库配置成功");
-	// 							LibraryHandler.output.hide();
-	// 							ConfigPanel._changeProgress(false);
-	// 							vscode.window.showInformationMessage("JS补全库配置成功 ");
-	// 						});
-	// 				}
-	// 			);
-	// 		}
-	// 	);
-	// }
-
-	public static getLibraryLocal() {}
-
-	// public static getLibraryPath(
-	// 	callback: (path: String | any) => any
-	// ): String | any {
-	// 	var path = vscode.workspace
-	// 		.getConfiguration()
-	// 		.get("extension.llseaids.libraryPath");
-	// 	if (isNotEmpty(path)) {
-	// 		callback(path);
-	// 		return;
-	// 	}
-	// 	path = selectLibrary((path) => {
-	// 		callback(path);
-	// 		vscode.workspace
-	// 			.getConfiguration()
-	// 			.update(
-	// 				"extension.llseaids.libraryPath",
-	// 				path,
-	// 				vscode.ConfigurationTarget.Global
-	// 			)
-	// 			.then(() => {
-	// 				ConfigPanel._updateLibraryPath(path);
-	// 				LibraryHandler.libraryPath = path;
-	// 			});
-	// 	});
-	// }
-	private cancel() {
-		this.log("配置操作取消,此窗口将在10s后关闭", "WARNING");
+	private cancel(s: number) {
+		this.log("配置操作取消,此窗口将在" + s + "s后关闭", "WARNING");
 		this.log("您可在稍后重新进行配置", "WARNING");
 		setTimeout(() => {
 			this.output.hide();
 			this.output.dispose();
-		}, 10000);
+		}, s * 1000);
 	}
 	private log(msg: any, type: "INFO" | "ERROR" | "WARNING" = "INFO") {
 		const time = new Date().toLocaleTimeString();

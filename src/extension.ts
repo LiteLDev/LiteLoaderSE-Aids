@@ -1,7 +1,7 @@
 /*
  * @Author: DevMoxi moxiout@gmail.com
  * @Date: 2022-08-24 10:09:36
- * @LastEditTime: 2022-09-15 22:38:55
+ * @LastEditTime: 2022-09-17 08:37:11
  */
 /*
  * @Author: moxi moxiout@gmail.com
@@ -12,8 +12,10 @@ import * as vscode from "vscode";
 import { LibraryHandler } from "./handler/LibraryHandler";
 import { WorkspaceHandler } from "./handler/WorkSpaceHandler";
 import { TerminalHelper } from "./terminal/TerminalHelper";
-
+export let globalState: vscode.Memento;
 async function activate(context: vscode.ExtensionContext) {
+	globalState = context.globalState;
+
 	// init handler
 	new WorkspaceHandler(context)
 		.init(context)
