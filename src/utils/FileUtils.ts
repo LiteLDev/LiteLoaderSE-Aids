@@ -2,7 +2,7 @@
 /*
  * @Author: DevMoxi moxiout@gmail.com
  * @Date: 2022-09-13 10:56:15
- * @LastEditTime: 2022-09-16 12:51:34
+ * @LastEditTime: 2022-09-17 15:25:46
  */
 /*
  * @Author: DevMoxi moxiout@gmail.com
@@ -139,4 +139,18 @@ export function downloadFile(url: string, path: string): Promise<string> {
 				reject2(msg);
 			});
 	});
+}
+
+export function isLiteLoaderPath(path: string | null): boolean {
+	if (path === null) {
+		return false;
+	}
+	if (!fs.statSync(path).isDirectory()) {
+		return false;
+	}
+	// platform
+	if (process.platform === "win32") {
+		return fs.existsSync(path + "\\bedrock_server_mod.exe");
+	}
+	return fs.existsSync(path + "/bedrock_server_mod");
 }

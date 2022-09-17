@@ -14,6 +14,7 @@ import * as open from "open";
 import { ConfigScope, Sections } from "../data/ConfigScope";
 import { createIterator } from "../utils/ExtraUtil";
 import { globalState } from "../extension";
+import { ConfigPanel } from "../panels/ConfigPanel";
 /**
  * 补全库配置类
  * @description 主要使用异步+Promise
@@ -29,9 +30,12 @@ export class LibraryHandler {
 			Sections.libraryPath
 		) as String;
 	}
-	public start() {
-		const repo = "https://github.com/LiteLScript-Dev/HelperLib/raw/master/";
-		console.log("start");
+	public start(repo: string) {
+		// 兼容方案
+		if (repo.includes("/manifest.json")) {
+			repo = repo.replace("/manifest.json", "");
+		}
+		ConfigScope.setting().update("sourceUrl", repo);
 		this.output.show();
 		this.log("Repo: " + repo);
 		const run = () => {
@@ -250,6 +254,7 @@ export class LibraryHandler {
 								.then((_) => {
 									// success
 									this.libraryPath = path;
+									ConfigPanel._updateLibraryPath(path);
 									resolve(null);
 								});
 						})

@@ -1,13 +1,13 @@
 /*
  * @Author: DevMoxi moxiout@gmail.com
  * @Date: 2022-08-25 16:57:56
- * @LastEditTime: 2022-09-17 12:13:26
+ * @LastEditTime: 2022-09-17 15:32:19
  */
 import * as vscode from "vscode";
 import { ConfigScope, Sections } from "../data/ConfigScope";
+import { ConfigPanel } from "../panels/ConfigPanel";
 import { DocsPanel } from "../panels/DocsPanel";
 import { includesInArray } from "../utils/ExtraUtil";
-import { isNotEmpty } from "../utils/SomeUtil";
 
 export class WorkspaceHandler {
 	context: vscode.ExtensionContext;
@@ -23,7 +23,7 @@ export class WorkspaceHandler {
 		// commands
 		context.subscriptions.push(
 			vscode.commands.registerCommand("extension.llseaids.config", (uri) => {
-				//ConfigPanel.render(context.extensionUri);
+				ConfigPanel.render(context.extensionUri);
 			}),
 			vscode.commands.registerCommand("extension.llseaids.docs", () => {
 				DocsPanel.render();
@@ -57,6 +57,7 @@ export class WorkspaceHandler {
 							)
 							.then((v) => {
 								if (v === "前往配置") {
+									vscode.commands.executeCommand("extension.llseaids.config");
 								} else if (v === "不再提醒") {
 									ConfigScope.global().save(Sections.noReminder, true);
 									ConfigScope.global().save(Sections.noReminder, true);
@@ -65,13 +66,12 @@ export class WorkspaceHandler {
 					}
 					return new vscode.SnippetString("");
 				}
-				const body = `
-				ll.registerPlugin(
-					/* name */ "$1",
-					/* introduction */ "$2",
-					/* version */ "$3",
-					/* otherInformation */ "$4"
-				);`;
+				const body = `ll.registerPlugin(
+	/* name */ "$1",
+	/* introduction */ "$2",
+	/* version */ "$3",
+	/* otherInformation */ "$4"
+);`;
 				const header =
 					'//LiteLoaderScript Dev Helper\n/// <reference path="' +
 					referencePath +

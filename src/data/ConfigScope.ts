@@ -2,7 +2,7 @@
 /*
  * @Author: DevMoxi moxiout@gmail.com
  * @Date: 2022-09-16 08:28:20
- * @LastEditTime: 2022-09-17 12:07:59
+ * @LastEditTime: 2022-09-17 16:05:35
  */
 
 import * as vscode from "vscode";
@@ -34,8 +34,17 @@ export class ConfigScope {
 		};
 	}
 }
+export const pinnedSources = [
+	{
+		// {source1_name}
+		name: "官方源 (Github Raw)",
+		// {source1_repo}
+		repo: "https://github.com/LiteLScript-Dev/HelperLib/raw/master/",
+	},
+];
 
 export const Sections = {
 	libraryPath: "libraryPath",
 	noReminder: "noReminder",
+	bdsPath: "bdsPath",
 };
