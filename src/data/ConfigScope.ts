@@ -2,7 +2,7 @@
 /*
  * @Author: DevMoxi moxiout@gmail.com
  * @Date: 2022-09-16 08:28:20
- * @LastEditTime: 2022-09-17 10:21:24
+ * @LastEditTime: 2022-09-17 12:07:59
  */
 
 import * as vscode from "vscode";
@@ -37,4 +37,5 @@ export class ConfigScope {
 
 export const Sections = {
 	libraryPath: "libraryPath",
+	noReminder: "noReminder",
 };

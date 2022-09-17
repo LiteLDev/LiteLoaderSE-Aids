@@ -1,10 +1,10 @@
 /*
  * @Author: DevMoxi moxiout@gmail.com
  * @Date: 2022-08-25 16:57:56
- * @LastEditTime: 2022-09-17 11:23:43
+ * @LastEditTime: 2022-09-17 12:13:26
  */
 import * as vscode from "vscode";
-import { ConfigScope } from "../data/ConfigScope";
+import { ConfigScope, Sections } from "../data/ConfigScope";
 import { DocsPanel } from "../panels/DocsPanel";
 import { includesInArray } from "../utils/ExtraUtil";
 import { isNotEmpty } from "../utils/SomeUtil";
@@ -40,11 +40,30 @@ export class WorkspaceHandler {
 	}
 	static buildSnippetString(language: string): vscode.SnippetString {
 		//TODO: 多语言支持
+		if (language === "typescript") {
+			language = "javascript";
+		}
 		switch (language) {
-			case "javascript" || "typescript": {
+			case "javascript": {
 				const referencePath = ConfigScope.library().get("js").recent_index;
 				if (referencePath === undefined) {
-					vscode.window.showWarningMessage();
+					const noReminder = ConfigScope.global().get(Sections.noReminder);
+					if (noReminder !== true) {
+						vscode.window
+							.showWarningMessage(
+								"咱就说你都没有配置任何库",
+								"前往配置",
+								"不再提醒"
+							)
+							.then((v) => {
+								if (v === "前往配置") {
+								} else if (v === "不再提醒") {
+									ConfigScope.global().save(Sections.noReminder, true);
+									ConfigScope.global().save(Sections.noReminder, true);
+								}
+							});
+					}
+					return new vscode.SnippetString("");
 				}
 				const body = `
 				ll.registerPlugin(

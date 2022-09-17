@@ -136,7 +136,8 @@ export class LibraryHandler {
 			libInfo.library.forEach((i) => {
 				quickItems.push({
 					label: i.name,
-					description: "version: " + i.version + " index: " + i.index,
+					description:
+						"version: " + i.version + " index: " + i.index + " type: " + i.type,
 					detail: "Language: " + i.language,
 				});
 			});
