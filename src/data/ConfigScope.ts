@@ -2,7 +2,7 @@
 /*
  * @Author: DevMoxi moxiout@gmail.com
  * @Date: 2022-09-16 08:28:20
- * @LastEditTime: 2022-09-17 08:29:05
+ * @LastEditTime: 2022-09-17 10:21:24
  */
 
 import * as vscode from "vscode";
@@ -19,6 +19,17 @@ export class ConfigScope {
 			},
 			get: (language: "js" | "lua" | "py"): LibraryInfo => {
 				return globalState.get("extension.llseaids." + language) as LibraryInfo;
+			},
+		};
+	}
+
+	static global() {
+		return {
+			save: (key: string, value: any): Thenable<void> => {
+				return globalState.update("extension.llseaids." + key, value);
+			},
+			get: (key: string): any => {
+				return globalState.get("extension.llseaids." + key);
 			},
 		};
 	}
