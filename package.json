@@ -132,8 +132,8 @@
 			"properties": {
 				"extension.llseaids.sourceUrl": {
 					"type": "string",
-					"default": "https://github.com/LiteLScript-Dev/HelperLib/raw/master/manifest.json",
-					"description": "补全库的清单源地址",
+					"default": "default",
+					"description": "补全库的源地址",
 					"scope": "resource",
 					"order": 0
 				},
