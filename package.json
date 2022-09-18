@@ -3,7 +3,7 @@
 	"displayName": "LiteLoaderSE-Aids",
 	"publisher": "moxicat",
 	"description": "Assist in the development of LLScript's plugin",
-	"version": "2.1.2-rc.2",
+	"version": "2.1.3",
 	"preview": true,
 	"icon": "images/icon.png",
 	"repository": "https://github.com/LiteLScript-Dev/LiteLoaderSE-Aids",
