@@ -2,7 +2,7 @@
 /*
  * @Author: DevMoxi moxiout@gmail.com
  * @Date: 2022-09-13 10:56:15
- * @LastEditTime: 2022-09-18 09:42:37
+ * @LastEditTime: 2022-09-18 15:26:19
  */
 /*
  * @Author: DevMoxi moxiout@gmail.com
@@ -157,7 +157,8 @@ export function isLiteLoaderPath(path: string | null): boolean {
 }
 
 export function getLiteLoaderpath(): string {
-	const path = ConfigScope.global().get(Sections.bdsPath);
+	const path = ConfigScope.setting().get(Sections.bdsPath) as string;
+	console.log(path);
 	if (isLiteLoaderPath(path)) {
 		return path;
 	}

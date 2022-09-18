@@ -64,6 +64,11 @@ export class LibraryHandler {
 					let now = it.next();
 					if (now.done === true) {
 						this.log("安装已完成 共计" + now.length + "个包");
+						this.log("该窗口将在3s后自动关闭");
+						setTimeout(() => {
+							this.output.hide();
+							this.output.dispose();
+						}, 3 * 1000);
 					} else {
 						this.setup(now.value)
 							.then(() => func())

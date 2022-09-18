@@ -2,7 +2,7 @@
 /*
  * @Author: DevMoxi moxiout@gmail.com
  * @Date: 2022-09-16 08:28:20
- * @LastEditTime: 2022-09-18 15:13:36
+ * @LastEditTime: 2022-09-18 15:19:46
  */
 
 import * as vscode from "vscode";
@@ -17,7 +17,7 @@ export class ConfigScope {
 			save: (lib: LibraryInfo): Thenable<void> => {
 				return globalState.update("extension.llseaids." + lib.type, lib);
 			},
-			get: (language: "js" | "lua" | "py"): LibraryInfo => {
+			get: (language: "dts" | "lua" | "py"): LibraryInfo => {
 				return globalState.get("extension.llseaids." + language) as LibraryInfo;
 			},
 			clear: () => {
