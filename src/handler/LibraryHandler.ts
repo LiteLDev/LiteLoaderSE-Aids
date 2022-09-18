@@ -223,7 +223,7 @@ export class LibraryHandler {
 			if (!repoUrl.startsWith("http://") && !repoUrl.startsWith("https://")) {
 				reject("清单地址不合法!");
 			}
-			const manifestUrl = repoUrl + "/manifest_test.json";
+			const manifestUrl = repoUrl + "/manifest_real.json";
 			axios.default
 				.get(manifestUrl)
 				.then(function (response) {
