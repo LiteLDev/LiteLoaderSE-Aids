@@ -2,15 +2,14 @@
 /*
  * @Author: DevMoxi moxiout@gmail.com
  * @Date: 2022-09-05 20:40:18
- * @LastEditTime: 2022-09-08 08:30:44
+ * @LastEditTime: 2022-09-18 09:44:48
  */
-import * as nls from "vscode-nls";
 import * as vscode from "vscode";
 import "./TerminalConst";
 import * as path from "path";
 import { CommandType, TerminalKeys, TerminalState } from "./TerminalConst";
-import { getBDSCwdPath, getBDSPath } from "../utils/WorkspaceUtil";
-const localize = nls.loadMessageBundle();
+import { getLiteLoaderpath } from "../utils/FileUtils";
+// import { getBDSCwdPath, getBDSPath } from "../utils/WorkspaceUtil";
 export class TerminalHelper {
 	static terminal: vscode.Terminal | undefined;
 	static context: vscode.ExtensionContext;
@@ -21,7 +20,6 @@ export class TerminalHelper {
 		this.registerCommands();
 		vscode.window.onDidCloseTerminal((t) => {
 			if (t.name === TerminalKeys.NAME) {
-				console.log(t.exitStatus?.code);
 				vscode.commands.executeCommand("setContext", "llse:termianl", false);
 				if (t.exitStatus?.code === 0) {
 					context.workspaceState.update(
@@ -125,23 +123,23 @@ export class TerminalHelper {
 		}
 	}
 	createTerminal() {
-		const shellPath = getBDSPath();
-		const cwdPath = getBDSCwdPath();
-		if (shellPath === null || cwdPath === null) {
-			return;
+		try {
+			const cwdPath = getLiteLoaderpath();
+			let t = vscode.window.createTerminal({
+				name: TerminalKeys.NAME,
+				shellPath: cwdPath + "\\bedrock_server_mod.exe",
+				cwd: cwdPath,
+			});
+			t.show();
+			TerminalHelper.terminal = t;
+			TerminalHelper.context.workspaceState.update(
+				TerminalKeys.STATE,
+				TerminalState.OPENED
+			);
+			vscode.commands.executeCommand("setContext", "llse:termianl", true);
+		} catch (err) {
+			vscode.window.showErrorMessage("" + err);
 		}
-		let t = vscode.window.createTerminal({
-			name: TerminalKeys.NAME,
-			shellPath: shellPath,
-			cwd: cwdPath,
-		});
-		t.show();
-		TerminalHelper.terminal = t;
-		TerminalHelper.context.workspaceState.update(
-			TerminalKeys.STATE,
-			TerminalState.OPENED
-		);
-		vscode.commands.executeCommand("setContext", "llse:termianl", true);
 	}
 	managePlugin(type: CommandType, filePath: string) {
 		const state = TerminalHelper.context.workspaceState.get(TerminalKeys.STATE);
@@ -194,4 +192,8 @@ export class TerminalHelper {
 			}
 		});
 	}
+}
+
+function localize(str: string, str2: string) {
+	return str2;
 }

@@ -2,7 +2,7 @@
 /*
  * @Author: moxi moxiout@gmail.com
  * @Date: 2022-08-24 11:22:00
- * @LastEditTime: 2022-09-06 12:46:54
+ * @LastEditTime: 2022-09-17 16:15:34
  */
 const vscode = acquireVsCodeApi();
 window.addEventListener("load", main);
@@ -15,6 +15,9 @@ function initListener() {
 	document
 		.getElementById("source_get")
 		.addEventListener("click", sourceGetButtonClick);
+	document
+		.getElementById("source_get_local")
+		.addEventListener("click", sourceGetSelfButtonClick);
 	document
 		.getElementById("library_select")
 		.addEventListener("click", librarySelectButtonClick);
@@ -79,28 +82,34 @@ function setDefaultConfig(args) {
 	const source2 = document.getElementById("source_radio_2");
 	const source_diy = document.getElementById("source_diy");
 	const source_diy_url = document.getElementById("source_diy_url");
-	switch (args.sourceUrl) {
-		case source1.value:
-			source1.checked = true;
-			source_diy.checked = false;
-			source_diy_url.style.display = "none";
-			break;
-		case source2.value:
-			source2.checked = true;
-			source_diy.checked = false;
-			source_diy_url.style.display = "none";
-			break;
-		case source_diy_url.value:
-			source_diy.checked = true;
-			source_diy_url.style.display = "block";
-			break;
-		default:
-			source1.checked = false;
-			source2.checked = false;
-			source_diy.checked = true;
-			source_diy_url.style.display = "block";
-			source_diy_url.value = args.sourceUrl;
-			break;
+	if (args.sourceUrl === "default") {
+		source1.checked = true;
+		source_diy.checked = false;
+		source_diy_url.style.display = "none";
+	} else {
+		switch (args.sourceUrl) {
+			case source1.value:
+				source1.checked = true;
+				source_diy.checked = false;
+				source_diy_url.style.display = "none";
+				break;
+			case source2.value:
+				source2.checked = true;
+				source_diy.checked = false;
+				source_diy_url.style.display = "none";
+				break;
+			case source_diy_url.value:
+				source_diy.checked = true;
+				source_diy_url.style.display = "block";
+				break;
+			default:
+				source1.checked = false;
+				source2.checked = false;
+				source_diy.checked = true;
+				source_diy_url.style.display = "block";
+				source_diy_url.value = args.sourceUrl;
+				break;
+		}
 	}
 	const libraryPathText = document.getElementById("library_path");
 	libraryPathText.value = args.libraryPath;
@@ -119,7 +128,9 @@ function setDefaultConfig(args) {
 	console.log(args.autoSplitDocs);
 	autoSplitDocsView.checked = args.autoSplitDocs;
 }
-
+function sourceGetSelfButtonClick() {
+	postMessage("source_get_local");
+}
 function sourceGetButtonClick() {
 	const source1 = document.getElementById("source_radio_1");
 	const source2 = document.getElementById("source_radio_2");
