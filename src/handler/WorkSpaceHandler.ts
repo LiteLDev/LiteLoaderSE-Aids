@@ -1,7 +1,7 @@
 /*
  * @Author: DevMoxi moxiout@gmail.com
  * @Date: 2022-08-25 16:57:56
- * @LastEditTime: 2022-09-18 14:59:08
+ * @LastEditTime: 2022-09-18 15:31:50
  */
 import * as vscode from "vscode";
 import { ConfigScope, Sections } from "../data/ConfigScope";
@@ -36,7 +36,7 @@ export class WorkspaceHandler {
 
 		// may first time run
 		//TODO: 更优雅的判断
-		var libraryIndex = ConfigScope.library().get("js");
+		var libraryIndex = ConfigScope.library().get("dts");
 		console.log(libraryIndex);
 
 		if (libraryIndex === null || libraryIndex === undefined) {
@@ -64,7 +64,7 @@ export class WorkspaceHandler {
 		}
 		switch (language) {
 			case "javascript": {
-				const reference = ConfigScope.library().get("js");
+				const reference = ConfigScope.library().get("dts");
 				if (reference === undefined) {
 					const noReminder = ConfigScope.global().get(Sections.noReminder);
 					if (noReminder !== true) {
@@ -85,11 +85,11 @@ export class WorkspaceHandler {
 					}
 					return new vscode.SnippetString("");
 				}
-				const referencePath = ConfigScope.library().get("js").recent_index;
+				const referencePath = ConfigScope.library().get("dts").recent_index;
 				const body = `ll.registerPlugin(
 	/* name */ "$1",
 	/* introduction */ "$2",
-	/* version */ "$3",
+	/* version */ [0,0,1],
 	/* otherInformation */ "$4"
 );`;
 				const header =
