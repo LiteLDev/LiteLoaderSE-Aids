@@ -2,7 +2,7 @@
 /*
  * @Author: DevMoxi moxiout@gmail.com
  * @Date: 2022-09-13 10:56:15
- * @LastEditTime: 2022-09-17 15:25:46
+ * @LastEditTime: 2022-09-18 09:42:37
  */
 /*
  * @Author: DevMoxi moxiout@gmail.com
@@ -16,6 +16,7 @@ import * as vscode from "vscode";
 import { randomUUID } from "crypto";
 import { rejects } from "assert";
 import { resolve } from "path";
+import { ConfigScope, Sections } from "../data/ConfigScope";
 
 /**
  * 同步查找文件匹配
@@ -142,7 +143,7 @@ export function downloadFile(url: string, path: string): Promise<string> {
 }
 
 export function isLiteLoaderPath(path: string | null): boolean {
-	if (path === null) {
+	if (path === null || path === undefined) {
 		return false;
 	}
 	if (!fs.statSync(path).isDirectory()) {
@@ -153,4 +154,13 @@ export function isLiteLoaderPath(path: string | null): boolean {
 		return fs.existsSync(path + "\\bedrock_server_mod.exe");
 	}
 	return fs.existsSync(path + "/bedrock_server_mod");
+}
+
+export function getLiteLoaderpath(): string {
+	const path = ConfigScope.global().get(Sections.bdsPath);
+	if (isLiteLoaderPath(path)) {
+		return path;
+	}
+	vscode.commands.executeCommand("extension.llseaids.config");
+	throw new Error("BDSPATH未配置");
 }

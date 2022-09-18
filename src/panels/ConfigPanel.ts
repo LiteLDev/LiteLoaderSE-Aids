@@ -230,7 +230,7 @@ export class ConfigPanel {
 						new LibraryHandler().start(data);
 						break;
 					case "source_get_local":
-						//LibraryHandler.getLibraryLocal();
+						new LibraryHandler().startLocal();
 						break;
 					case "library_select":
 						selectFolder("选择库存放目录").then((v) => {

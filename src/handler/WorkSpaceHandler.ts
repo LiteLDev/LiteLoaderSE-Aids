@@ -1,7 +1,7 @@
 /*
  * @Author: DevMoxi moxiout@gmail.com
  * @Date: 2022-08-25 16:57:56
- * @LastEditTime: 2022-09-17 15:32:19
+ * @LastEditTime: 2022-09-18 14:45:14
  */
 import * as vscode from "vscode";
 import { ConfigScope, Sections } from "../data/ConfigScope";
@@ -27,13 +27,32 @@ export class WorkspaceHandler {
 			}),
 			vscode.commands.registerCommand("extension.llseaids.docs", () => {
 				DocsPanel.render();
+			}),
+			vscode.commands.registerCommand("extension.llseaids.clear", () => {
+				ConfigScope.library().clear();
+				vscode.window.showInformationMessage("ok,please restart vscode");
 			})
 		);
+
 		// may first time run
-		var libraryPath = vscode.workspace
-			.getConfiguration()
-			.get("extension.llseaids.libraryPath");
-		if (libraryPath === null) {
+		//TODO: 更优雅的判断
+		var libraryIndex = ConfigScope.library().get("js");
+		console.log(libraryIndex);
+
+		if (libraryIndex === null || libraryIndex === undefined) {
+			console.log(ConfigScope.setting().get(Sections.noReminder2, true));
+			if (ConfigScope.global().get(Sections.noReminder2) !== true) {
+				vscode.window
+					.showInformationMessage(
+						"正在使用Preview版本,您可能需要重新进行库配置",
+						"不再提示"
+					)
+					.then((s) => {
+						if (s === "不再提示") {
+							ConfigScope.global().save(Sections.noReminder2, true);
+						}
+					});
+			}
 			vscode.commands.executeCommand("extension.llseaids.config");
 		}
 		return this;
@@ -45,8 +64,8 @@ export class WorkspaceHandler {
 		}
 		switch (language) {
 			case "javascript": {
-				const referencePath = ConfigScope.library().get("js").recent_index;
-				if (referencePath === undefined) {
+				const reference = ConfigScope.library().get("js");
+				if (reference === undefined) {
 					const noReminder = ConfigScope.global().get(Sections.noReminder);
 					if (noReminder !== true) {
 						vscode.window
@@ -66,6 +85,7 @@ export class WorkspaceHandler {
 					}
 					return new vscode.SnippetString("");
 				}
+				const referencePath = ConfigScope.library().get("js").recent_index;
 				const body = `ll.registerPlugin(
 	/* name */ "$1",
 	/* introduction */ "$2",
@@ -102,9 +122,15 @@ export class WorkspaceHandler {
 						description: " 快捷导入LiteLoaderSE补全引用",
 						label: "lxl",
 					});
-					snippetCompletion.insertText = WorkspaceHandler.buildSnippetString(
-						document.languageId
-					);
+					// //TODO: 性能优化
+					if (document.lineAt(position.line).text.includes("l")) {
+						snippetCompletion.insertText = WorkspaceHandler.buildSnippetString(
+							document.languageId
+						);
+						snippetCompletion2.insertText = WorkspaceHandler.buildSnippetString(
+							document.languageId
+						);
+					}
 					return [snippetCompletion, snippetCompletion2];
 				},
 			},

@@ -2,12 +2,13 @@
 /*
  * @Author: DevMoxi moxiout@gmail.com
  * @Date: 2022-09-05 20:40:18
- * @LastEditTime: 2022-09-17 15:27:43
+ * @LastEditTime: 2022-09-18 09:44:48
  */
 import * as vscode from "vscode";
 import "./TerminalConst";
 import * as path from "path";
 import { CommandType, TerminalKeys, TerminalState } from "./TerminalConst";
+import { getLiteLoaderpath } from "../utils/FileUtils";
 // import { getBDSCwdPath, getBDSPath } from "../utils/WorkspaceUtil";
 export class TerminalHelper {
 	static terminal: vscode.Terminal | undefined;
@@ -122,23 +123,23 @@ export class TerminalHelper {
 		}
 	}
 	createTerminal() {
-		// const shellPath = getBDSPath();
-		// const cwdPath = getBDSCwdPath();
-		// if (shellPath === null || cwdPath === null) {
-		// 	return;
-		// }
-		// let t = vscode.window.createTerminal({
-		// 	name: TerminalKeys.NAME,
-		// 	shellPath: shellPath,
-		// 	cwd: cwdPath,
-		// });
-		// t.show();
-		// TerminalHelper.terminal = t;
-		// TerminalHelper.context.workspaceState.update(
-		// 	TerminalKeys.STATE,
-		// 	TerminalState.OPENED
-		// );
-		// vscode.commands.executeCommand("setContext", "llse:termianl", true);
+		try {
+			const cwdPath = getLiteLoaderpath();
+			let t = vscode.window.createTerminal({
+				name: TerminalKeys.NAME,
+				shellPath: cwdPath + "\\bedrock_server_mod.exe",
+				cwd: cwdPath,
+			});
+			t.show();
+			TerminalHelper.terminal = t;
+			TerminalHelper.context.workspaceState.update(
+				TerminalKeys.STATE,
+				TerminalState.OPENED
+			);
+			vscode.commands.executeCommand("setContext", "llse:termianl", true);
+		} catch (err) {
+			vscode.window.showErrorMessage("" + err);
+		}
 	}
 	managePlugin(type: CommandType, filePath: string) {
 		const state = TerminalHelper.context.workspaceState.get(TerminalKeys.STATE);

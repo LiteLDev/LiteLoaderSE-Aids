@@ -2,7 +2,7 @@
 /*
  * @Author: DevMoxi moxiout@gmail.com
  * @Date: 2022-09-16 08:28:20
- * @LastEditTime: 2022-09-17 16:05:35
+ * @LastEditTime: 2022-09-18 09:25:44
  */
 
 import * as vscode from "vscode";
@@ -19,6 +19,9 @@ export class ConfigScope {
 			},
 			get: (language: "js" | "lua" | "py"): LibraryInfo => {
 				return globalState.get("extension.llseaids." + language) as LibraryInfo;
+			},
+			clear: () => {
+				globalState.update("extension.llseaids.js", undefined);
 			},
 		};
 	}
@@ -46,5 +49,6 @@ export const pinnedSources = [
 export const Sections = {
 	libraryPath: "libraryPath",
 	noReminder: "noReminder",
+	noReminder2: "noReminder2",
 	bdsPath: "bdsPath",
 };

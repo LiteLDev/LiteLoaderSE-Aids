@@ -30,6 +30,9 @@ export class LibraryHandler {
 			Sections.libraryPath
 		) as String;
 	}
+	startLocal() {
+		throw new Error("Method not implemented.");
+	}
 	public start(repo: string) {
 		// 兼容方案
 		if (repo.includes("/manifest.json")) {
@@ -230,9 +233,9 @@ export class LibraryHandler {
 						reject("请求清单出现错误 状态码" + response.status);
 					}
 				})
-				.catch(function (error) {
+				.catch((error) => {
+					this.log("请求清单出现错误, 建议更换源重试");
 					reject(error);
-					console.log(error);
 				});
 		});
 	}

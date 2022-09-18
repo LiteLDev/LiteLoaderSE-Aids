@@ -66,6 +66,10 @@
 				"command": "extension.llseaids.unload",
 				"title": "unload this file to LiteLoaderBDS",
 				"icon": "$(arrow-down)"
+			},
+			{
+				"command": "extension.llseaids.clear",
+				"title": "clear & reset library config"
 			}
 		],
 		"menus": {
