@@ -1,7 +1,7 @@
 <!--
  * @Author: DevMoxi moxiout@gmail.com
  * @Date: 2022-08-24 10:09:31
- * @LastEditTime: 2022-09-06 13:37:16
+ * @LastEditTime: 2022-09-18 15:38:17
 -->
 
 # LiteLoaderSE-Aids
@@ -19,12 +19,14 @@
 
 - [x] 傻瓜式的窗口化配置页面
 - [x] 自动从配置源拉取库并配置
-- [x] 自动配置引用(JS)
+- [x] 自动配置引用(JS/TS)
 - [x] 支持内嵌文档阅读
 - [x] [控制台热重载辅助](https://github.com/LiteLScript-Dev/LiteLoaderSE-Aids/wiki#%E6%8E%A7%E5%88%B6%E5%8F%B0%E8%BE%85%E5%8A%A9)
 - [x] [WIKi](https://github.com/LiteLScript-Dev/LiteLoaderSE-Aids/wiki)
+- [x] 软件包式的库安装
+- [ ] 自动打包 NodeJs 插件
 - [ ] 支持更新检测
-- [ ] 支持拉取 [Lua 库](src\handler\LibraryHandler.ts)
+- [ ] 支持安装 [Lua 库](src\handler\LibraryHandler.ts)
 - [ ] 支持 QuickJS、NodeJS、Lua 调试
 - [ ] 更多可配置项 80%
 - [ ] [i18n](https://github.com/microsoft/vscode-extension-samples/tree/main/i18n-sample)
