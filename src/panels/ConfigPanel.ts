@@ -2,10 +2,8 @@
 import * as vscode from "vscode";
 import { getUri } from "../utils/getUri";
 import { LibraryHandler } from "../handler/LibraryHandler";
-import { selectLibrary } from "../utils/SomeUtil";
-import { checkBDSPath } from "../utils/WorkspaceUtil";
-import * as nls from "vscode-nls";
-const localize = nls.loadMessageBundle();
+import { isLiteLoaderPath, selectFolder } from "../utils/FileUtils";
+import { ConfigScope, pinnedSources, Sections } from "../data/ConfigScope";
 
 export class ConfigPanel {
 	public static currentPanel: ConfigPanel | undefined;
@@ -75,7 +73,7 @@ export class ConfigPanel {
 		const mainUri = getUri(webview, extensionUri, ["webview-ui", "main.js"]);
 		const imageUri = getUri(webview, extensionUri, ["images", "icon.png"]);
 		// Tip: Install the es6-string-html VS Code extension to enable code highlighting below (必要)
-		return /*html*/ `
+		let text = /*html*/ `
         <!DOCTYPE html>
         <html lang="en">
 
@@ -145,12 +143,12 @@ export class ConfigPanel {
                     <label slot="label">源地址</label>
                     <!-- 必须同时在Package.json配置-->
                     <vscode-radio id='source_radio_1'
-                      value='https://github.com/LiteLScript-Dev/HelperLib/raw/master/manifest.json'>
-                      官方源 (Github Raw)
+                      value='{source1_repo}'>
+                      {source1_name}
                     </vscode-radio>
                     <vscode-radio id='source_radio_2'
-                      value='https://raw.fastgit.org/LiteLScript-Dev/HelperLib/master/manifest_cdn.json'>
-                      镜像源 (FastGit)
+                      value='{source2_repo}'>
+                      {source2_name}
                     </vscode-radio>
                     <vscode-radio id='source_diy'>
                       自定义
@@ -162,13 +160,13 @@ export class ConfigPanel {
                 <div class="div_s_h">
                   <div>
                     <vscode-button id="source_get">拉取并保存</vscode-button>
+                    <vscode-button id="source_get_local">手动选择</vscode-button>
                   </div>
                   <div style="position: relative; left: 10px;">
                     <vscode-progress-ring id="library_ring" style="visibility:hidden;">
                     </vscode-progress-ring>
                   </div>
                 </div>
-                <!-- todo -->
               </div>
               </div>
             </vscode-panel-view>
@@ -211,6 +209,13 @@ export class ConfigPanel {
                 </vscode-panels>
         </html>
   `;
+		let i = 0;
+		for (let d of pinnedSources) {
+			i++;
+			text = text.replace("{source" + i.toString() + "_repo}", d.repo);
+			text = text.replace("{source" + i.toString() + "_name}", d.name);
+		}
+		return text;
 	}
 
 	// 这是一个一个listener
@@ -222,45 +227,26 @@ export class ConfigPanel {
 				console.log(command, data);
 				switch (command) {
 					case "source_get":
-						LibraryHandler.getLibrary(data);
+						new LibraryHandler().start(data);
+						break;
+					case "source_get_local":
+						new LibraryHandler().startLocal();
 						break;
 					case "library_select":
-						selectLibrary((uri) => {
-							vscode.workspace
-								.getConfiguration()
-								.update(
-									"extension.llseaids.libraryPath",
-									uri,
-									vscode.ConfigurationTarget.Global
-								)
-								.then(() => {
-									ConfigPanel._updateLibraryPath(uri);
-									LibraryHandler.libraryPath = uri;
-								});
+						selectFolder("选择库存放目录").then((v) => {
+							ConfigPanel._updateLibraryPath(v);
+							ConfigScope.setting().update(Sections.libraryPath, v);
 						});
 						break;
 					case "bdsPath_select":
-						selectLibrary((uri) => {
-							if (!checkBDSPath(uri)) {
-								const bds_path_invalid = localize(
-									"bds_path_invalid_message",
-									"BDS根目录无效"
-								);
-								vscode.window.showWarningMessage(bds_path_invalid);
+						selectFolder("选择BDS/LiteLoader根目录").then((v) => {
+							if (isLiteLoaderPath(v)) {
+								ConfigPanel._updatebdsPathPath(v);
+								ConfigScope.setting().update(Sections.bdsPath, v);
 							} else {
-								vscode.workspace
-									.getConfiguration()
-									.update(
-										"extension.llseaids.bdsPath",
-										uri,
-										vscode.ConfigurationTarget.Global
-									)
-									.then(() => {
-										ConfigPanel._updatebdsPathPath(uri);
-									});
+								vscode.window.showErrorMessage("未找到bedrock_server_mod.exe");
 							}
 						});
-
 						break;
 					case "debugger_config":
 						vscode.workspace

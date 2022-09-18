@@ -1,7 +1,7 @@
 /*
  * @Author: DevMoxi moxiout@gmail.com
  * @Date: 2022-08-24 10:09:36
- * @LastEditTime: 2022-09-05 21:52:12
+ * @LastEditTime: 2022-09-17 15:59:45
  */
 /*
  * @Author: moxi moxiout@gmail.com
@@ -11,10 +11,10 @@
 import * as vscode from "vscode";
 import { WorkspaceHandler } from "./handler/WorkSpaceHandler";
 import { TerminalHelper } from "./terminal/TerminalHelper";
-import * as nls from "vscode-nls";
-const localize = nls.config({ messageFormat: nls.MessageFormat.file })();
+export let globalState: vscode.Memento;
 
 async function activate(context: vscode.ExtensionContext) {
+	globalState = context.globalState;
 	// init handler
 	new WorkspaceHandler(context)
 		.init(context)
@@ -22,9 +22,7 @@ async function activate(context: vscode.ExtensionContext) {
 		.onCreateFile();
 	// init debugger
 	//activateDebugger(context);
-	// set menu visibility
 	new TerminalHelper(context);
-	localize("", "");
 }
 
 exports.deactivate = function () {};
