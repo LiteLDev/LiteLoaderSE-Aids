@@ -2,7 +2,7 @@
 /*
  * @Author: DevMoxi moxiout@gmail.com
  * @Date: 2022-09-16 08:28:20
- * @LastEditTime: 2022-09-18 09:25:44
+ * @LastEditTime: 2022-09-18 15:13:36
  */
 
 import * as vscode from "vscode";
@@ -43,6 +43,10 @@ export const pinnedSources = [
 		name: "官方源 (Github Raw)",
 		// {source1_repo}
 		repo: "https://github.com/LiteLScript-Dev/HelperLib/raw/master/",
+	},
+	{
+		name: "镜像库 (Codeberg)",
+		repo: "https://codeberg.org/moixsuki/LLAIDS/raw/branch/main/",
 	},
 ];
 

@@ -1,7 +1,7 @@
 /*
  * @Author: DevMoxi moxiout@gmail.com
  * @Date: 2022-08-25 16:57:56
- * @LastEditTime: 2022-09-18 14:45:14
+ * @LastEditTime: 2022-09-18 14:59:08
  */
 import * as vscode from "vscode";
 import { ConfigScope, Sections } from "../data/ConfigScope";
@@ -122,6 +122,10 @@ export class WorkspaceHandler {
 						description: " 快捷导入LiteLoaderSE补全引用",
 						label: "lxl",
 					});
+					const snippetCompletion3 = new vscode.CompletionItem({
+						description: " 快捷导入LiteLoaderSE补全引用",
+						label: "lls",
+					});
 					// //TODO: 性能优化
 					if (document.lineAt(position.line).text.includes("l")) {
 						snippetCompletion.insertText = WorkspaceHandler.buildSnippetString(
@@ -130,8 +134,11 @@ export class WorkspaceHandler {
 						snippetCompletion2.insertText = WorkspaceHandler.buildSnippetString(
 							document.languageId
 						);
+						snippetCompletion3.insertText = WorkspaceHandler.buildSnippetString(
+							document.languageId
+						);
 					}
-					return [snippetCompletion, snippetCompletion2];
+					return [snippetCompletion, snippetCompletion2, snippetCompletion3];
 				},
 			},
 			"ll" // triggered whenever a 'll' is being typed
