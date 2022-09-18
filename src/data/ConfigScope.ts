@@ -45,7 +45,7 @@ export const pinnedSources = [
 		repo: "https://github.com/LiteLScript-Dev/HelperLib/raw/master/",
 	},
 	{
-		name: "镜像库 (Codeberg)",
+		name: "镜像源 (Codeberg)",
 		repo: "https://codeberg.org/moixsuki/LLAIDS/raw/branch/main/",
 	},
 ];
