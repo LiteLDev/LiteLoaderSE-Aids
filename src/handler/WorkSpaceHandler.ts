@@ -1,7 +1,7 @@
 /*
  * @Author: DevMoxi moxiout@gmail.com
  * @Date: 2022-08-25 16:57:56
- * @LastEditTime: 2022-09-18 15:31:50
+ * @LastEditTime: 2022-09-18 16:45:25
  */
 import * as vscode from "vscode";
 import { ConfigScope, Sections } from "../data/ConfigScope";
@@ -90,7 +90,7 @@ export class WorkspaceHandler {
 	/* name */ "$1",
 	/* introduction */ "$2",
 	/* version */ [0,0,1],
-	/* otherInformation */ "$4"
+	/* otherInformation */ null
 );`;
 				const header =
 					'//LiteLoaderScript Dev Helper\n/// <reference path="' +
