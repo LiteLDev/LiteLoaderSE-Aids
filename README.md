@@ -21,8 +21,9 @@
 - [x] 自动从配置源拉取库并配置
 - [x] 自动配置引用(JS/TS)
 - [x] 支持内嵌文档阅读
+- [x] 插件注册配置代码片段
 - [x] [控制台热重载辅助](https://github.com/LiteLScript-Dev/LiteLoaderSE-Aids/wiki#%E6%8E%A7%E5%88%B6%E5%8F%B0%E8%BE%85%E5%8A%A9)
-- [x] [WIKi](https://github.com/LiteLScript-Dev/LiteLoaderSE-Aids/wiki)
+- [ ] [WIKi](https://github.com/LiteLScript-Dev/LiteLoaderSE-Aids/wiki)
 - [x] 软件包式的库安装
 - [ ] 自动打包 NodeJs 插件
 - [ ] 支持更新检测
