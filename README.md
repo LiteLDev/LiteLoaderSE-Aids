@@ -11,6 +11,7 @@
 
 适用于 Visual Studio Code 的 [LiteLoaderSE](https://github.com/LiteLDev/LiteLoaderBDS) 开发辅助工具
 
+库贡献请看 [HelperLib](https://github.com/LiteLScript-Dev/HelperLib)
 # Usage
 
 请移步 [WIKi](https://github.com/LiteLScript-Dev/LiteLoaderSE-Aids/wiki)
