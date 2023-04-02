@@ -1,9 +1,3 @@
-<!--
- * @Author: DevMoxi moxiout@gmail.com
- * @Date: 2022-08-24 10:09:31
- * @LastEditTime: 2022-09-18 15:38:17
--->
-
 # LiteLoaderSE-Aids
 
 [![Version](https://vsmarketplacebadge.apphb.com/version-short/moxicat.LLScriptHelper.svg)](https://marketplace.visualstudio.com/items?itemName=moxicat.LLScriptHelper)
