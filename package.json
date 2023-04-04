@@ -3,7 +3,7 @@
 	"displayName": "LiteLoaderSE-Aids",
 	"publisher": "moxicat",
 	"description": "Assist in the development of LLScript's plugin",
-	"version": "2.1.4",
+	"version": "2.1.7",
 	"preview": true,
 	"icon": "images/icon.png",
 	"repository": "https://github.com/LiteLScript-Dev/LiteLoaderSE-Aids",
@@ -44,7 +44,7 @@
 				"title": "Run LiteLoaderBDS",
 				"category": "llse",
 				"enablement": "!inDebugMode",
-				"icon": "$(debug-alt)"
+				"icon": "./images/logo.svg"
 			},
 			{
 				"command": "extension.llseaids.stopconsole",
@@ -75,27 +75,12 @@
 		"menus": {
 			"editor/title": [
 				{
-					"when": "resourceLangId == lua || resourceLangId== javascript",
-					"command": "extension.llseaids.docs",
-					"group": "navigation@6"
-				},
-				{
 					"when": "resourceLangId == javascript && !llse:termianl",
 					"command": "extension.llseaids.runconsole",
 					"group": "navigation@1"
 				},
 				{
-					"when": "resourceLangId == lua && !llse:termianl",
-					"command": "extension.llseaids.runconsole",
-					"group": "navigation@1"
-				},
-				{
 					"when": "resourceLangId == javascript && llse:termianl",
-					"command": "extension.llseaids.unload",
-					"group": "navigation@3"
-				},
-				{
-					"when": "resourceLangId == lua && llse:termianl",
 					"command": "extension.llseaids.unload",
 					"group": "navigation@3"
 				},
@@ -105,17 +90,7 @@
 					"group": "navigation@2"
 				},
 				{
-					"when": "resourceLangId == lua && llse:termianl",
-					"command": "extension.llseaids.load",
-					"group": "navigation@2"
-				},
-				{
 					"when": "resourceLangId == javascript && llse:termianl",
-					"command": "extension.llseaids.reload",
-					"group": "navigation@4"
-				},
-				{
-					"when": "resourceLangId == lua && llse:termianl",
 					"command": "extension.llseaids.reload",
 					"group": "navigation@4"
 				},
@@ -126,6 +101,61 @@
 				},
 				{
 					"when": "resourceLangId == lua && llse:termianl",
+					"command": "extension.llseaids.reload",
+					"group": "navigation@4"
+				},
+				{
+					"when": "resourceLangId == lua && llse:termianl",
+					"command": "extension.llseaids.stopconsole",
+					"group": "navigation@1"
+				},
+				{
+					"when": "resourceLangId == lua && llse:termianl",
+					"command": "extension.llseaids.load",
+					"group": "navigation@2"
+				},
+				{
+					"when": "resourceLangId == lua && llse:termianl",
+					"command": "extension.llseaids.unload",
+					"group": "navigation@3"
+				},
+				{
+					"when": "resourceLangId == lua && !llse:termianl",
+					"command": "extension.llseaids.runconsole",
+					"group": "navigation@1"
+				},
+				{
+					"when": "resourceLangId == lua || resourceLangId== javascript",
+					"command": "extension.llseaids.docs",
+					"group": "navigation@6"
+				},
+				{
+					"when": "resourceLangId == python || resourceLangId== javascript",
+					"command": "extension.llseaids.docs",
+					"group": "navigation@6"
+				},
+				{
+					"when": "resourceLangId == python && !llse:termianl",
+					"command": "extension.llseaids.runconsole",
+					"group": "navigation@1"
+				},
+				{
+					"when": "resourceLangId == python && llse:termianl",
+					"command": "extension.llseaids.unload",
+					"group": "navigation@3"
+				},
+				{
+					"when": "resourceLangId == python && llse:termianl",
+					"command": "extension.llseaids.load",
+					"group": "navigation@2"
+				},
+				{
+					"when": "resourceLangId == python && llse:termianl",
+					"command": "extension.llseaids.reload",
+					"group": "navigation@4"
+				},
+				{
+					"when": "resourceLangId == python && llse:termianl",
 					"command": "extension.llseaids.stopconsole",
 					"group": "navigation@1"
 				}
@@ -204,6 +234,7 @@
 	"devDependencies": {
 		"@types/node": "14.x",
 		"@types/node-fetch": "^2.6.1",
+		"@types/ps-tree": "^1.1.2",
 		"@types/vscode": "^1.58.0",
 		"@typescript-eslint/eslint-plugin": "^4.26.0",
 		"@typescript-eslint/parser": "^4.26.0",
@@ -216,9 +247,11 @@
 		"@vscode/webview-ui-toolkit": "^1.0.1",
 		"async": "^3.2.0",
 		"axios": "^0.27.2",
+		"iconv-lite": "^0.6.3",
 		"node-fetch": "^2.6.1",
 		"node-stream-zip": "^1.15.0",
 		"open": "^8.4.0",
-		"path": "^0.12.7"
+		"path": "^0.12.7",
+		"ps-tree": "^1.2.0"
 	}
 }

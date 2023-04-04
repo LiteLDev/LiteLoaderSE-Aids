@@ -6,7 +6,6 @@
 		"**/CVS": true,
 		"**/.DS_Store": true,
 		"**/Thumbs.db": true,
-		"images": true,
 		"node_modules": true,
 		"out": true,
 		".eslintrc.json": true,
@@ -15,7 +14,6 @@
 		"LICENSE": true
 	},
 	"hide-files.files": [
-		"images",
 		"node_modules",
 		"out",
 		".eslintrc.json",

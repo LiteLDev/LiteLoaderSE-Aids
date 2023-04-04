@@ -12,10 +12,14 @@ interface LibraryInfo {
 	index: string;
 	download_url: string;
 	recent_index: string;
+	// for advanced setup
+	cmd:string;
+	tip:string;
 }
 
 interface SourceInfo {
 	name: string;
 	source: string;
+	wiki: string;
 	library: LibraryInfo[];
 }

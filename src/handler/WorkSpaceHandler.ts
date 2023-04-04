@@ -37,8 +37,6 @@ export class WorkspaceHandler {
 		// may first time run
 		//TODO: 更优雅的判断
 		var libraryIndex = ConfigScope.library().get("dts");
-		console.log(libraryIndex);
-
 		if (libraryIndex === null || libraryIndex === undefined) {
 			console.log(ConfigScope.setting().get(Sections.noReminder2, true));
 			if (ConfigScope.global().get(Sections.noReminder2) !== true) {
@@ -93,13 +91,30 @@ export class WorkspaceHandler {
 	/* otherInformation */ null
 );`;
 				const header =
-					'//LiteLoaderScript Dev Helper\n/// <reference path="' +
+					'// LiteLoader-AIDS automatic generated\n/// <reference path="' +
 					referencePath +
 					'"/> \n\n' +
 					body +
 					" \n\n\n$5";
 				return new vscode.SnippetString(header);
 			}
+			case "python":
+				let code = `import typing
+
+if typing.TYPE_CHECKING: # Important !
+    from llpy import *
+    
+ll.registerPlugin(
+    "$1", # name
+    "$2", # introduction
+    [0, 0, 1, Version.Dev],
+    {"Author": "$3"}, # other_information
+)
+## LiteLoader-AIDS automatic generated
+
+
+$4`;
+				return new vscode.SnippetString(code);
 			default: {
 				return new vscode.SnippetString("不支持的语言");
 			}
@@ -108,7 +123,7 @@ export class WorkspaceHandler {
 	// 编辑器上下文引用
 	public snippetCompletion(): WorkspaceHandler {
 		const provider = vscode.languages.registerCompletionItemProvider(
-			["javascript", "typescript", "lua"],
+			["javascript", "typescript", "lua","python"],
 			{
 				provideCompletionItems(
 					document: vscode.TextDocument,
@@ -126,6 +141,10 @@ export class WorkspaceHandler {
 						description: " 快捷导入LiteLoaderSE补全引用",
 						label: "lls",
 					});
+					const snippetCompletion4 = new vscode.CompletionItem({
+						description: " 快捷导入LiteLoaderSE补全引用",
+						label: "ll",
+					});
 					// //TODO: 性能优化
 					if (document.lineAt(position.line).text.includes("l")) {
 						snippetCompletion.insertText = WorkspaceHandler.buildSnippetString(
@@ -137,11 +156,14 @@ export class WorkspaceHandler {
 						snippetCompletion3.insertText = WorkspaceHandler.buildSnippetString(
 							document.languageId
 						);
+						snippetCompletion4.insertText = WorkspaceHandler.buildSnippetString(
+							document.languageId
+						);
 					}
-					return [snippetCompletion, snippetCompletion2, snippetCompletion3];
+					return [snippetCompletion, snippetCompletion2, snippetCompletion3,snippetCompletion4];
 				},
 			},
-			"ll" // triggered whenever a 'll' is being typed
+			"" // triggered whenever a 'll' is being typed
 		);
 		this.context.subscriptions.push(provider);
 		return this;
