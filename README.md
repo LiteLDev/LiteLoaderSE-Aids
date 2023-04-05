@@ -3,9 +3,9 @@
 
 适用于 Visual Studio Code 的 [LiteLoaderSE](https://github.com/LiteLDev/LiteLoaderBDS) 开发辅助工具
 
-库贡献请看 (TypeScript)[HelperLib](https://github.com/LiteLScript-Dev/HelperLib)
+库贡献请看 [HelperLib](https://github.com/LiteLScript-Dev/HelperLib)(TypeScript)
 
-库贡献请看 (Python)[llpy-helper-lib](https://github.com/LiteLDev/llpy-helper-lib)
+库贡献请看 [llpy-helper-lib](https://github.com/LiteLDev/llpy-helper-lib)(Python)
 
 # Usage
 
