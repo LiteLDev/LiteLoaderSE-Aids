@@ -46,7 +46,7 @@ export const pinnedSources = [
 	},
 	{
 		name: "镜像源 (Codeberg)",
-		repo: "https://codeberg.org/moixsuki/LLAIDS/raw/branch/main/",
+		repo: "https://codeberg.org/moixsuki/HelperLib/raw/branch/master/mirror/",
 	},
 ];
 
