@@ -34,8 +34,8 @@
 npm install
 ```
 
-1. 自行补全依赖
+2. 自行补全依赖
    
-2. 安装扩展 `TODO Highlight`
+3. 安装扩展 `TODO Highlight`
 
-3. 遵循 TODO
+4. 遵循 TODO
