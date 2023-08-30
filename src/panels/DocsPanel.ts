@@ -17,7 +17,13 @@ export class DocsPanel {
 	}
 
 	private _getWebviewContent() {
-		const uri = "https://docs.litebds.com/#/zh_CN/Development/";
+		var uri = "https://docs.litebds.com/zh-Hans/#/LLSEPluginDevelopment/README";
+		const mirroredocs = vscode.workspace
+		.getConfiguration("extension.llseaids")
+		.get("mirroredocs") as boolean;
+		if(mirroredocs){
+			uri = "https://docs.xclhove.top/LiteLoaderBDS/zh-Hans/#/LLSEPluginDevelopment/README";
+		}
 		// Tip: Install the es6-string-html VS Code extension to enable code highlighting below (必要)
 		return /*html*/ `
         <!DOCTYPE html>

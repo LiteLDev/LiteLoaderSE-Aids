@@ -1,12 +1,10 @@
-## 2.1.2 - 2022-09-09
+## 2.2.0 - 2023-08-30
 
-### <type>
+### <type> Bug Fixs 
 
-- <desc>
-- <desc>
+- JavaScript下会出席两次文档图标
+- 文档初始界面异常
 
-### <type>
+### <type> Features
 
-- <desc>
-- <desc>
--
+- 文档新增镜像源，默认开启 By [XCLHove](https://github.com/LiteLDev/LiteLoaderSE-Aids/issues/17)

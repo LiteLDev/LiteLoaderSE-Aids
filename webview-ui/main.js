@@ -36,6 +36,12 @@ function initListener() {
 			autoSplitDocs: autoSplitDocsView.checked,
 		});
 	});
+	const mirroredocsView = document.getElementById("mirroredocs");
+	mirroredocsView.addEventListener("click", () => {
+		postMessage("mirroredocs", {
+			mirroredocs: mirroredocsView.checked,
+		});
+	});
 	window.addEventListener("message", (event) => {
 		const message = event.data; // The JSON data our extension sent
 		console.log(message);
@@ -127,6 +133,10 @@ function setDefaultConfig(args) {
 	const autoSplitDocsView = document.getElementById("autoSplitDocs");
 	console.log(args.autoSplitDocs);
 	autoSplitDocsView.checked = args.autoSplitDocs;
+	
+	const mirroredocsView = document.getElementById("mirroredocs");
+	console.log(args.mirroredocs);
+	mirroredocsView.checked = args.mirroredocs;
 }
 function sourceGetSelfButtonClick() {
 	postMessage("source_get_local");

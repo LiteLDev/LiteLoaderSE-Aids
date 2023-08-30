@@ -48,12 +48,16 @@ export class ConfigPanel {
 		const autoSplitDocs = vscode.workspace
 			.getConfiguration("extension.llseaids")
 			.get("autoSplitDocs");
+		const mirroredocs = vscode.workspace
+			.getConfiguration("extension.llseaids")
+			.get("mirroredocs");
 
 		var args = {
 			sourceUrl: sourceUrl,
 			libraryPath: libraryPath,
 			debugger: debuggerData,
 			autoSplitDocs: autoSplitDocs,
+			mirroredocs: mirroredocs
 		};
 
 		ConfigPanel.postMessage("set_default_config", args);
@@ -191,6 +195,7 @@ export class ConfigPanel {
                 </vscode-panel-view>
                 <vscode-panel-view id="view-3">
 				<vscode-checkbox id="autoSplitDocs">打开文档时自动向右分割视图</vscode-checkbox>
+				<vscode-checkbox id="mirroredocs">使用国内友好的镜像文档(byXCLHove)</vscode-checkbox>
 				</vscode-panel-view>
                 <vscode-panel-view id="view-4">
                   <div>
@@ -265,6 +270,14 @@ export class ConfigPanel {
 							.update(
 								"extension.llseaids.autoSplitDocs",
 								data.autoSplitDocs,
+								true
+							);
+					case "mirroredocs":
+						vscode.workspace
+							.getConfiguration()
+							.update(
+								"extension.llseaids.mirroredocs",
+								data.mirroredocs,
 								true
 							);
 						break;
