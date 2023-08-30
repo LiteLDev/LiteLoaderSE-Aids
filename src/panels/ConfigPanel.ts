@@ -194,8 +194,11 @@ export class ConfigPanel {
                 </div>
                 </vscode-panel-view>
                 <vscode-panel-view id="view-3">
+				<div style="display: vertical;">
 				<vscode-checkbox id="autoSplitDocs">打开文档时自动向右分割视图</vscode-checkbox>
+				<p></p>
 				<vscode-checkbox id="mirroredocs">使用国内友好的镜像文档(byXCLHove)</vscode-checkbox>
+                </div>
 				</vscode-panel-view>
                 <vscode-panel-view id="view-4">
                   <div>
