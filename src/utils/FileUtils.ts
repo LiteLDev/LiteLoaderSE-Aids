@@ -15,9 +15,8 @@ import StreamZip = require("node-stream-zip");
 import * as vscode from "vscode";
 import { randomUUID } from "crypto";
 import { rejects } from "assert";
-import { resolve } from "path";
+import * as path from "path";
 import { ConfigScope, Sections } from "../data/ConfigScope";
-import path = require("path");
 
 /**
  * 同步查找文件匹配
