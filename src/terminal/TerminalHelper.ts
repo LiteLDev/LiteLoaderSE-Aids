@@ -8,7 +8,7 @@ import * as vscode from "vscode";
 import "./TerminalConst";
 import * as path from "path";
 import { CommandType, TerminalKeys, TerminalState } from "./TerminalConst";
-import { getLiteLoaderpath } from "../utils/FileUtils";
+import { getLiteLoaderpath, getFilePath } from "../utils/FileUtils";
 // import { getBDSCwdPath, getBDSPath } from "../utils/WorkspaceUtil";
 export class TerminalHelper {
 	static terminal: vscode.Terminal | undefined;
@@ -44,16 +44,22 @@ export class TerminalHelper {
 				this.stopConsole();
 			}),
 			vscode.commands.registerCommand("extension.llseaids.load", (uri) => {
-				const _path = uri.fsPath;
-				this.managePlugin(CommandType.LOAD, _path);
+				this.managePlugin(
+					CommandType.LOAD, 
+					getFilePath(uri.fsPath, false)
+				);
 			}),
 			vscode.commands.registerCommand("extension.llseaids.unload", (uri) => {
-				const _path = path.parse(uri.fsPath).base;
-				this.managePlugin(CommandType.UNLOAD, _path);
+				this.managePlugin(
+					CommandType.UNLOAD, 
+					getFilePath(uri.fsPath, true)
+				);
 			}),
 			vscode.commands.registerCommand("extension.llseaids.reload", (uri) => {
-				const _path = path.parse(uri.fsPath).base;
-				this.managePlugin(CommandType.RELOAD, _path);
+				this.managePlugin(
+					CommandType.RELOAD, 
+					getFilePath(uri.fsPath, true)
+				);
 			})
 		);
 	}

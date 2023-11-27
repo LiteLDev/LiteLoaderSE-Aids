@@ -17,6 +17,7 @@ import { randomUUID } from "crypto";
 import { rejects } from "assert";
 import { resolve } from "path";
 import { ConfigScope, Sections } from "../data/ConfigScope";
+import path = require("path");
 
 /**
  * 同步查找文件匹配
@@ -164,4 +165,53 @@ export function getLiteLoaderpath(): string {
 	}
 	vscode.commands.executeCommand("extension.llseaids.config");
 	throw new Error("BDSPATH未配置");
+}
+
+function _returnFilePath(filePath: string, getBase: boolean): string {
+	if(getBase) {
+		return path.parse(filePath).base;
+	}
+	return filePath;
+}
+
+/**
+ * Obtain different filePaths based on the type of file
+ * @param fsPath 
+ * @param getBase 
+ * @returns 
+ */
+export function getFilePath(fsPath: string, getBase: boolean): string {
+	const cwdPath = getLiteLoaderpath();
+	const pluginsPath = path.join(cwdPath, "plugins");
+	const nodePath = path.join(pluginsPath, "nodejs");
+
+	const relativePath = path.relative(nodePath, fsPath);
+	// path not in nodejs, return directly
+	if (relativePath.startsWith("..")) {
+		return _returnFilePath(fsPath, getBase);
+	}
+
+	// path in nodejs
+	const pathArray = relativePath.split(path.sep);
+	const nodeFileName = pathArray[0];
+	const packagePath = path.join(nodePath, nodeFileName, "package.json");
+	if (!fs.existsSync(packagePath)) {
+		return _returnFilePath(fsPath, getBase);
+	}
+	const packageJson = JSON.parse(
+		fs.readFileSync(packagePath, "utf-8")
+	);
+	
+	// determine if it is a nodejs entry file
+	const resolvedFsPath = path.resolve(fsPath);
+	const indexPath = path.join(nodePath, nodeFileName, packageJson.main);
+	if (indexPath.toLowerCase() !== resolvedFsPath.toLowerCase()) {
+		// return as a QuickJS file
+		return _returnFilePath(resolvedFsPath, getBase);
+	}
+	// return as nodejs
+	if (getBase) {
+		return packageJson.name;
+	}
+	return path.join(nodePath, nodeFileName);
 }
